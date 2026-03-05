@@ -1,1 +1,2004 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Grafik Şablon 2025</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Roboto:wght@300;400;700&family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;600;700;800&family=Lato:wght@300;400;700&family=Oswald:wght@400;600;700&family=Raleway:wght@400;600;700&family=Poppins:wght@300;400;600;700&family=Source+Sans+3:wght@300;400;600;700&family=Nunito:wght@300;400;600;700&family=Ubuntu:wght@300;400;700&family=Playfair+Display:wght@400;700&family=Merriweather:wght@300;400;700&family=PT+Sans:wght@400;700&family=Noto+Sans:wght@300;400;700&family=Roboto+Condensed:wght@300;400;700&family=Roboto+Slab:wght@300;400;700&family=Fira+Sans:wght@300;400;600;700&family=Barlow:wght@300;400;600;700&family=DM+Sans:wght@300;400;600;700&family=Manrope:wght@300;400;600;700&family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;600;700&family=Lexend:wght@300;400;600;700&family=Lora:wght@400;600;700&family=Segoe+UI:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════
+   TOKENS & RESET
+═══════════════════════════════════ */
+:root {
+  --nav-h: 68px;
+  --panel-h: 52vh;
+  --accent: #60a5fa;
+  --bg: #080e1c;
+  --surface: #0f172a;
+  --surface2: #1e293b;
+  --border: #1e293b;
+  --border2: #334155;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --panel-transition: .32s cubic-bezier(.4,0,.2,1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; }
 
+/* ═══════════════════════════════════
+   APP SHELL
+═══════════════════════════════════ */
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════
+   CANVAS ZONE
+═══════════════════════════════════ */
+#canvasZone {
+  flex: 1 1 0;       /* 1 1 0: büyür de küçülür de, basis=0 */
+  min-height: 0;     /* flex item'ın taşmasını önler */
+  display: flex;
+  flex-direction: column;   /* kart üstte, toolbar altta */
+  align-items: stretch;
+  justify-content: center;
+  padding: 8px 14px 0;
+  overflow: hidden;
+  position: relative;
+  gap: 6px;
+  transition: flex var(--panel-transition);
+}
+
+/* canvasInner: kart + bg-frame — flex 1 ile büyür */
+#canvasInner {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ── PHOTO TOOLBAR ── */
+#photoToolbar {
+  flex-shrink: 0;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(7,12,24,.85);
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 0 6px;
+  backdrop-filter: blur(8px);
+  /* kendisi mb olarak kullanılmaz, parent gap ile yeterli */
+}
+.ptb-btn {
+  height: 28px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: rgba(255,255,255,.45);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: background .12s, color .12s;
+  white-space: nowrap;
+}
+.ptb-btn i { font-size: 12px; }
+.ptb-btn:hover { background: rgba(255,255,255,.08); color: #e2e8f0; }
+.ptb-btn.active { background: rgba(99,102,241,.2); color: #a5b4fc; }
+.ptb-sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(255,255,255,.1);
+  margin: 0 2px;
+  flex-shrink: 0;
+}
+.ptb-sep.ptb-grow { width: auto; flex: 1; background: none; }
+.ptb-dl {
+  color: #4ade80 !important;
+  background: rgba(34,197,94,.12) !important;
+  border: 1px solid rgba(34,197,94,.2);
+}
+.ptb-dl:hover { background: rgba(34,197,94,.22) !important; color: #86efac !important; }
+
+/* bg-wrap + bg-aspect: tam alanı kapla, kart içinde ortalansın */
+.bg-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* bg-aspect: boyutları canvasZone'dan alır ama taşmaz */
+.bg-aspect {
+  /* Her iki eksende de sınırlı: içerik sığmıyorsa küçülür */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*
+  bg-frame: 16:9 oranını korur, hem genişliğe hem yüksekliğe göre ölçeklenir.
+  Trick: width: min(100%, calc(100vh * 16/9)) — ama daha sağlıklısı:
+  aspect-ratio + max-height + width: auto kombinasyonu.
+  height=100% ile başlar, width=auto aşağı iner; max-width ile de kısıtlanır.
+*/
+.bg-frame {
+  aspect-ratio: 16 / 9;
+  /* Yüksekliği parent'ın %100'ü, genişlik orandan hesaplanır */
+  height: 100%;
+  width: auto;
+  /* Yatayda taşmasın */
+  max-width: 100%;
+
+  position: relative;
+  border-radius: 14px; overflow: hidden;
+  background: radial-gradient(ellipse at 30% 40%, #1e3a5f 0%, #0b1728 55%, #070d1a 100%);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.06), 0 24px 60px rgba(0,0,0,.8);
+  display: flex; align-items: center; justify-content: center;
+  padding: 80px;
+  transition: padding .25s;
+}
+
+/* Kare / dikey oran overrides */
+.bg-frame.ratio-square   { aspect-ratio: 1 / 1; }
+.bg-frame.ratio-portrait { aspect-ratio: 9 / 16; }
+
+#bgImgLayer {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  pointer-events: none;
+}
+.bg-frame::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.4) 100%);
+}
+.card-wrap { position: relative; z-index: 1; width: 100%; }
+
+/* card-aspect also uses aspect-ratio */
+.card-aspect {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  transition: aspect-ratio .3s;
+}
+.card-aspect.ratio-square   { aspect-ratio: 1 / 1; }
+.card-aspect.ratio-portrait { aspect-ratio: 9 / 16; }
+
+/* ── CARD ── */
+.card-aspect { position: relative; }
+.card-inner {
+  position: absolute; inset: 0;
+  display: flex; border-radius: 14px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.7);
+}
+.card-inner.photo-right  { flex-direction: row-reverse; }
+.card-inner.photo-top    { flex-direction: column; }
+.card-inner.photo-bottom { flex-direction: column-reverse; }
+.card-inner.photo-top    .photo-panel,
+.card-inner.photo-bottom .photo-panel { width: 100%; height: 55%; }
+.card-inner.photo-top    .content-panel,
+.card-inner.photo-bottom .content-panel { height: 45%; }
+
+.photo-panel {
+  position: relative; width: 42%; flex-shrink: 0; overflow: hidden;
+  background: #1a1a2e; cursor: grab; user-select: none; transition: width .3s;
+}
+.photo-panel.grabbing { cursor: grabbing; }
+#photoImg { position: absolute; transform-origin: 0 0; display: none; pointer-events: none; will-change: transform; }
+#photoTint { position: absolute; inset: 0; pointer-events: none; z-index: 2; opacity: 0; }
+
+.photo-overlay {
+  position: absolute; inset: 0; z-index: 5;
+  display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px;
+  transition: background .2s, opacity .2s; pointer-events: none;
+}
+.photo-panel.empty    .photo-overlay { background: rgba(0,0,0,.5); opacity: 1; }
+.photo-panel.has-img  .photo-overlay { opacity: 0; }
+.photo-panel.has-img:hover .photo-overlay { background: rgba(0,0,0,.35); opacity: 1; }
+.photo-panel.drag-over .photo-overlay { background: rgba(0,0,0,.6); opacity: 1; }
+.photo-panel.drag-over { outline: 2px dashed rgba(255,255,255,.6); outline-offset: -3px; }
+.ov-label { color: #fff; font-size: clamp(8px,.9vw,11px); font-weight: 600; text-align: center; line-height: 1.6; }
+
+.content-panel {
+  flex: 1; position: relative; display: flex; flex-direction: column;
+  justify-content: flex-end; overflow: visible;
+}
+.quote-area {
+  position: absolute; top: 0; left: 0; right: 0;
+  bottom: clamp(40px, 9%, 90px);
+  padding: clamp(8px, 1.5vw, 24px);
+  display: flex; align-items: center;
+  transition: top .25s, bottom .25s;
+}
+.content-panel.namebar-top .quote-area { top: clamp(40px,9%,90px); bottom: 0; }
+.content-panel.namebar-bottom .quote-area { top: 0; bottom: clamp(40px,9%,90px); }
+
+#quoteText {
+  color: #fff; line-height: 1.65; font-weight: 400;
+  outline: none; width: 100%;
+  text-shadow: 0 1px 3px rgba(0,0,0,.2);
+  cursor: text; white-space: pre-wrap; word-break: break-word;
+  position: relative; z-index: 1;
+}
+#quoteText:empty::before { content: attr(data-ph); color: rgba(255,255,255,.45); font-style: italic; pointer-events: none; font-size: .7em; }
+
+.quote-bg {
+  position: absolute; top: 0; left: 0; right: 0;
+  bottom: clamp(40px,9%,90px);
+  pointer-events: none; z-index: 1;
+}
+.content-panel.namebar-top .quote-bg { top: clamp(40px,9%,90px); bottom: 0; }
+
+.name-bar-wrap {
+  position: absolute; bottom: 0; left: 0; z-index: 3; display: flex; transition: all .25s;
+}
+.name-bar-wrap.pos-bottom-left  { bottom:0; left:0; right:auto; top:auto; align-items:flex-end; justify-content:flex-start; }
+.name-bar-wrap.pos-bottom-right { bottom:0; right:0; left:auto; top:auto; align-items:flex-end; justify-content:flex-end; }
+.name-bar-wrap.pos-top-left     { top:0; left:0; bottom:auto; right:auto; align-items:flex-start; justify-content:flex-start; }
+.name-bar-wrap.pos-top-right    { top:0; right:0; bottom:auto; left:auto; align-items:flex-start; justify-content:flex-end; }
+
+.name-bar {
+  display: block;
+  padding: clamp(6px,.9vw,12px) clamp(12px,1.8vw,28px);
+  min-width: 44%; max-width: 100%; width: fit-content;
+  position: relative; background: transparent !important;
+  transition: border-radius .2s;
+}
+.name-bar-wrap.pos-bottom-left  .name-bar { border-radius: 0 var(--bar-r, 26px) 0 0; }
+.name-bar-wrap.pos-bottom-right .name-bar { border-radius: var(--bar-r, 26px) 0 0 0; }
+.name-bar-wrap.pos-top-left     .name-bar { border-radius: 0 0 var(--bar-r, 26px) 0; }
+.name-bar-wrap.pos-top-right    .name-bar { border-radius: 0 0 0 var(--bar-r, 26px); }
+
+.bar-bg { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 0; }
+
+#nameField, #titleField { position: relative; z-index: 1; }
+#nameField {
+  color: #fff; font-weight: 800; letter-spacing: .07em; text-transform: uppercase;
+  outline: none; display: block; cursor: text; white-space: normal; word-break: break-word;
+}
+#nameField:empty::before { content: attr(data-ph); color: rgba(255,255,255,.35); font-style: italic; pointer-events: none; font-size: .65em; font-weight: 400; letter-spacing: 0; text-transform: none; }
+#titleField {
+  color: rgba(255,255,255,.85); font-weight: 400; letter-spacing: .03em;
+  outline: none; display: block; margin-top: 3px; cursor: text; white-space: normal; word-break: break-word;
+}
+#titleField:empty::before { content: attr(data-ph); color: rgba(255,255,255,.3); font-style: italic; pointer-events: none; font-size: .7em; }
+#nameField:focus, #titleField:focus { background: rgba(255,255,255,.07); border-radius: 3px; }
+
+/* ═══════════════════════════════════
+   HELP OVERLAY (inside canvas zone)
+═══════════════════════════════════ */
+#helpOverlay {
+  display: none; position: absolute; inset: 0; z-index: 200;
+  background: #080f1e; flex-direction: column;
+  animation: hIn .22s ease;
+}
+#helpOverlay.on { display: flex; }
+@keyframes hIn { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:translateY(0) } }
+.ho-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; background: #0d1526; border-bottom: 1px solid #1e293b; flex-shrink: 0;
+}
+.ho-topbar h4 { font-size: 13px; font-weight: 800; color: #e2e8f0; margin: 0; flex: 1; }
+.ho-close {
+  width: 28px; height: 28px; border-radius: 7px; border: none;
+  background: #1e293b; color: #64748b; cursor: pointer; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+}
+.ho-close:hover { background: #334155; color: #e2e8f0; }
+.ho-body { flex: 1; overflow-y: auto; padding: 16px 18px 24px; display: flex; flex-direction: column; gap: 12px; }
+
+/* ═══════════════════════════════════
+   PANEL DRAWER
+═══════════════════════════════════ */
+#panelDrawer {
+  flex-shrink: 0;
+  height: 0;
+  overflow: hidden;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  transition: height var(--panel-transition);
+  display: flex;
+  flex-direction: column;
+}
+#panelDrawer.open {
+  height: var(--panel-h);
+}
+
+.pd-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px;
+  background: #0a1020;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.pd-header-icon {
+  width: 26px; height: 26px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; flex-shrink: 0;
+}
+.pd-header h5 { font-size: 12px; font-weight: 700; color: var(--text); margin: 0; flex: 1; }
+.pd-close {
+  width: 28px; height: 28px; border-radius: 7px; border: none;
+  background: var(--surface2); color: var(--muted); font-size: 13px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .15s, color .15s;
+}
+.pd-close:hover { background: #334155; color: var(--text); }
+
+.pd-body {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 10px 12px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.pd-body::-webkit-scrollbar { width: 3px; }
+.pd-body::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+/* ═══════════════════════════════════
+   BOTTOM NAV
+═══════════════════════════════════ */
+#bottomNav {
+  height: var(--nav-h);
+  flex-shrink: 0;
+  background: #070c18;
+  border-top: 1px solid #111827;
+  display: flex;
+  align-items: stretch;
+  box-shadow: 0 -4px 20px rgba(0,0,0,.5);
+  z-index: 100;
+}
+.bn-btn {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px; border: none; background: transparent;
+  color: rgba(255,255,255,.3);
+  font-size: 8px; font-weight: 700;
+  letter-spacing: .05em; text-transform: uppercase;
+  cursor: pointer;
+  transition: color .15s, background .15s;
+  padding: 8px 2px 10px;
+  position: relative;
+}
+.bn-btn i { font-size: 18px; transition: transform .2s; }
+.bn-btn.active {
+  color: var(--accent);
+  background: rgba(96,165,250,.07);
+}
+.bn-btn.active::before {
+  content: '';
+  position: absolute; top: 0; left: 20%; right: 20%;
+  height: 2px; background: var(--accent);
+  border-radius: 0 0 3px 3px;
+}
+.bn-btn.active i { transform: translateY(-1px); }
+.bn-btn:active { background: rgba(255,255,255,.05); }
+.bn-btn.bn-dl { color: #22c55e; }
+.bn-btn.bn-dl.active { color: #22c55e; background: rgba(34,197,94,.07); }
+.bn-btn.bn-dl.active::before { background: #22c55e; }
+
+/* ═══════════════════════════════════
+   PANEL CONTENT COMPONENTS
+═══════════════════════════════════ */
+.sb-card {
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 10px; overflow: hidden; flex-shrink: 0;
+}
+.sb-card-head {
+  padding: 6px 11px; background: #172033;
+  border-bottom: 1px solid var(--border2);
+  display: flex; align-items: center; gap: 6px;
+}
+.sb-card-head small {
+  font-size: 8.5px; font-weight: 800; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+}
+.sb-card-head small i { color: var(--accent); }
+.sb-card-body { padding: 5px 8px; display: flex; flex-direction: column; gap: 4px; }
+
+.row { display: flex; align-items: center; gap: 4px; margin: 0; flex-wrap: nowrap; overflow: hidden; }
+.lbl { font-size: 9.5px; font-weight: 600; color: var(--muted); white-space: nowrap; width: 54px; flex-shrink: 0; }
+.val { font-size: 9.5px; color: var(--muted); width: 32px; text-align: right; flex-shrink: 0; }
+.flex-fill { flex: 1 1 0; min-width: 0; }
+.sb-hr { height: 1px; background: var(--border2); margin: 2px 0; }
+
+.lg { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.lb {
+  padding: 7px 4px; border: 1px solid var(--border2); border-radius: 7px;
+  background: #0f172a; color: var(--muted);
+  font-size: 9px; cursor: pointer; text-align: center;
+  transition: background .15s, border-color .15s, color .15s;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.lb i { font-size: 15px; }
+.lb.active, .lb:hover { background: rgba(99,102,241,.2); border-color: #6366f1; color: #a5b4fc; }
+
+.nb {
+  padding: 6px 4px; border: 1px solid var(--border2); border-radius: 7px;
+  background: #0f172a; color: var(--muted);
+  font-size: 9px; cursor: pointer; text-align: center;
+  transition: background .15s, border-color .15s, color .15s;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.nb i { font-size: 13px; }
+.nb.active, .nb:hover { background: rgba(99,102,241,.2); border-color: #6366f1; color: #a5b4fc; }
+
+.ibg { display: flex; gap: 3px; }
+.ib {
+  width: 28px; height: 28px; border: 1px solid var(--border2); border-radius: 5px;
+  background: #0f172a; color: var(--muted); font-size: 11px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s;
+}
+.ib.active, .ib:hover { background: rgba(99,102,241,.2); color: #a5b4fc; border-color: #6366f1; }
+.wb {
+  padding: 3px 8px; border: 1px solid var(--border2); border-radius: 5px;
+  background: #0f172a; color: var(--muted); font-size: 10px; cursor: pointer; transition: background .15s, color .15s;
+}
+.wb.active, .wb:hover { background: rgba(99,102,241,.2); color: #a5b4fc; border-color: #6366f1; }
+
+/* form controls */
+select, input[type=number], input[type=text] {
+  min-width: 0; max-width: 100%;
+  background: #0f172a !important; border: 1px solid var(--border2) !important;
+  color: var(--text) !important; font-size: 11.5px;
+  border-radius: 6px !important; padding: 4px 7px !important;
+}
+select:focus, input[type=number]:focus, input[type=text]:focus {
+  box-shadow: 0 0 0 2px rgba(99,102,241,.25) !important;
+  border-color: #6366f1 !important; outline: none;
+}
+select option { background: #1e293b; }
+input[type=range] { accent-color: #6366f1; cursor: pointer; min-width: 0; flex: 1 1 0; display: block; }
+input[type=color] {
+  width: 28px; height: 26px; border: 1px solid var(--border2);
+  border-radius: 5px; background: none; cursor: pointer; padding: 1px; flex-shrink: 0;
+}
+
+/* btn */
+.btn {
+  padding: 7px 12px; border-radius: 8px; font-size: 11px; font-weight: 600;
+  cursor: pointer; border: none; display: flex; align-items: center; gap: 5px;
+  transition: transform .1s, opacity .15s;
+}
+.btn:active { transform: scale(.97); }
+.btn-green { background: linear-gradient(135deg,#22c55e,#15803d); color: #fff; box-shadow: 0 3px 10px rgba(34,197,94,.2); }
+.btn-green:hover { opacity: .88; }
+.btn-ghost { background: var(--surface2); color: #94a3b8; border: 1px solid var(--border2); }
+.btn-ghost:hover { background: #334155; color: var(--text); }
+
+/* ═══════════════════════════════════
+   PERSON PANEL
+═══════════════════════════════════ */
+.rp-tools { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; padding-bottom: 4px; }
+.search-wrap { position: relative; }
+.search-wrap i { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: #475569; font-size: 10px; }
+.rp-search {
+  width: 100%; background: var(--surface2) !important;
+  border: 1px solid var(--border2) !important; color: var(--text) !important;
+  border-radius: 7px !important; padding: 5px 9px 5px 28px !important; font-size: 11px; outline: none;
+}
+.rp-search:focus { border-color: #6366f1 !important; }
+.rp-btn-row { display: flex; gap: 5px; }
+.rp-btn {
+  flex: 1; padding: 5px 6px; border-radius: 6px; border: none;
+  font-size: 10px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+}
+.rp-btn-save { background: #6366f1; color: #fff; }
+.rp-btn-exp  { background: #0f766e; color: #fff; }
+.rp-btn-imp  { background: #334155; color: #94a3b8; }
+
+.pk {
+  border: 1px solid var(--border2); border-radius: 9px;
+  background: var(--surface2); overflow: hidden; transition: border-color .15s; flex-shrink: 0;
+}
+.pk:hover { border-color: #6366f1; }
+.pk-top {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 8px 4px; cursor: pointer;
+}
+.pk-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg,#6366f1,#8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.pk-name-wrap { flex: 1; min-width: 0; }
+.pk-name { font-size: 11px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pk-meta { font-size: 8.5px; color: var(--muted); margin-top: 1px; }
+.pk-actions { display: flex; gap: 3px; flex-shrink: 0; }
+.pk-ico {
+  width: 22px; height: 22px; border-radius: 5px; border: none;
+  font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.pk-ico-edit { background: rgba(99,102,241,.15); color: #818cf8; }
+.pk-ico-edit:hover { background: rgba(99,102,241,.35); }
+.pk-ico-del  { background: rgba(239,68,68,.12); color: #f87171; }
+.pk-ico-del:hover { background: rgba(239,68,68,.3); }
+
+.pk-titles { padding: 0 8px 6px; display: flex; flex-direction: column; gap: 3px; }
+.pk-title-row {
+  display: flex; align-items: center; gap: 5px;
+  padding: 3px 6px; border-radius: 6px; border: 1px solid var(--border2);
+  cursor: pointer; background: #0f172a; transition: border-color .15s, background .15s;
+}
+.pk-title-row:hover { border-color: #6366f1; background: rgba(99,102,241,.1); }
+.pt-badge {
+  font-size: 8px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+  color: #fff; background: #334155; border-radius: 4px; padding: 1px 5px; flex-shrink: 0;
+}
+.pt-text { font-size: 10px; color: #94a3b8; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pt-load {
+  width: 18px; height: 18px; border-radius: 4px; border: none; font-size: 9px;
+  background: rgba(99,102,241,.2); color: #818cf8; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.pk-title-empty { opacity: .5; cursor: default; }
+.pt-text-empty { font-size: 9.5px; color: #475569; font-style: italic; flex: 1; }
+.pt-load-add { background: rgba(34,197,94,.15) !important; color: #4ade80 !important; }
+.rp-empty { color: #475569; font-size: 11px; text-align: center; padding: 20px 12px; line-height: 1.8; }
+
+/* ═══════════════════════════════════
+   HELP COMPONENTS
+═══════════════════════════════════ */
+.ic-blue   { background: rgba(99,102,241,.18); color: #818cf8; }
+.ic-green  { background: rgba(34,197,94,.14);  color: #4ade80; }
+.ic-yellow { background: rgba(234,179,8,.14);  color: #facc15; }
+.ic-red    { background: rgba(239,68,68,.14);  color: #f87171; }
+.ic-purple { background: rgba(168,85,247,.14); color: #c084fc; }
+.ic-cyan   { background: rgba(6,182,212,.14);  color: #22d3ee; }
+.ic-orange { background: rgba(249,115,22,.14); color: #fb923c; }
+
+.hs-title { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.hs-title-icon { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.hs-title h3 { font-size: 13px; font-weight: 800; color: var(--text); margin: 0; }
+.hs-title p  { font-size: 9.5px; color: #475569; margin: 1px 0 0; }
+.h-tip { display: flex; gap: 9px; align-items: flex-start; background: #111827; border: 1px solid #1e293b; border-radius: 9px; padding: 9px 11px; margin-bottom: 5px; }
+.h-tip-ic { width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; margin-top: 1px; }
+.h-tip-txt b { font-size: 10.5px; color: var(--text); display: block; margin-bottom: 2px; }
+.h-tip-txt span { font-size: 9.5px; color: var(--muted); line-height: 1.6; display: block; }
+.h-steps { display: flex; flex-direction: column; }
+.h-step { display: flex; gap: 9px; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid #1e293b; }
+.h-step:last-child { border-bottom: none; }
+.h-step-num { width: 18px; height: 18px; border-radius: 50%; background: rgba(99,102,241,.25); color: #818cf8; font-size: 9.5px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.h-step-txt b { font-size: 10px; color: #cbd5e1; display: block; }
+.h-step-txt span { font-size: 9px; color: var(--muted); line-height: 1.6; }
+.h-highlight { background: rgba(99,102,241,.1); border: 1px solid rgba(99,102,241,.25); border-radius: 9px; padding: 9px 11px; display: flex; gap: 8px; align-items: flex-start; }
+.h-highlight i { color: #818cf8; font-size: 12px; margin-top: 1px; flex-shrink: 0; }
+.h-highlight p { font-size: 9.5px; color: #94a3b8; line-height: 1.65; margin: 0; }
+.help-topic-btn {
+  width: 100%; text-align: left; padding: 6px 9px;
+  background: transparent; border: none; color: #475569;
+  font-size: 11px; font-weight: 600; cursor: pointer; border-radius: 7px;
+  display: flex; align-items: center; gap: 8px; transition: background .12s, color .12s;
+}
+.help-topic-btn i { width: 12px; text-align: center; font-size: 11px; }
+.help-topic-btn:hover { background: rgba(255,255,255,.05); color: #cbd5e1; }
+.help-topic-btn.active { background: rgba(99,102,241,.18); color: #a5b4fc; }
+
+/* export overlay */
+#exportOverlay {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,.85);
+  align-items: center; justify-content: center; flex-direction: column; gap: 12px;
+}
+#exportOverlay.on { display: flex; }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<div id="exportOverlay">
+  <div class="spinner-border text-success" style="width:2.5rem;height:2.5rem;border-width:.25em;" role="status"></div>
+  <span style="font-size:14px;font-weight:600;">Görsel oluşturuluyor…</span>
+</div>
+
+<div id="app">
+
+  <!-- ══════ CANVAS ZONE ══════ -->
+  <div id="canvasZone">
+
+    <!-- Help overlay -->
+    <div id="helpOverlay">
+      <div class="ho-topbar">
+        <i class="fa-solid fa-circle-question" style="color:#6366f1;font-size:14px;flex-shrink:0;"></i>
+        <h4 id="hoTitle">Yardım</h4>
+        <button class="ho-close" onclick="closeHelpOverlay()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="ho-body" id="hoBody"></div>
+    </div>
+
+    <!-- card wrapper grows to fill remaining space -->
+    <div id="canvasInner">
+      <div class="bg-wrap">
+        <div class="bg-aspect" id="bgAspect">
+          <div class="bg-frame" id="bgFrame">
+            <div id="bgImgLayer"></div>
+            <div class="card-wrap">
+              <div class="card-aspect" id="cardAspect">
+                <div class="card-inner" id="card">
+
+                  <div class="photo-panel empty" id="photoPanel">
+                    <img id="photoImg" alt="">
+                    <div id="photoTint"></div>
+                    <div class="photo-overlay">
+                      <i class="fa-solid fa-cloud-arrow-up fa-2x" style="opacity:.7"></i>
+                      <span class="ov-label">Fotoğraf seçin<br>veya sürükleyin</span>
+                    </div>
+                  </div>
+
+                  <input type="file" id="fileInput" accept="image/*" style="display:none">
+
+                  <div class="content-panel namebar-bottom" id="contentPanel">
+                    <div class="quote-bg" id="quoteBg"></div>
+                    <div class="quote-area" id="quoteArea">
+                      <div id="quoteText" contenteditable="true" spellcheck="false" data-ph="Buraya yazınızı yazın…"></div>
+                    </div>
+                    <div class="name-bar-wrap pos-bottom-left" id="nameBarWrap">
+                      <div class="name-bar" id="nameBar">
+                        <div class="bar-bg" id="barBg"></div>
+                        <div id="nameField" contenteditable="true" spellcheck="false" data-ph="Ad Soyad…"></div>
+                        <div id="titleField" contenteditable="true" spellcheck="false" data-ph="Ünvan…"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div><!-- card-inner -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- canvasInner -->
+
+    <!-- ── PHOTO TOOLBAR (canvas altı) ── -->
+    <div id="photoToolbar">
+      <button class="ptb-btn" onclick="$('fileInput').click()" title="Fotoğraf Yükle">
+        <i class="fa-solid fa-camera"></i><span>Fotoğraf</span>
+      </button>
+      <div class="ptb-sep"></div>
+      <button class="ptb-btn" id="btnZoomIn" title="Yakınlaştır">
+        <i class="fa-solid fa-magnifying-glass-plus"></i><span>Yakın</span>
+      </button>
+      <button class="ptb-btn" id="btnZoomOut" title="Uzaklaştır">
+        <i class="fa-solid fa-magnifying-glass-minus"></i><span>Uzak</span>
+      </button>
+      <div class="ptb-sep"></div>
+      <button class="ptb-btn" id="btnFlipH" title="Yatay Çevir">
+        <i class="fa-solid fa-left-right"></i><span>Flip Y</span>
+      </button>
+      <button class="ptb-btn" id="btnFlipV" title="Dikey Çevir">
+        <i class="fa-solid fa-up-down"></i><span>Flip D</span>
+      </button>
+      <div class="ptb-sep"></div>
+      <button class="ptb-btn" id="btnReset" title="Sıfırla">
+        <i class="fa-solid fa-rotate-left"></i><span>Sıfırla</span>
+      </button>
+      <div class="ptb-sep ptb-grow"></div>
+      <button class="ptb-btn ptb-dl" onclick="exportImg()" title="İndir">
+        <i class="fa-solid fa-download"></i><span>İndir</span>
+      </button>
+    </div><!-- photoToolbar -->
+
+  </div><!-- canvasZone -->
+
+  <!-- ══════ PANEL DRAWER ══════ -->
+  <div id="panelDrawer">
+    <div class="pd-header">
+      <div class="pd-header-icon ic-blue" id="pdIcon"><i class="fa-solid fa-sliders"></i></div>
+      <h5 id="pdTitle">Kontroller</h5>
+      <button class="pd-close" onclick="closePanel()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="pd-body" id="pdBody"></div>
+  </div>
+
+  <!-- ══════ BOTTOM NAV ══════ -->
+  <nav id="bottomNav">
+    <button class="bn-btn" data-key="layout" onclick="togglePanel('layout',this)">
+      <i class="fa-solid fa-table-columns"></i><span>Düzen</span>
+    </button>
+    <button class="bn-btn" data-key="photo" onclick="togglePanel('photo',this)">
+      <i class="fa-solid fa-image"></i><span>Fotoğraf</span>
+    </button>
+    <button class="bn-btn" data-key="text" onclick="togglePanel('text',this)">
+      <i class="fa-solid fa-font"></i><span>Metin</span>
+    </button>
+    <button class="bn-btn" data-key="colors" onclick="togglePanel('colors',this)">
+      <i class="fa-solid fa-palette"></i><span>Renkler</span>
+    </button>
+    <button class="bn-btn bn-dl" data-key="export" onclick="togglePanel('export',this)">
+      <i class="fa-solid fa-download"></i><span>Aktar</span>
+    </button>
+    <button class="bn-btn" data-key="persons" onclick="togglePanel('persons',this)">
+      <i class="fa-solid fa-address-book"></i><span>Kişiler</span>
+    </button>
+    <button class="bn-btn" data-key="help" onclick="togglePanel('help',this)">
+      <i class="fa-solid fa-circle-question"></i><span>Yardım</span>
+    </button>
+  </nav>
+
+</div><!-- app -->
+
+<!-- ══════ MODAL ══════ -->
+<div id="pkModal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+  <div style="background:#1e293b;border:1px solid #334155;border-radius:14px;width:340px;max-width:94vw;padding:20px;box-shadow:0 24px 60px rgba(0,0,0,.6);display:flex;flex-direction:column;gap:13px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <i class="fa-solid fa-user-pen" style="color:#6366f1;font-size:15px;"></i>
+      <span id="pkModalTitle" style="font-size:13px;font-weight:700;color:#e2e8f0;flex:1;">Yeni Kişi Ekle</span>
+      <button onclick="closeModal()" style="background:none;border:none;color:#64748b;font-size:16px;cursor:pointer;padding:2px 6px;">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div><label style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:3px;">Ad Soyad *</label>
+        <input id="pkModalName" type="text" placeholder="Ad Soyad" style="width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;border-radius:8px;padding:7px 10px;font-size:12px;outline:none;font-family:inherit;"></div>
+      <div><label style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:3px;">Ünvan 1</label>
+        <input id="pkModalT1" type="text" placeholder="Birinci ünvan" style="width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;border-radius:8px;padding:7px 10px;font-size:12px;outline:none;font-family:inherit;"></div>
+      <div><label style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:3px;">Ünvan 2</label>
+        <input id="pkModalT2" type="text" placeholder="İkinci ünvan (opsiyonel)" style="width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;border-radius:8px;padding:7px 10px;font-size:12px;outline:none;font-family:inherit;"></div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="closeModal()" style="flex:1;padding:8px;border-radius:8px;border:none;background:#334155;color:#94a3b8;font-size:12px;font-weight:600;cursor:pointer;">İptal</button>
+      <button onclick="submitModal()" style="flex:2;padding:8px;border-radius:8px;border:none;background:#6366f1;color:#fff;font-size:12px;font-weight:700;cursor:pointer;"><i class="fa-solid fa-check"></i> Kaydet</button>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+
+/* ══════════════════════════════════════
+   PANEL CONTENTS (HTML generators)
+══════════════════════════════════════ */
+const PANELS = {
+  layout: {
+    title: 'Düzen', icon: 'fa-table-columns', iconCls: 'ic-cyan',
+    html: () => `
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-table-columns"></i> Yerleşim</small></div>
+  <div class="sb-card-body">
+    <div class="lg">
+      <button class="lb ${_layout==='photo-top'?'active':''}" onclick="setLayout('photo-top',this)"><i class="fa-solid fa-table-rows"></i>Foto Üst</button>
+      <button class="lb ${_layout==='photo-bottom'?'active':''}" onclick="setLayout('photo-bottom',this)"><i class="fa-solid fa-table-rows fa-flip-vertical"></i>Foto Alt</button>
+      <button class="lb ${_layout==='photo-left'?'active':''}" onclick="setLayout('photo-left',this)"><i class="fa-solid fa-table-columns"></i>Foto Sol</button>
+      <button class="lb ${_layout==='photo-right'?'active':''}" onclick="setLayout('photo-right',this)"><i class="fa-solid fa-table-columns fa-flip-horizontal"></i>Foto Sağ</button>
+    </div>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-id-card"></i> Ad/Ünvan Konumu</small></div>
+  <div class="sb-card-body">
+    <div class="lg">
+      <button class="nb ${_namePos==='top-left'?'active':''}" onclick="setNamePos('top-left',this)"><i class="fa-solid fa-arrow-up-left"></i>Sol Üst</button>
+      <button class="nb ${_namePos==='top-right'?'active':''}" onclick="setNamePos('top-right',this)"><i class="fa-solid fa-arrow-up-right"></i>Sağ Üst</button>
+      <button class="nb ${_namePos==='bottom-left'?'active':''}" onclick="setNamePos('bottom-left',this)"><i class="fa-solid fa-arrow-down-left"></i>Sol Alt</button>
+      <button class="nb ${_namePos==='bottom-right'?'active':''}" onclick="setNamePos('bottom-right',this)"><i class="fa-solid fa-arrow-down-right"></i>Sağ Alt</button>
+    </div>
+    <div class="sb-hr"></div>
+    <div class="row"><span class="lbl">Ünvan</span>
+      <div class="form-check form-switch ms-1"><input class="form-check-input" type="checkbox" id="cbShowTitle" ${_showTitle?'checked':''} onchange="toggleTitleField(this.checked)"></div>
+      <span style="font-size:9px;color:#475569;">Ünvan alanını göster</span></div>
+    <div class="row"><span class="lbl">Bar</span>
+      <div class="form-check form-switch ms-1"><input class="form-check-input" type="checkbox" id="cbShowNameBar" ${_showNameBar?'checked':''} onchange="toggleNameBar(this.checked)"></div>
+      <span style="font-size:9px;color:#475569;">Ad/Ünvan barını göster</span></div>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-expand"></i> Kart Marjini</small></div>
+  <div class="sb-card-body">
+    <div class="row"><span class="lbl">Bağlı</span>
+      <div class="form-check form-switch ms-1"><input class="form-check-input" type="checkbox" id="cbMarginLink" ${_marginLink?'checked':''} onchange="_marginLink=this.checked;syncMargins('all')"></div>
+      <span style="font-size:9px;color:#475569;">Kenarlar eşit</span></div>
+    <div class="row"><span class="lbl">↑ Üst</span><input type="range" class="flex-fill" id="slMTop" min="0" max="400" value="${mg.top}" oninput="syncMargins('top')"><span class="val" id="mTopVal">${mg.top}px</span></div>
+    <div class="row"><span class="lbl">→ Sağ</span><input type="range" class="flex-fill" id="slMRight" min="0" max="400" value="${mg.right}" oninput="syncMargins('right')"><span class="val" id="mRightVal">${mg.right}px</span></div>
+    <div class="row"><span class="lbl">↓ Alt</span><input type="range" class="flex-fill" id="slMBottom" min="0" max="400" value="${mg.bottom}" oninput="syncMargins('bottom')"><span class="val" id="mBottomVal">${mg.bottom}px</span></div>
+    <div class="row"><span class="lbl">← Sol</span><input type="range" class="flex-fill" id="slMLeft" min="0" max="400" value="${mg.left}" oninput="syncMargins('left')"><span class="val" id="mLeftVal">${mg.left}px</span></div>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-sliders"></i> Boyut & Köşe</small></div>
+  <div class="sb-card-body">
+    <div class="row"><span class="lbl">Foto Gen.</span><input type="range" class="flex-fill" id="slPhotoW" min="20" max="70" value="${_photoW}" oninput="setPhotoW(this.value)"><span class="val" id="photoWVal">${_photoW}%</span></div>
+    <div class="sb-hr"></div>
+    <div class="row"><span class="lbl">Kart Köşe</span><input type="range" class="flex-fill" id="slCardR" min="0" max="32" value="${_cardR}" oninput="setCardR(this.value)"><span class="val" id="cardRVal">${_cardR}px</span></div>
+    <div class="row"><span class="lbl">Bar Köşe</span><input type="range" class="flex-fill" id="slBarR" min="0" max="60" value="${_barR}" oninput="setBarR(this.value)"><span class="val" id="barRVal">${_barR}px</span></div>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-panorama"></i> Arka Plan</small></div>
+  <div class="sb-card-body">
+    <button class="btn btn-ghost w-100" style="justify-content:center;" onclick="$('bgImgInput').click()"><i class="fa-solid fa-image"></i> Arka Plan Seç</button>
+    <input type="file" id="bgImgInput" accept="image/*" style="display:none">
+    <button class="btn w-100" id="bgClearRow" style="${bgBase64?'':'display:none;'}justify-content:center;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);" onclick="clearBgImg()"><i class="fa-solid fa-trash"></i> Arka Planı Kaldır</button>
+    <div class="row" id="bgFitRow" style="${bgBase64?'':'display:none'}"><span class="lbl">Yerleşim</span>
+      <select class="flex-fill" id="selBgFit" onchange="applyBgStyle()">
+        <option value="cover" ${_bgFit==='cover'?'selected':''}>Cover</option>
+        <option value="contain" ${_bgFit==='contain'?'selected':''}>Contain</option>
+        <option value="fill" ${_bgFit==='fill'?'selected':''}>Esnet</option>
+      </select></div>
+    <div class="row" id="bgOpRow" style="${bgBase64?'':'display:none'}"><span class="lbl">Opaklık</span><input type="range" class="flex-fill" id="slBgOp" min="5" max="100" value="${_bgOp}" oninput="applyBgStyle()"><span class="val" id="bgOpVal">${_bgOp}%</span></div>
+  </div>
+</div>`
+  },
+
+  photo: {
+    title: 'Fotoğraf', icon: 'fa-image', iconCls: 'ic-green',
+    html: () => `
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-wand-magic-sparkles"></i> Filtreler</small></div>
+  <div class="sb-card-body">
+    <div class="row"><span class="lbl">Parlaklık</span><input type="range" class="flex-fill" id="slBr" min="0" max="200" value="${fs.br}" oninput="applyFilters()"><span class="val" id="brVal">${fs.br}</span></div>
+    <div class="row"><span class="lbl">Kontrast</span><input type="range" class="flex-fill" id="slCt" min="0" max="200" value="${fs.ct}" oninput="applyFilters()"><span class="val" id="ctVal">${fs.ct}</span></div>
+    <div class="row"><span class="lbl">Doygunluk</span><input type="range" class="flex-fill" id="slSat" min="0" max="200" value="${fs.sat}" oninput="applyFilters()"><span class="val" id="satVal">${fs.sat}</span></div>
+    <div class="row"><span class="lbl">Bulanıklık</span><input type="range" class="flex-fill" id="slBlur" min="0" max="20" value="${fs.blur}" step=".5" oninput="applyFilters()"><span class="val" id="blurVal">${fs.blur}</span></div>
+    <div class="row"><span class="lbl">Opaklık</span><input type="range" class="flex-fill" id="slImgOp" min="10" max="100" value="${fs.op}" oninput="applyFilters()"><span class="val" id="imgOpVal">${fs.op}%</span></div>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-droplet"></i> Renk Tonu</small></div>
+  <div class="sb-card-body">
+    <div class="row"><span class="lbl">Renk</span>
+      <input type="color" id="tintColor" value="${ts.color}" oninput="applyTint()">
+      <input type="range" class="flex-fill" id="slTint" min="0" max="90" value="${ts.amount}" oninput="applyTint()">
+      <span class="val" id="tintVal">${ts.amount}%</span></div>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-camera"></i> Hazır Efektler</small></div>
+  <div class="sb-card-body">
+    <div class="lg">
+      <button class="lb" onclick="applyPreset('normal')"><i class="fa-solid fa-sun"></i>Normal</button>
+      <button class="lb" onclick="applyPreset('bw')"><i class="fa-solid fa-circle-half-stroke"></i>S&B</button>
+      <button class="lb" onclick="applyPreset('sepia')"><i class="fa-solid fa-mug-hot"></i>Sepya</button>
+      <button class="lb" onclick="applyPreset('vivid')"><i class="fa-solid fa-bolt"></i>Canlı</button>
+      <button class="lb" onclick="applyPreset('dark')"><i class="fa-solid fa-moon"></i>Koyu</button>
+      <button class="lb" onclick="applyPreset('soft')"><i class="fa-solid fa-feather"></i>Yumuşak</button>
+    </div>
+  </div>
+</div>`
+  },
+
+  text: {
+    title: 'Metin', icon: 'fa-font', iconCls: 'ic-yellow',
+    html: () => `
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-quote-left"></i> Yazı Alanı</small></div>
+  <div class="sb-card-body">
+    <div class="row"><span class="lbl">Font</span>${fontSelect('selQFont', tx.qFont)}</div>
+    <div class="row"><span class="lbl">Punto</span><input type="number" style="width:52px" id="inpQSz" value="${tx.qSz}" min="8" max="120" onchange="applyText()">
+      <div class="ibg ms-1">
+        <button class="wb ${tx.qW==300?'active':''}" id="qw300" onclick="setW('q',300,this)">Thin</button>
+        <button class="wb ${tx.qW==400?'active':''}" id="qw400" onclick="setW('q',400,this)">Reg</button>
+        <button class="wb ${tx.qW==700?'active':''}" id="qw700" onclick="setW('q',700,this)">Bold</button>
+      </div></div>
+    <div class="row"><span class="lbl">Yatay</span><div class="ibg">
+      <button class="ib ${tx.qAlign==='left'?'active':''}" id="qa-left" onclick="setAlign('left',this)"><i class="fa-solid fa-align-left"></i></button>
+      <button class="ib ${tx.qAlign==='center'?'active':''}" id="qa-center" onclick="setAlign('center',this)"><i class="fa-solid fa-align-center"></i></button>
+      <button class="ib ${tx.qAlign==='right'?'active':''}" id="qa-right" onclick="setAlign('right',this)"><i class="fa-solid fa-align-right"></i></button>
+    </div></div>
+    <div class="row"><span class="lbl">Dikey</span><div class="ibg">
+      <button class="ib ${tx.qVAlign==='flex-start'?'active':''}" id="qv-start" onclick="setVAlign('flex-start',this)"><i class="fa-solid fa-align-left" style="transform:rotate(-90deg)"></i></button>
+      <button class="ib ${tx.qVAlign==='center'?'active':''}" id="qv-center" onclick="setVAlign('center',this)"><i class="fa-solid fa-align-center" style="transform:rotate(-90deg)"></i></button>
+      <button class="ib ${tx.qVAlign==='flex-end'?'active':''}" id="qv-end" onclick="setVAlign('flex-end',this)"><i class="fa-solid fa-align-right" style="transform:rotate(-90deg)"></i></button>
+    </div></div>
+    <div class="row"><span class="lbl">Satır Aralk</span><input type="range" class="flex-fill" id="slQLH" min="1" max="3" step=".05" value="${tx.qLH}" oninput="applyText()"><span class="val" id="qLHVal">${tx.qLH}</span></div>
+    <div class="row"><span class="lbl">Harf Aralk</span><input type="range" class="flex-fill" id="slQLS" min="-2" max="10" step=".5" value="${tx.qLS}" oninput="applyText()"><span class="val" id="qLSVal">${tx.qLS}px</span></div>
+    <div class="row"><span class="lbl">Renk</span><input type="color" id="qColor" value="${tx.qColor}" oninput="applyText()"></div>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-signature"></i> Ad Alanı</small></div>
+  <div class="sb-card-body">
+    <div class="row"><span class="lbl">Font</span>${fontSelect('selNFont', tx.nFont)}</div>
+    <div class="row"><span class="lbl">Punto</span><input type="number" style="width:52px" id="inpNSz" value="${tx.nSz}" min="6" max="72" onchange="applyText()">
+      <div class="ibg ms-1">
+        <button class="wb ${tx.nW==400?'active':''}" id="nw400" onclick="setW('n',400,this)">Reg</button>
+        <button class="wb ${tx.nW==700?'active':''}" id="nw700" onclick="setW('n',700,this)">Bold</button>
+        <button class="wb ${tx.nW==800?'active':''}" id="nw800" onclick="setW('n',800,this)">Black</button>
+      </div></div>
+    <div class="row"><span class="lbl">Harf Aralk</span><input type="range" class="flex-fill" id="slNLS" min="-2" max="14" step=".5" value="${tx.nLS}" oninput="applyText()"><span class="val" id="nLSVal">${tx.nLS}px</span></div>
+    <div class="row"><span class="lbl">Renk</span><input type="color" id="nColor" value="${tx.nColor}" oninput="applyText()"></div>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-id-badge"></i> Ünvan Alanı</small></div>
+  <div class="sb-card-body">
+    <div class="row"><span class="lbl">Font</span>${fontSelect('selTFont', tx.tFont)}</div>
+    <div class="row"><span class="lbl">Punto</span><input type="number" style="width:52px" id="inpTSz" value="${tx.tSz}" min="6" max="60" onchange="applyText()">
+      <div class="ibg ms-1">
+        <button class="wb ${tx.tW==300?'active':''}" id="tw300" onclick="setW('t',300,this)">Thin</button>
+        <button class="wb ${tx.tW==400?'active':''}" id="tw400" onclick="setW('t',400,this)">Reg</button>
+        <button class="wb ${tx.tW==700?'active':''}" id="tw700" onclick="setW('t',700,this)">Bold</button>
+      </div></div>
+    <div class="row"><span class="lbl">Ad/Ünvan Aralk</span><input type="range" class="flex-fill" id="slTGap" min="-6" max="24" value="${tx.tGap}" oninput="applyText()"><span class="val" id="tGapVal">${tx.tGap}px</span></div>
+    <div class="row"><span class="lbl">Renk</span><input type="color" id="tColor" value="${tx.tColor}" oninput="applyText()"></div>
+  </div>
+</div>`
+  },
+
+  colors: {
+    title: 'Renkler', icon: 'fa-palette', iconCls: 'ic-orange',
+    html: () => `
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-fill-drip"></i> İçerik Paneli</small></div>
+  <div class="sb-card-body">
+    <div class="row"><span class="lbl">Renk 1</span><input type="color" id="bgC1" value="${cl.bgC1}" oninput="applyBgGrad()">
+      <span class="lbl ms-2">Renk 2</span><input type="color" id="bgC2" value="${cl.bgC2}" oninput="applyBgGrad()"></div>
+    <div class="row"><span class="lbl">Açı</span><input type="range" class="flex-fill" id="slBgAngle" min="0" max="360" value="${cl.bgAngle}" oninput="applyBgGrad()"><span class="val" id="bgAngleVal">${cl.bgAngle}°</span></div>
+    <div class="sb-hr"></div>
+    <div class="row"><span class="lbl">Düz Renk</span>
+      <div class="form-check form-switch ms-1"><input class="form-check-input" type="checkbox" id="cbSolidBg" ${cl.bgSolid?'checked':''} onchange="cl.bgSolid=this.checked;applyBgGrad()"></div>
+      <input type="color" id="bgSolid" value="${cl.bgSolidColor}" oninput="applyBgGrad()" style="margin-left:7px"></div>
+    <div class="sb-hr"></div>
+    <div class="row"><span class="lbl">Yazı Zemini</span>
+      <input type="color" id="quoteBgColor" value="${cl.quoteBgColor}" oninput="applyQuoteBg()" style="flex-shrink:0">
+      <input type="range" class="flex-fill" id="slQuoteBgOp" min="0" max="100" value="${cl.quoteBgOp}" oninput="applyQuoteBg()">
+      <span class="val" id="quoteBgOpVal">${cl.quoteBgOp}%</span></div>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-rectangle-ad"></i> Name Bar Rengi</small></div>
+  <div class="sb-card-body">
+    <div class="row"><span class="lbl">Renk 1</span><input type="color" id="barC1" value="${cl.barC1}" oninput="applyBarColor()">
+      <span class="lbl ms-2">Renk 2</span><input type="color" id="barC2" value="${cl.barC2}" oninput="applyBarColor()"></div>
+    <div class="row"><span class="lbl">Açı</span><input type="range" class="flex-fill" id="slBarAngle" min="0" max="360" value="${cl.barAngle}" oninput="applyBarColor()"><span class="val" id="barAngleVal">${cl.barAngle}°</span></div>
+    <div class="sb-hr"></div>
+    <div class="row"><span class="lbl">Düz Renk</span>
+      <div class="form-check form-switch ms-1"><input class="form-check-input" type="checkbox" id="cbSolidBar" ${cl.barSolid?'checked':''} onchange="cl.barSolid=this.checked;applyBarColor()"></div>
+      <input type="color" id="barSolid" value="${cl.barSolidColor}" oninput="applyBarColor()" style="margin-left:7px"></div>
+    <div class="row"><span class="lbl">Bar Opaklık</span><input type="range" class="flex-fill" id="slBarOp" min="0" max="100" value="${cl.barOp}" oninput="applyBarColor()"><span class="val" id="barOpVal">${cl.barOp}%</span></div>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-image"></i> Fotoğraf Arka Planı</small></div>
+  <div class="sb-card-body">
+    <div class="row"><span class="lbl">Renk</span><input type="color" id="photoBgColor" value="${cl.photoBg}" oninput="cl.photoBg=this.value;$('photoPanel').style.background=this.value"></div>
+  </div>
+</div>`
+  },
+
+  export: {
+    title: 'Dışa Aktar', icon: 'fa-download', iconCls: 'ic-green',
+    html: () => `
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-photo-film"></i> Çözünürlük</small></div>
+  <div class="sb-card-body">
+    <div class="row"><span class="lbl" style="width:70px">Boyut</span>
+      <select class="flex-fill" id="selRes" onchange="onResChange(this.value)">
+        <option value="1920x1080" ${_res==='1920x1080'?'selected':''}>1920×1080 (Full HD)</option>
+        <option value="3840x2160" ${_res==='3840x2160'?'selected':''}>3840×2160 (4K)</option>
+        <option value="1080x1080" ${_res==='1080x1080'?'selected':''}>1080×1080 (Instagram)</option>
+        <option value="1080x1920" ${_res==='1080x1920'?'selected':''}>1080×1920 (Story)</option>
+        <option value="1280x720"  ${_res==='1280x720'?'selected':''}>1280×720 (HD)</option>
+        <option value="custom"    ${_res==='custom'?'selected':''}>Özel…</option>
+      </select></div>
+    <div class="row" id="customRow" style="${_res==='custom'?'':'display:none'}">
+      <input type="number" id="cusW" value="${_cusW}" style="width:62px">
+      <span style="color:#64748b;font-size:11px;padding:0 4px">×</span>
+      <input type="number" id="cusH" value="${_cusH}" style="width:62px">
+    </div>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-file-image"></i> Format</small></div>
+  <div class="sb-card-body">
+    <div class="row"><div class="ibg gap-2">
+      <button class="wb ${_fmt==='jpg'?'active':''}" id="fmtJpg" onclick="setFmt('jpg',this)">JPG</button>
+      <button class="wb ${_fmt==='png'?'active':''}" id="fmtPng" onclick="setFmt('png',this)">PNG</button>
+      <button class="wb ${_fmt==='webp'?'active':''}" id="fmtWebp" onclick="setFmt('webp',this)">WebP</button>
+    </div></div>
+    <div class="row" id="qualRow" style="${_fmt==='png'?'display:none':''}">
+      <span class="lbl">Kalite</span>
+      <input type="range" class="flex-fill" id="slQuality" min="50" max="100" value="${_quality}" oninput="_quality=this.value;$('qualVal').textContent=this.value+'%'">
+      <span class="val" id="qualVal">${_quality}%</span></div>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-body" style="padding:8px;">
+    <button class="btn btn-green w-100" style="justify-content:center;" onclick="exportImg()">
+      <i class="fa-solid fa-download"></i> Görseli İndir
+    </button>
+  </div>
+</div>`
+  },
+
+  persons: {
+    title: 'Kişi Kayıtları', icon: 'fa-address-book', iconCls: 'ic-purple',
+    html: () => `
+<div class="rp-tools">
+  <div class="search-wrap">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" class="rp-search" id="rpSearch" placeholder="Ada veya ünvana göre ara…" oninput="renderPersons()">
+  </div>
+  <div class="rp-btn-row">
+    <button class="rp-btn rp-btn-save" onclick="openAddModal()"><i class="fa-solid fa-user-plus"></i> Ekle</button>
+    <button class="rp-btn rp-btn-exp" onclick="exportPersonsXLSX()"><i class="fa-solid fa-file-excel"></i> Excel</button>
+    <button class="rp-btn rp-btn-imp" onclick="$('rpImport').click()"><i class="fa-solid fa-file-arrow-up"></i> İçe</button>
+  </div>
+  <input type="file" id="rpImport" accept=".xlsx,.xls,.csv" style="display:none" onchange="importPersonsXLSX(this)">
+</div>
+<div id="personList" style="display:flex;flex-direction:column;gap:5px;"></div>`
+  },
+
+  help: {
+    title: 'Yardım', icon: 'fa-circle-question', iconCls: 'ic-blue',
+    html: () => `
+<div class="sb-card">
+  <div class="sb-card-body" style="padding:10px;gap:6px;text-align:center;">
+    <i class="fa-solid fa-photo-film" style="font-size:24px;color:#6366f1;"></i>
+    <div style="font-size:12px;font-weight:800;color:#e2e8f0;margin-top:5px;">Grafik Şablon 2025</div>
+    <div style="font-size:10px;color:#475569;margin-top:2px;">TRT Grafik Araçları · v3.0</div>
+    <p style="font-size:10px;color:#64748b;line-height:1.7;margin-top:6px;">Haber grafikleri ve sosyal medya görseli üretim aracı.</p>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-book-open"></i> Kılavuz</small></div>
+  <div class="sb-card-body" style="padding:5px 6px;gap:2px;">
+    <button class="help-topic-btn" onclick="showHelpPage('welcome',this)"><i class="fa-solid fa-house"></i>Genel Bakış</button>
+    <button class="help-topic-btn" onclick="showHelpPage('layout',this)"><i class="fa-solid fa-table-columns"></i>Düzen</button>
+    <button class="help-topic-btn" onclick="showHelpPage('photo',this)"><i class="fa-solid fa-image"></i>Fotoğraf</button>
+    <button class="help-topic-btn" onclick="showHelpPage('text',this)"><i class="fa-solid fa-font"></i>Metin</button>
+    <button class="help-topic-btn" onclick="showHelpPage('colors',this)"><i class="fa-solid fa-palette"></i>Renkler</button>
+    <button class="help-topic-btn" onclick="showHelpPage('persons',this)"><i class="fa-solid fa-address-book"></i>Kişi Kayıtları</button>
+    <button class="help-topic-btn" onclick="showHelpPage('export',this)"><i class="fa-solid fa-download"></i>Dışa Aktarma</button>
+  </div>
+</div>`
+  }
+};
+
+/* font select helper */
+const FONTS = [
+  ["'Poppins',sans-serif","Poppins"],["'Inter',sans-serif","Inter"],["'Roboto',sans-serif","Roboto"],
+  ["'Open Sans',sans-serif","Open Sans"],["'Montserrat',sans-serif","Montserrat"],["'Lato',sans-serif","Lato"],
+  ["'Oswald',sans-serif","Oswald"],["'Raleway',sans-serif","Raleway"],["'Nunito',sans-serif","Nunito"],
+  ["'Barlow',sans-serif","Barlow"],["'DM Sans',sans-serif","DM Sans"],["'Manrope',sans-serif","Manrope"],
+  ["'Outfit',sans-serif","Outfit"],["'Space Grotesk',sans-serif","Space Grotesk"],["'Lexend',sans-serif","Lexend"],
+  ["'Fira Sans',sans-serif","Fira Sans"],["'Source Sans 3',sans-serif","Source Sans 3"],
+  ["'Roboto Condensed',sans-serif","Roboto Condensed"],["'Noto Sans',sans-serif","Noto Sans"],
+  ["'Ubuntu',sans-serif","Ubuntu"],["'PT Sans',sans-serif","PT Sans"],
+  ["'Playfair Display',serif","Playfair Display"],["'Merriweather',serif","Merriweather"],
+  ["'Lora',serif","Lora"],["'Roboto Slab',serif","Roboto Slab"],["'Segoe UI',sans-serif","Segoe UI"]
+];
+function fontSelect(id, val) {
+  return `<select class="flex-fill" id="${id}" onchange="applyText()">${FONTS.map(([v,l])=>`<option value="${v}"${v===val?' selected':''}>${l}</option>`).join('')}</select>`;
+}
+
+/* ══════════════════════════════════════
+   STATE
+══════════════════════════════════════ */
+let _layout = 'photo-left', _namePos = 'bottom-left';
+let _showTitle = true, _showNameBar = true, _marginLink = true;
+let _photoW = 42, _cardR = 14, _barR = 28;
+let _bgFit = 'cover', _bgOp = 100;
+let _res = '1920x1080', _cusW = 1920, _cusH = 1080, _fmt = 'png', _quality = 95;
+let bgBase64 = null;
+let _currentPanel = null;
+
+const mg = { top: 80, right: 80, bottom: 90, left: 80 };
+// Varsayılan marjinler bg-frame boyutuna göre % ile hesaplanır
+function calcDefaultMargins() {
+  const f = $('bgFrame');
+  const fw = f.offsetWidth  || 800;
+  const fh = f.offsetHeight || 450;
+  mg.left   = Math.round(fw * 0.20);
+  mg.right  = Math.round(fw * 0.20);
+  mg.top    = Math.round(fh * 0.10);
+  mg.bottom = Math.round(fh * 0.30);
+}
+
+const fs = { br: 100, ct: 100, sat: 100, blur: 0, op: 100 };
+const ts = { color: '#000000', amount: 0 };
+
+const tx = {
+  qFont: "'Poppins',sans-serif", qSz: 36, qW: 700, qAlign: 'left', qVAlign: 'center',
+  qLH: 1.65, qLS: 0, qColor: '#ffffff',
+  nFont: "'Poppins',sans-serif", nSz: 25, nW: 800, nLS: 5, nColor: '#ffffff',
+  tFont: "'Poppins',sans-serif", tSz: 20, tW: 400, tGap: 3, tColor: '#e0e0e0'
+};
+
+const cl = {
+  bgC1: '#3a5298', bgC2: '#6b8fdf', bgAngle: 135, bgSolid: false, bgSolidColor: '#3a5298',
+  quoteBgColor: '#000000', quoteBgOp: 0,
+  barC1: '#9b1c2e', barC2: '#c0273d', barAngle: 90, barSolid: false, barSolidColor: '#9b1c2e', barOp: 100,
+  photoBg: '#1a1a2e'
+};
+
+/* ══════════════════════════════════════
+   PANEL TOGGLE
+══════════════════════════════════════ */
+function togglePanel(key, btn) {
+  const drawer = $('panelDrawer');
+  const canvasZone = $('canvasZone');
+
+  if (_currentPanel === key) {
+    closePanel();
+    return;
+  }
+  _currentPanel = key;
+
+  // Update header
+  const cfg = PANELS[key];
+  $('pdIcon').className = 'pd-header-icon ' + cfg.iconCls;
+  $('pdIcon').innerHTML = `<i class="fa-solid ${cfg.icon}"></i>`;
+  $('pdTitle').textContent = cfg.title;
+
+  // Inject content
+  $('pdBody').innerHTML = cfg.html();
+
+  // Open drawer
+  drawer.classList.add('open');
+  canvasZone.classList.add('panel-open');
+
+  // Nav active
+  document.querySelectorAll('.bn-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  // Post-render
+  setTimeout(() => {
+    if (key === 'persons') renderPersons();
+    if (key === 'photo') {
+      // re-bind bgImgInput
+      const inp = $('bgImgInput');
+      // already in layout panel, not photo
+    }
+  }, 0);
+}
+
+function closePanel() {
+  _currentPanel = null;
+  $('panelDrawer').classList.remove('open');
+  $('canvasZone').classList.remove('panel-open');
+  document.querySelectorAll('.bn-btn').forEach(b => b.classList.remove('active'));
+}
+
+/* ══════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════ */
+const card = $('card');
+
+function setLayout(mode, btn) {
+  _layout = mode;
+  card.className = 'card-inner' + (mode === 'photo-left' ? '' : ' ' + mode);
+  document.querySelectorAll('.lb').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const pp = $('photoPanel');
+  if (mode === 'photo-top' || mode === 'photo-bottom') {
+    pp.style.width = '100%'; pp.style.height = '55%';
+  } else {
+    pp.style.height = '';
+    pp.style.width = _photoW + '%';
+  }
+  if (imgLoaded) setTimeout(fitCover, 50);
+  updateNameBarRadius();
+}
+
+function setPhotoW(v) {
+  _photoW = parseInt(v);
+  if (_layout !== 'photo-top' && _layout !== 'photo-bottom') $('photoPanel').style.width = v + '%';
+  const el = $('photoWVal'); if (el) el.textContent = v + '%';
+}
+function setCardR(v) { _cardR = parseInt(v); card.style.borderRadius = v + 'px'; const el = $('cardRVal'); if (el) el.textContent = v + 'px'; }
+function setBarR(v) {
+  _barR = parseInt(v);
+  document.documentElement.style.setProperty('--bar-r', v + 'px');
+  $('nameBar').style.borderRadius = '';
+  updateNameBarRadius();
+  const el = $('barRVal'); if (el) el.textContent = v + 'px';
+}
+
+function setNamePos(pos, btn) {
+  _namePos = pos;
+  const wrap = $('nameBarWrap'), cp = $('contentPanel');
+  wrap.classList.remove('pos-bottom-left','pos-bottom-right','pos-top-left','pos-top-right');
+  wrap.classList.add('pos-' + pos);
+  const isTop = pos.startsWith('top');
+  cp.classList.toggle('namebar-top', isTop);
+  cp.classList.toggle('namebar-bottom', !isTop);
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  updateNameBarRadius();
+}
+
+function toggleTitleField(v) { _showTitle = v; $('titleField').style.display = v ? '' : 'none'; }
+function toggleNameBar(v)     { _showNameBar = v; $('nameBarWrap').style.display = v ? '' : 'none'; }
+
+function updateNameBarRadius() {
+  const r = _barR + 'px';
+  const m = { 'bottom-left':'0 '+r+' 0 0','bottom-right':r+' 0 0 0','top-left':'0 0 '+r+' 0','top-right':'0 0 0 '+r };
+  $('nameBar').style.borderRadius = m[_namePos] || '0';
+}
+
+const capF = s => s[0].toUpperCase() + s.slice(1);
+function syncMargins(changed) {
+  if (changed !== 'all') {
+    const el = $('slM' + capF(changed));
+    if (el) mg[changed] = parseInt(el.value);
+    if (_marginLink && changed !== 'bottom') {
+      mg.top = mg.right = mg.left = mg[changed];
+      mg.bottom = Math.round(mg[changed] * 1.12);
+    }
+  } else if (_marginLink) {
+    mg.right = mg.top; mg.left = mg.top; mg.bottom = Math.round(mg.top * 1.12);
+  }
+  ['top','right','bottom','left'].forEach(s => {
+    const sl = $('slM' + capF(s)); if (sl) sl.value = mg[s];
+    const vl = $('m' + capF(s) + 'Val'); if (vl) vl.textContent = mg[s] + 'px';
+  });
+  $('bgFrame').style.padding = `${mg.top}px ${mg.right}px ${mg.bottom}px ${mg.left}px`;
+}
+
+/* ══════════════════════════════════════
+   BG IMAGE
+══════════════════════════════════════ */
+(function tryBg() {
+  const img = new Image();
+  img.onload = () => {
+    const c = document.createElement('canvas');
+    c.width = img.naturalWidth; c.height = img.naturalHeight;
+    c.getContext('2d').drawImage(img, 0, 0);
+    try {
+      bgBase64 = c.toDataURL('image/jpeg', .9);
+      $('bgImgLayer').style.backgroundImage = `url('${bgBase64}')`;
+      applyBgStyle();
+    } catch(e) { $('bgImgLayer').style.backgroundImage = "url('background.jpg')"; }
+  };
+  img.src = 'background.jpg?' + Date.now();
+})();
+
+document.addEventListener('change', e => {
+  if (e.target.id === 'bgImgInput') {
+    const f = e.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = ev => {
+      bgBase64 = ev.target.result;
+      _bgOp = 100; _bgFit = 'cover';
+      $('bgImgLayer').style.backgroundImage = `url('${bgBase64}')`;
+      applyBgStyle();
+      // refresh panel if open
+      if (_currentPanel === 'layout') togglePanel('layout', document.querySelector('[data-key="layout"]'));
+    };
+    r.readAsDataURL(f); e.target.value = '';
+  }
+});
+
+function applyBgStyle() {
+  const layer = $('bgImgLayer');
+  layer.style.backgroundSize = _bgFit === 'cover' ? 'cover' : _bgFit === 'contain' ? 'contain' : '100% 100%';
+  layer.style.backgroundPosition = 'center';
+  layer.style.opacity = _bgOp / 100;
+  const el = $('slBgOp'); if (el) { el.value = _bgOp; }
+  const vl = $('bgOpVal'); if (vl) vl.textContent = _bgOp + '%';
+  const selFit = $('selBgFit'); if (selFit) selFit.value = _bgFit;
+  // read back from DOM if available
+  const slOp = $('slBgOp');
+  if (slOp) { _bgOp = parseInt(slOp.value); layer.style.opacity = _bgOp / 100; const v2=$('bgOpVal'); if(v2) v2.textContent=_bgOp+'%'; }
+  const sel = $('selBgFit');
+  if (sel) { _bgFit = sel.value; layer.style.backgroundSize = _bgFit==='cover'?'cover':_bgFit==='contain'?'contain':'100% 100%'; }
+}
+function clearBgImg() {
+  bgBase64 = null;
+  $('bgImgLayer').style.backgroundImage = 'none';
+  if (_currentPanel === 'layout') togglePanel('layout', document.querySelector('[data-key="layout"]'));
+}
+
+/* ══════════════════════════════════════
+   COLORS
+══════════════════════════════════════ */
+function applyBgGrad() {
+  const c1=$('bgC1'),c2=$('bgC2'),ang=$('slBgAngle'),cb=$('cbSolidBg'),bs=$('bgSolid');
+  if(c1) cl.bgC1=c1.value; if(c2) cl.bgC2=c2.value;
+  if(ang){ cl.bgAngle=parseInt(ang.value); const v=$('bgAngleVal'); if(v) v.textContent=cl.bgAngle+'°'; }
+  if(cb) cl.bgSolid=cb.checked;
+  if(bs) cl.bgSolidColor=bs.value;
+  $('contentPanel').style.background = cl.bgSolid ? cl.bgSolidColor
+    : `linear-gradient(${cl.bgAngle}deg,${cl.bgC1},${cl.bgC2})`;
+}
+
+function applyQuoteBg() {
+  const col=$('quoteBgColor'),sl=$('slQuoteBgOp');
+  if(col) cl.quoteBgColor=col.value;
+  if(sl) { cl.quoteBgOp=parseInt(sl.value); const v=$('quoteBgOpVal'); if(v) v.textContent=cl.quoteBgOp+'%'; }
+  const qb=$('quoteBg');
+  if(qb){ qb.style.background=cl.quoteBgColor; qb.style.opacity=cl.quoteBgOp/100; }
+}
+
+function applyBarColor() {
+  const c1=$('barC1'),c2=$('barC2'),ang=$('slBarAngle'),cb=$('cbSolidBar'),bs=$('barSolid'),sl=$('slBarOp');
+  if(c1) cl.barC1=c1.value; if(c2) cl.barC2=c2.value;
+  if(ang){ cl.barAngle=parseInt(ang.value); const v=$('barAngleVal'); if(v) v.textContent=cl.barAngle+'°'; }
+  if(cb) cl.barSolid=cb.checked;
+  if(bs) cl.barSolidColor=bs.value;
+  if(sl){ cl.barOp=parseInt(sl.value); const v=$('barOpVal'); if(v) v.textContent=cl.barOp+'%'; }
+  const bg = cl.barSolid ? cl.barSolidColor : `linear-gradient(${cl.barAngle}deg,${cl.barC1},${cl.barC2})`;
+  const barBg = $('barBg');
+  if(barBg){ barBg.style.background=bg; barBg.style.opacity=cl.barOp/100; }
+}
+
+/* ══════════════════════════════════════
+   TEXT
+══════════════════════════════════════ */
+function applyText() {
+  const q=$('quoteText'),n=$('nameField'),t=$('titleField');
+  const r=(id)=>document.getElementById(id);
+
+  const qf=r('selQFont'); if(qf){tx.qFont=qf.value;} q.style.fontFamily=tx.qFont;
+  const qs=r('inpQSz'); if(qs){tx.qSz=parseInt(qs.value);} q.style.fontSize=tx.qSz+'px';
+  q.style.fontWeight=tx.qW;
+  const qlh=r('slQLH'); if(qlh){tx.qLH=parseFloat(qlh.value);const v=r('qLHVal');if(v)v.textContent=tx.qLH.toFixed(2);} q.style.lineHeight=tx.qLH;
+  const qls=r('slQLS'); if(qls){tx.qLS=parseFloat(qls.value);const v=r('qLSVal');if(v)v.textContent=tx.qLS+'px';} q.style.letterSpacing=tx.qLS+'px';
+  const qc=r('qColor'); if(qc){tx.qColor=qc.value;} q.style.color=tx.qColor;
+
+  const nf=r('selNFont'); if(nf){tx.nFont=nf.value;} n.style.fontFamily=tx.nFont;
+  const ns=r('inpNSz'); if(ns){tx.nSz=parseInt(ns.value);} n.style.fontSize=tx.nSz+'px';
+  n.style.fontWeight=tx.nW;
+  const nls=r('slNLS'); if(nls){tx.nLS=parseFloat(nls.value);const v=r('nLSVal');if(v)v.textContent=tx.nLS+'px';} n.style.letterSpacing=tx.nLS+'px';
+  const nc=r('nColor'); if(nc){tx.nColor=nc.value;} n.style.color=tx.nColor;
+
+  const tf=r('selTFont'); if(tf){tx.tFont=tf.value;} t.style.fontFamily=tx.tFont;
+  const ts2=r('inpTSz'); if(ts2){tx.tSz=parseInt(ts2.value);} t.style.fontSize=tx.tSz+'px';
+  t.style.fontWeight=tx.tW;
+  const tg=r('slTGap'); if(tg){tx.tGap=parseFloat(tg.value);const v=r('tGapVal');if(v)v.textContent=tx.tGap+'px';} t.style.marginTop=tx.tGap+'px';
+  const tc=r('tColor'); if(tc){tx.tColor=tc.value;} t.style.color=tx.tColor;
+}
+
+function setW(f, w, btn) {
+  if(f==='q') tx.qW=w; else if(f==='n') tx.nW=w; else tx.tW=w;
+  const pre = f==='q'?'q':f==='n'?'n':'t';
+  document.querySelectorAll(`[id^="${pre}w"]`).forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  applyText();
+}
+function setAlign(v,btn) {
+  tx.qAlign=v; $('quoteText').style.textAlign=v;
+  document.querySelectorAll('[id^="qa-"]').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+}
+function setVAlign(v,btn) {
+  tx.qVAlign=v; $('quoteArea').style.alignItems=v;
+  document.querySelectorAll('[id^="qv-"]').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+}
+
+/* ══════════════════════════════════════
+   PHOTO FILTERS
+══════════════════════════════════════ */
+function applyFilters() {
+  const img=$('photoImg');
+  const br=$('slBr'),ct=$('slCt'),sat=$('slSat'),blr=$('slBlur'),op=$('slImgOp');
+  if(br){fs.br=parseInt(br.value);const v=$('brVal');if(v)v.textContent=fs.br;}
+  if(ct){fs.ct=parseInt(ct.value);const v=$('ctVal');if(v)v.textContent=fs.ct;}
+  if(sat){fs.sat=parseInt(sat.value);const v=$('satVal');if(v)v.textContent=fs.sat;}
+  if(blr){fs.blur=parseFloat(blr.value);const v=$('blurVal');if(v)v.textContent=fs.blur;}
+  if(op){fs.op=parseInt(op.value);const v=$('imgOpVal');if(v)v.textContent=fs.op+'%';}
+  img.style.filter=`brightness(${fs.br}%) contrast(${fs.ct}%) saturate(${fs.sat}%) blur(${fs.blur}px)`;
+  img.style.opacity=fs.op/100;
+}
+function applyTint() {
+  const tc=$('tintColor'),sl=$('slTint');
+  if(tc) ts.color=tc.value; if(sl){ts.amount=parseInt(sl.value);const v=$('tintVal');if(v)v.textContent=ts.amount+'%';}
+  const t=$('photoTint'); t.style.background=ts.color; t.style.opacity=ts.amount/100;
+}
+function applyPreset(t){
+  const p={normal:{br:100,ct:100,sat:100,blur:0},bw:{br:100,ct:110,sat:0,blur:0},
+    sepia:{br:105,ct:100,sat:50,blur:0},vivid:{br:110,ct:120,sat:160,blur:0},
+    dark:{br:65,ct:110,sat:90,blur:0},soft:{br:110,ct:85,sat:80,blur:1.5}}[t];
+  if(!p) return;
+  Object.assign(fs,{br:p.br,ct:p.ct,sat:p.sat,blur:p.blur});
+  const sl=$('slBr');if(sl){sl.value=p.br;} const sc=$('slCt');if(sc)sc.value=p.ct;
+  const ss=$('slSat');if(ss)ss.value=p.sat; const sb=$('slBlur');if(sb)sb.value=p.blur;
+  applyFilters();
+}
+
+/* ══════════════════════════════════════
+   PHOTO PAN / ZOOM
+══════════════════════════════════════ */
+const panel=$('photoPanel'), photoImg=$('photoImg'), fileInp=$('fileInput');
+let imgLoaded=false,photoBase64=null,scale=1,ox=0,oy=0,flipH=false,flipV=false;
+let dragging=false,sx=0,sy=0,sox=0,soy=0;
+
+function applyTransform(){
+  const sw=flipH?-scale:scale,sh=flipV?-scale:scale;
+  const tx2=flipH?photoImg.naturalWidth*scale:0,ty2=flipV?photoImg.naturalHeight*scale:0;
+  photoImg.style.transform=`translate(${ox+tx2}px,${oy+ty2}px) scale(${sw},${sh})`;
+}
+function fitCover(){
+  const pw=panel.offsetWidth,ph=panel.offsetHeight;
+  scale=Math.max(pw/photoImg.naturalWidth,ph/photoImg.naturalHeight);
+  ox=(pw-photoImg.naturalWidth*scale)/2; oy=(ph-photoImg.naturalHeight*scale)/2;
+  applyTransform();
+}
+function zoomAt(cx,cy,d){
+  const ns=Math.min(Math.max(scale+d,.1),10);
+  const ix=(cx-ox)/scale,iy=(cy-oy)/scale;
+  scale=ns; ox=cx-ix*scale; oy=cy-iy*scale; applyTransform();
+}
+function loadFile(file){
+  if(!file||!file.type.startsWith('image/')) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    photoBase64=ev.target.result;
+    photoImg.onload=()=>{
+      photoImg.style.display='block'; imgLoaded=true;
+      panel.classList.remove('empty'); panel.classList.add('has-img'); fitCover();
+    };
+    photoImg.src=photoBase64;
+  };
+  r.readAsDataURL(file);
+}
+fileInp.addEventListener('change',e=>{ loadFile(e.target.files[0]); fileInp.value=''; });
+panel.addEventListener('click',e=>{
+  if(dragging) return;
+  if(e.target.closest('.photo-controls')) return;
+  if(!imgLoaded) fileInp.click();
+});
+panel.addEventListener('dragover',e=>{e.preventDefault();panel.classList.add('drag-over');});
+panel.addEventListener('dragleave',()=>panel.classList.remove('drag-over'));
+panel.addEventListener('drop',e=>{e.preventDefault();panel.classList.remove('drag-over');loadFile(e.dataTransfer.files[0]);});
+panel.addEventListener('mousedown',e=>{
+  if(!imgLoaded||e.target.closest('.photo-controls')) return;
+  dragging=false; sx=e.clientX; sy=e.clientY; sox=ox; soy=oy;
+  panel.classList.add('grabbing');
+  const mv=ev=>{ const dx=ev.clientX-sx,dy=ev.clientY-sy; if(Math.abs(dx)+Math.abs(dy)>3) dragging=true; ox=sox+dx; oy=soy+dy; applyTransform(); };
+  const up=()=>{ panel.classList.remove('grabbing'); window.removeEventListener('mousemove',mv); window.removeEventListener('mouseup',up); setTimeout(()=>{dragging=false;},0); };
+  window.addEventListener('mousemove',mv); window.addEventListener('mouseup',up); e.preventDefault();
+});
+
+// Touch
+let tSX=0,tSY=0,tSOX=0,tSOY=0,tDrag=false,lastPinch=0;
+panel.addEventListener('touchstart',e=>{
+  if(e.touches.length===2){ lastPinch=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY); return; }
+  if(!imgLoaded||e.target.closest('.photo-controls')) return;
+  const t=e.touches[0]; tSX=t.clientX; tSY=t.clientY; tSOX=ox; tSOY=oy; tDrag=false;
+},{passive:true});
+panel.addEventListener('touchmove',e=>{
+  if(e.touches.length===2&&imgLoaded){
+    e.preventDefault();
+    const dist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+    const delta=(dist-lastPinch)*.012;
+    const r=panel.getBoundingClientRect();
+    const cx=(e.touches[0].clientX+e.touches[1].clientX)/2-r.left;
+    const cy=(e.touches[0].clientY+e.touches[1].clientY)/2-r.top;
+    zoomAt(cx,cy,delta); lastPinch=dist; return;
+  }
+  if(!imgLoaded) return;
+  const t=e.touches[0]; const dx=t.clientX-tSX,dy=t.clientY-tSY;
+  if(Math.abs(dx)+Math.abs(dy)>3) tDrag=true;
+  ox=tSOX+dx; oy=tSOY+dy; applyTransform(); e.preventDefault();
+},{passive:false});
+panel.addEventListener('touchend',e=>{ if(!tDrag&&!imgLoaded) fileInp.click(); tDrag=false; });
+
+panel.addEventListener('wheel',e=>{
+  if(!imgLoaded) return; e.preventDefault();
+  const r=panel.getBoundingClientRect();
+  zoomAt(e.clientX-r.left,e.clientY-r.top,e.deltaY<0?.1:-.1);
+},{passive:false});
+
+$('btnZoomIn').addEventListener('click',e=>{e.stopPropagation();zoomAt(panel.offsetWidth/2,panel.offsetHeight/2,.15);});
+$('btnZoomOut').addEventListener('click',e=>{e.stopPropagation();zoomAt(panel.offsetWidth/2,panel.offsetHeight/2,-.15);});
+$('btnFlipH').addEventListener('click',e=>{e.stopPropagation();flipH=!flipH;e.currentTarget.classList.toggle('active');applyTransform();});
+$('btnFlipV').addEventListener('click',e=>{e.stopPropagation();flipV=!flipV;e.currentTarget.classList.toggle('active');applyTransform();});
+$('btnReset').addEventListener('click',e=>{e.stopPropagation();flipH=flipV=false;$('btnFlipH').classList.remove('active');$('btnFlipV').classList.remove('active');fitCover();});
+
+/* ══════════════════════════════════════
+   ASPECT RATIO & FORMAT
+══════════════════════════════════════ */
+const RATIOS={'1920x1080':'16/9','3840x2160':'16/9','1280x720':'16/9','1080x1080':'1/1','1080x1920':'9/16','custom':'16/9'};
+function onResChange(v){
+  _res=v;
+  const cr=$('customRow'); if(cr) cr.style.display=v==='custom'?'flex':'none';
+  const ratio = RATIOS[v] || '16/9';
+  const frame = $('bgFrame'), cardAsp = $('cardAspect');
+  // Set aspect-ratio via CSS
+  frame.style.aspectRatio = ratio.replace('/','/');
+  if (cardAsp) cardAsp.style.aspectRatio = ratio.replace('/','/');
+  // Remove old ratio classes
+  ['ratio-square','ratio-portrait'].forEach(c => { frame.classList.remove(c); if(cardAsp) cardAsp.classList.remove(c); });
+  if(ratio==='1/1'){ frame.classList.add('ratio-square'); if(cardAsp) cardAsp.classList.add('ratio-square'); }
+  if(ratio==='9/16'){ frame.classList.add('ratio-portrait'); if(cardAsp) cardAsp.classList.add('ratio-portrait'); }
+  if(imgLoaded) setTimeout(fitCover,50);
+}
+function setFmt(f,btn){
+  _fmt=f;
+  document.querySelectorAll('[id^="fmt"]').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const qr=$('qualRow'); if(qr) qr.style.display=f==='png'?'none':'';
+}
+
+/* ══════════════════════════════════════
+   PERSONS
+══════════════════════════════════════ */
+const PKEY='grafik_persons_v3';
+let _editId=null;
+function loadPersons(){ try{return JSON.parse(localStorage.getItem(PKEY))||[];}catch(e){return[];} }
+function savePersons(a){ localStorage.setItem(PKEY,JSON.stringify(a)); }
+
+function renderPersons(){
+  const el=$('personList'); if(!el) return;
+  const all=loadPersons();
+  const q=(($('rpSearch')&&$('rpSearch').value)||'').toLowerCase().trim();
+  const list=q?all.filter(p=>(p.name||'').toLowerCase().includes(q)||(p.title1||'').toLowerCase().includes(q)||(p.title2||'').toLowerCase().includes(q)):all;
+  if(!list.length){
+    el.innerHTML=all.length===0
+      ?'<div class="rp-empty"><i class="fa-solid fa-users" style="font-size:26px;color:#334155;display:block;margin-bottom:8px;"></i>Henüz kayıt yok.</div>'
+      :'<div class="rp-empty">Arama sonucu bulunamadı.</div>';
+    return;
+  }
+  el.innerHTML=list.map(p=>{
+    const ini=(p.name||'').split(' ').filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('');
+    const t1=p.title1||'',t2=p.title2||'',id=p.id;
+    const trow=(lbl,title)=>title
+      ?`<div class="pk-title-row" onclick="event.stopPropagation();loadPersonTitle('${encodeURIComponent(p.name)}','${encodeURIComponent(title)}')">
+          <span class="pt-badge">${lbl}</span><span class="pt-text">${title}</span>
+          <button class="pt-load" onclick="event.stopPropagation();loadPersonTitle('${encodeURIComponent(p.name)}','${encodeURIComponent(title)}')"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+        </div>`
+      :`<div class="pk-title-row pk-title-empty"><span class="pt-badge">${lbl}</span><span class="pt-text-empty">boş</span>
+          <button class="pt-load pt-load-add" onclick="event.stopPropagation();openEditModal(${id})"><i class="fa-solid fa-plus"></i></button>
+        </div>`;
+    const def=t1||t2||'';
+    return `<div class="pk">
+      <div class="pk-top" onclick="loadPersonTitle('${encodeURIComponent(p.name)}','${encodeURIComponent(def)}')">
+        <div class="pk-avatar">${ini||'?'}</div>
+        <div class="pk-name-wrap"><div class="pk-name">${p.name}</div><div class="pk-meta">${[t1,t2].filter(Boolean).length} ünvan</div></div>
+        <div class="pk-actions">
+          <button class="pk-ico pk-ico-edit" onclick="event.stopPropagation();openEditModal(${id})"><i class="fa-solid fa-pen"></i></button>
+          <button class="pk-ico pk-ico-del" onclick="event.stopPropagation();deletePerson(${id})"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+      <div class="pk-titles">${trow('Ü1',t1)}${trow('Ü2',t2)}</div>
+    </div>`;
+  }).join('');
+}
+
+function loadPersonTitle(nameEnc, titleEnc) {
+  const name=decodeURIComponent(nameEnc), title=decodeURIComponent(titleEnc);
+  $('nameField').textContent=name; $('titleField').textContent=title;
+  [$('nameField'),$('titleField')].forEach(el=>{
+    el.style.transition='background .3s'; el.style.background='rgba(99,102,241,.3)';
+    setTimeout(()=>{el.style.background='';el.style.transition='';},700);
+  });
+  applyText();
+  closePanel();
+}
+
+function deletePerson(id){ if(!confirm('Silmek istiyor musunuz?')) return; savePersons(loadPersons().filter(p=>p.id!==id)); renderPersons(); }
+
+function openAddModal(){
+  _editId=null; $('pkModalTitle').textContent='Yeni Kişi Ekle';
+  $('pkModalName').value=($('nameField').textContent||'').trim();
+  $('pkModalT1').value=($('titleField').textContent||'').trim();
+  $('pkModalT2').value=''; showModal();
+}
+function openEditModal(id){
+  const p=loadPersons().find(x=>x.id===id); if(!p) return;
+  _editId=id; $('pkModalTitle').textContent='Kaydı Düzenle';
+  $('pkModalName').value=p.name||''; $('pkModalT1').value=p.title1||''; $('pkModalT2').value=p.title2||'';
+  showModal();
+}
+function showModal(){
+  const m=$('pkModal'); m.style.display='flex';
+  setTimeout(()=>$('pkModalName').focus(),80);
+  m.onclick=e=>{if(e.target===m)closeModal();};
+  ['pkModalName','pkModalT1','pkModalT2'].forEach(id=>{const el=$(id);if(el)el.onkeydown=e=>{if(e.key==='Enter')submitModal();};});
+}
+function closeModal(){ $('pkModal').style.display='none'; _editId=null; }
+function submitModal(){
+  const name=($('pkModalName').value||'').trim();
+  const t1=($('pkModalT1').value||'').trim();
+  const t2=($('pkModalT2').value||'').trim();
+  if(!name){$('pkModalName').style.borderColor='#ef4444';$('pkModalName').focus();return;}
+  $('pkModalName').style.borderColor='';
+  const list=loadPersons();
+  if(_editId!==null){ const i=list.findIndex(p=>p.id===_editId); if(i>=0){list[i].name=name;list[i].title1=t1;list[i].title2=t2;} }
+  else list.unshift({id:Date.now(),name,title1:t1,title2:t2});
+  savePersons(list); closeModal(); renderPersons();
+}
+
+function exportPersonsXLSX(){
+  const list=loadPersons(); if(!list.length){alert('Kayıt yok.');return;}
+  const rows=[['Ad Soyad','Ünvan 1','Ünvan 2'],...list.map(p=>[p.name||'',p.title1||'',p.title2||''])];
+  const wb=XLSX.utils.book_new(); const ws=XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols']=[{wch:28},{wch:36},{wch:36}];
+  XLSX.utils.book_append_sheet(wb,ws,'Kişi Kayıtları'); XLSX.writeFile(wb,'kisi_kayitlari.xlsx');
+}
+function importPersonsXLSX(inp){
+  const file=inp.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const wb=XLSX.read(e.target.result,{type:'binary'}); const ws=wb.Sheets[wb.SheetNames[0]];
+      const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+      const first=((rows[0]&&rows[0][0])||'').toString().toLowerCase();
+      const start=(first.includes('ad')||first.includes('name'))?1:0;
+      let added=0; const list=loadPersons();
+      rows.slice(start).forEach(r=>{
+        const name=(r[0]||'').toString().trim(); if(!name) return;
+        if(list.some(p=>p.name===name)) return;
+        list.push({id:Date.now()+Math.random()*1000,name,title1:(r[1]||'').toString().trim(),title2:(r[2]||'').toString().trim()}); added++;
+      });
+      savePersons(list); renderPersons(); alert(`✓ ${added} kayıt eklendi.`);
+    }catch(err){alert('Hata:\n'+err.message);}
+    inp.value='';
+  };
+  r.readAsBinaryString(file);
+}
+
+/* ══════════════════════════════════════
+   HELP
+══════════════════════════════════════ */
+const HELP_PAGES = {
+  welcome:{title:'Genel Bakış',html:`<div class="h-highlight" style="margin-bottom:8px"><i class="fa-solid fa-lightbulb"></i><p>Alttaki menüden sekme seçin, panel açılır ve canlı olarak değişikliklerinizi yapın.</p></div><div class="h-steps"><div class="h-step"><div class="h-step-num">1</div><div class="h-step-txt"><b>Düzen seçin</b><span>Düzen menüsünden yerleşim ve boyutları ayarlayın.</span></div></div><div class="h-step"><div class="h-step-num">2</div><div class="h-step-txt"><b>Fotoğraf yükleyin</b><span>Fotoğraf alanına tıklayın ya da sürükleyin.</span></div></div><div class="h-step"><div class="h-step-num">3</div><div class="h-step-txt"><b>Metin yazın</b><span>Kart üzerindeki alanlara doğrudan tıklayıp yazın.</span></div></div><div class="h-step"><div class="h-step-num">4</div><div class="h-step-txt"><b>Kişi seçin</b><span>Kişiler menüsünden kayıtlı kişiye tıklayın.</span></div></div><div class="h-step"><div class="h-step-num">5</div><div class="h-step-txt"><b>İndirin</b><span>Aktar menüsünden çözünürlük seçip indirin.</span></div></div></div>`},
+  layout:{title:'Düzen',html:`<div class="h-tip"><div class="h-tip-ic ic-cyan"><i class="fa-solid fa-table-columns"></i></div><div class="h-tip-txt"><b>Yerleşim</b><span>Fotoğrafı Sol, Sağ, Üst veya Alta taşıyın.</span></div></div><div class="h-tip"><div class="h-tip-ic ic-green"><i class="fa-solid fa-expand"></i></div><div class="h-tip-txt"><b>Marjin</b><span>Kart kenar boşluklarını kaydırıcıyla ayarlayın.</span></div></div>`},
+  photo:{title:'Fotoğraf',html:`<div class="h-tip"><div class="h-tip-ic ic-green"><i class="fa-solid fa-camera"></i></div><div class="h-tip-txt"><b>Yükleme</b><span>Fotoğraf alanına tıklayın veya sürükleyip bırakın.</span></div></div><div class="h-tip"><div class="h-tip-ic ic-blue"><i class="fa-solid fa-magnifying-glass-plus"></i></div><div class="h-tip-txt"><b>Zoom & Pan</b><span>Tekerlek veya iki parmakla yakınlaştırın, tutup sürükleyin.</span></div></div>`},
+  text:{title:'Metin',html:`<div class="h-tip"><div class="h-tip-ic ic-yellow"><i class="fa-solid fa-i-cursor"></i></div><div class="h-tip-txt"><b>Düzenleme</b><span>Kart üzerindeki alanlara doğrudan tıklayıp yazın.</span></div></div><div class="h-tip"><div class="h-tip-ic ic-purple"><i class="fa-solid fa-font"></i></div><div class="h-tip-txt"><b>Font</b><span>Her alan için ayrı font, boyut ve kalınlık seçin.</span></div></div>`},
+  colors:{title:'Renkler',html:`<div class="h-tip"><div class="h-tip-ic ic-orange"><i class="fa-solid fa-fill-drip"></i></div><div class="h-tip-txt"><b>Panel Rengi</b><span>Degrade veya düz renk seçin, açıyı ayarlayın.</span></div></div>`},
+  persons:{title:'Kişi Kayıtları',html:`<div class="h-tip"><div class="h-tip-ic ic-purple"><i class="fa-solid fa-user-plus"></i></div><div class="h-tip-txt"><b>Ekleme</b><span>Ekle butonuna basın, ad ve ünvan girin.</span></div></div><div class="h-tip"><div class="h-tip-ic ic-green"><i class="fa-solid fa-arrow-up-right-from-square"></i></div><div class="h-tip-txt"><b>Yükleme</b><span>Kişi kartına tıklayınca karta yüklenir ve panel kapanır.</span></div></div>`},
+  export:{title:'Dışa Aktarma',html:`<div class="h-tip"><div class="h-tip-ic ic-green"><i class="fa-solid fa-download"></i></div><div class="h-tip-txt"><b>İndirme</b><span>Çözünürlük ve format seçip "Görseli İndir" butonuna basın.</span></div></div>`}
+};
+function showHelpPage(key,btn){
+  const p=HELP_PAGES[key]; if(!p) return;
+  document.querySelectorAll('.help-topic-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  $('hoTitle').textContent=p.title; $('hoBody').innerHTML=p.html;
+  $('helpOverlay').classList.add('on');
+}
+function closeHelpOverlay(){ $('helpOverlay').classList.remove('on'); }
+
+/* ══════════════════════════════════════
+   EXPORT — pure Canvas API (taint-free)
+══════════════════════════════════════ */
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+async function exportImg() {
+  const defName = 'grafik_export';
+  const userInput = await promptExportName(defName);
+  if (userInput === null) return;
+  const fileName = (userInput.trim() || defName).replace(/[^a-zA-Z0-9_\-ğüşıöçĞÜŞİÖÇ ]/g, '_');
+
+  $('exportOverlay').classList.add('on');
+  await sleep(80);
+
+  try {
+    let W, H;
+    if (_res === 'custom') {
+      const cw = $('cusW'), ch = $('cusH');
+      W = parseInt((cw ? cw.value : null) || _cusW) || 1920;
+      H = parseInt((ch ? ch.value : null) || _cusH) || 1080;
+    } else {
+      [W, H] = _res.split('x').map(Number);
+    }
+
+    const mime    = _fmt === 'png' ? 'image/png' : _fmt === 'webp' ? 'image/webp' : 'image/jpeg';
+    const ext     = _fmt === 'png' ? 'png'       : _fmt === 'webp' ? 'webp'       : 'jpg';
+    const quality = _quality / 100;
+
+    // ── ölçek hesapla ──
+    const frame    = $('bgFrame');
+    const cardEl   = $('card');
+    const frameR   = frame.getBoundingClientRect();
+    const cardR    = cardEl.getBoundingClientRect();
+
+    const scX = W / frameR.width;
+    const scY = H / frameR.height;
+
+    // kart koordinatları (frame içinde relative)
+    const cx = (cardR.left - frameR.left) * scX;
+    const cy = (cardR.top  - frameR.top)  * scY;
+    const cw = cardR.width  * scX;
+    const ch = cardR.height * scY;
+
+    const canvas = document.createElement('canvas');
+    canvas.width  = W;
+    canvas.height = H;
+    const ctx = canvas.getContext('2d');
+
+    // 1) ARKA PLAN GRADYENİ
+    const cp = $('contentPanel');
+    const bgStyle = cp.style.background || `linear-gradient(135deg,${cl.bgC1},${cl.bgC2})`;
+    const grad = parseGradientForCanvas(ctx, bgStyle, W, H);
+    if (grad) { ctx.fillStyle = grad; } else { ctx.fillStyle = bgStyle; }
+    ctx.fillRect(0, 0, W, H);
+
+    // 2) ARKA PLAN RESMİ
+    if (bgBase64) {
+      await drawImageContained(ctx, bgBase64, 0, 0, W, H, _bgFit, _bgOp / 100);
+    }
+
+    // 3) KART köşe yuvarlaması ile clip
+    const r = _cardR * Math.min(scX, scY);
+    roundRect(ctx, cx, cy, cw, ch, r);
+    ctx.save();
+    ctx.clip();
+
+    // 4) FOTOĞRAF PANELİ
+    const photoPanelEl = $('photoPanel');
+    const photoPanelR  = photoPanelEl.getBoundingClientRect();
+    const px = (photoPanelR.left - frameR.left) * scX;
+    const py = (photoPanelR.top  - frameR.top)  * scY;
+    const pw = photoPanelR.width  * scX;
+    const ph = photoPanelR.height * scY;
+
+    // foto arka plan rengi
+    ctx.fillStyle = cl.photoBg || '#1a1a2e';
+    ctx.fillRect(px, py, pw, ph);
+
+    if (imgLoaded && photoBase64) {
+      const img = await loadImg(photoBase64);
+      // transform: translate + scale (flip)
+      ctx.save();
+      ctx.rect(px, py, pw, ph); ctx.clip(); // photo panel sınırı
+      const scaleImg = scale * Math.min(scX, scY);
+      const imgOx = px + ox * scX;
+      const imgOy = py + oy * scY;
+      const sw = flipH ? -scaleImg : scaleImg;
+      const sh = flipV ? -scaleImg : scaleImg;
+      ctx.save();
+      ctx.translate(imgOx + (flipH ? img.naturalWidth * scaleImg : 0),
+                    imgOy + (flipV ? img.naturalHeight * scaleImg : 0));
+      ctx.scale(sw, sh);
+      // filters
+      ctx.filter = `brightness(${fs.br}%) contrast(${fs.ct}%) saturate(${fs.sat}%) blur(${fs.blur * Math.min(scX,scY)}px)`;
+      ctx.globalAlpha = fs.op / 100;
+      ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight);
+      ctx.restore();
+      // tint
+      if (ts.amount > 0) {
+        ctx.globalAlpha = ts.amount / 100;
+        ctx.fillStyle = ts.color;
+        ctx.fillRect(px, py, pw, ph);
+      }
+      ctx.restore();
+    }
+
+    // 5) CONTENT PANEL arka planı
+    const cpR = $('contentPanel').getBoundingClientRect();
+    const cpx = (cpR.left - frameR.left) * scX;
+    const cpy = (cpR.top  - frameR.top)  * scY;
+    const cpw = cpR.width  * scX;
+    const cph = cpR.height * scY;
+
+    ctx.globalAlpha = 1; ctx.filter = 'none';
+    const cpGrad = parseGradientForCanvas(ctx, cp.style.background, cpw, cph, cpx, cpy);
+    ctx.fillStyle = cpGrad || cp.style.background || '#1e3a5f';
+    ctx.fillRect(cpx, cpy, cpw, cph);
+
+    // yazı zemini (quoteBg)
+    if (cl.quoteBgOp > 0) {
+      const qbEl = $('quoteBg');
+      const qbR  = qbEl.getBoundingClientRect();
+      const qbx = (qbR.left - frameR.left) * scX;
+      const qby = (qbR.top  - frameR.top)  * scY;
+      const qbw = qbR.width  * scX;
+      const qbh = qbR.height * scY;
+      ctx.globalAlpha = cl.quoteBgOp / 100;
+      ctx.fillStyle   = cl.quoteBgColor;
+      ctx.fillRect(qbx, qby, qbw, qbh);
+      ctx.globalAlpha = 1;
+    }
+
+    // 6) NAME BAR
+    if (_showNameBar) {
+      const nbWrap = $('nameBarWrap');
+      const nbEl   = $('nameBar');
+      const nbR    = nbEl.getBoundingClientRect();
+      const nbx = (nbR.left - frameR.left) * scX;
+      const nby = (nbR.top  - frameR.top)  * scY;
+      const nbw = nbR.width  * scX;
+      const nbh = nbR.height * scY;
+      const barR2 = _barR * Math.min(scX, scY);
+
+      // bar bg
+      const bbEl = $('barBg');
+      let barBgStyle = cl.barSolid ? cl.barSolidColor : `linear-gradient(${cl.barAngle}deg,${cl.barC1},${cl.barC2})`;
+      ctx.globalAlpha = cl.barOp / 100;
+      const barGrad = parseGradientForCanvas(ctx, barBgStyle, nbw, nbh, nbx, nby);
+      ctx.fillStyle = barGrad || barBgStyle;
+      // radius matches position
+      const brm = { 'bottom-left':'0 '+barR2+' 0 0','bottom-right':barR2+' 0 0 0','top-left':'0 0 '+barR2+' 0','top-right':'0 0 0 '+barR2 };
+      const brArr = (brm[_namePos]||'0').split(' ').map(Number);
+      roundRect(ctx, nbx, nby, nbw, nbh, brArr);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      // name text
+      const ratio = Math.min(scX, scY);
+      const nf = $('nameField');
+      const tf = $('titleField');
+      const nfR = nf.getBoundingClientRect();
+      const tfR = tf.getBoundingClientRect();
+
+      ctx.fillStyle = tx.nColor;
+      ctx.font = `${tx.nW} ${tx.nSz * ratio}px ${tx.nFont.replace(/'/g,'')}`;
+      ctx.textBaseline = 'top';
+      ctx.letterSpacing = (tx.nLS * ratio) + 'px';
+      const nfx = (nfR.left - frameR.left) * scX;
+      const nfy = (nfR.top  - frameR.top)  * scY;
+      wrapText(ctx, nf.textContent || '', nfx, nfy, nfR.width * scX, tx.nSz * ratio * 1.4, tx.nW, tx.nFont, tx.nSz * ratio);
+
+      if (_showTitle && tf.style.display !== 'none') {
+        ctx.fillStyle = tx.tColor;
+        ctx.font = `${tx.tW} ${tx.tSz * ratio}px ${tx.tFont.replace(/'/g,'')}`;
+        ctx.letterSpacing = '0px';
+        const tfx = (tfR.left - frameR.left) * scX;
+        const tfy = (tfR.top  - frameR.top)  * scY;
+        wrapText(ctx, tf.textContent || '', tfx, tfy, tfR.width * scX, tx.tSz * ratio * 1.4, tx.tW, tx.tFont, tx.tSz * ratio);
+      }
+    }
+
+    // 7) QUOTE TEXT
+    const qtEl = $('quoteText');
+    const qtR  = qtEl.getBoundingClientRect();
+    const ratio2 = Math.min(scX, scY);
+    const qtx = (qtR.left - frameR.left) * scX;
+    const qty = (qtR.top  - frameR.top)  * scY;
+    ctx.globalAlpha = 1;
+    ctx.fillStyle   = tx.qColor;
+    ctx.font = `${tx.qW} ${tx.qSz * ratio2}px ${tx.qFont.replace(/'/g,'')}`;
+    ctx.letterSpacing = (tx.qLS * ratio2) + 'px';
+    ctx.textBaseline = 'top';
+    wrapText(ctx, qtEl.textContent || '', qtx, qty, qtR.width * scX, tx.qSz * ratio2 * tx.qLH, tx.qW, tx.qFont, tx.qSz * ratio2);
+
+    ctx.restore(); // kart clip sonu
+
+    // 8) indir
+    canvas.toBlob(blob => {
+      downloadBlob(blob, `${fileName}.${ext}`);
+      $('exportOverlay').classList.remove('on');
+    }, mime, quality);
+
+  } catch(err) {
+    console.error(err);
+    alert('Export hatası:\n' + err.message);
+    $('exportOverlay').classList.remove('on');
+  }
+}
+
+/* ── Canvas yardımcıları ── */
+function loadImg(src) {
+  return new Promise((res, rej) => {
+    const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src;
+  });
+}
+
+async function drawImageContained(ctx, src, x, y, w, h, fit, alpha) {
+  const img = await loadImg(src);
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  if (fit === 'contain') {
+    const s = Math.min(w / img.naturalWidth, h / img.naturalHeight);
+    const dx = x + (w - img.naturalWidth * s) / 2;
+    const dy = y + (h - img.naturalHeight * s) / 2;
+    ctx.drawImage(img, dx, dy, img.naturalWidth * s, img.naturalHeight * s);
+  } else if (fit === 'fill') {
+    ctx.drawImage(img, x, y, w, h);
+  } else { // cover
+    const s = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+    const dx = x + (w - img.naturalWidth * s) / 2;
+    const dy = y + (h - img.naturalHeight * s) / 2;
+    ctx.drawImage(img, dx, dy, img.naturalWidth * s, img.naturalHeight * s);
+  }
+  ctx.restore();
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  const radii = Array.isArray(r) ? r : [r, r, r, r];
+  ctx.beginPath();
+  ctx.moveTo(x + radii[0], y);
+  ctx.lineTo(x + w - radii[1], y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + radii[1]);
+  ctx.lineTo(x + w, y + h - radii[2]);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - radii[2], y + h);
+  ctx.lineTo(x + radii[3], y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - radii[3]);
+  ctx.lineTo(x, y + radii[0]);
+  ctx.quadraticCurveTo(x, y, x + radii[0], y);
+  ctx.closePath();
+}
+
+function parseGradientForCanvas(ctx, css, w, h, ox2 = 0, oy2 = 0) {
+  if (!css) return null;
+  const m = css.match(/linear-gradient\((\d+)deg,\s*(#[a-fA-F0-9]+|rgba?\([^)]+\)|[a-z]+),\s*(#[a-fA-F0-9]+|rgba?\([^)]+\)|[a-z]+)\)/);
+  if (!m) return null;
+  const deg = parseFloat(m[1]);
+  const rad = (deg - 90) * Math.PI / 180;
+  const gx1 = ox2 + w / 2 - Math.cos(rad) * w / 2;
+  const gy1 = oy2 + h / 2 - Math.sin(rad) * h / 2;
+  const gx2 = ox2 + w / 2 + Math.cos(rad) * w / 2;
+  const gy2 = oy2 + h / 2 + Math.sin(rad) * h / 2;
+  const g = ctx.createLinearGradient(gx1, gy1, gx2, gy2);
+  g.addColorStop(0, m[2]); g.addColorStop(1, m[3]);
+  return g;
+}
+
+function wrapText(ctx, text, x, y, maxW, lineH, fw, ff, sz) {
+  if (!text) return;
+  const lines = text.split('\n');
+  let curY = y;
+  for (const line of lines) {
+    const words = line.split(' ');
+    let cur = '';
+    for (const w of words) {
+      const test = cur ? cur + ' ' + w : w;
+      if (ctx.measureText(test).width > maxW && cur) {
+        ctx.fillText(cur, x, curY); curY += lineH; cur = w;
+      } else { cur = test; }
+    }
+    if (cur) { ctx.fillText(cur, x, curY); curY += lineH; }
+  }
+}
+
+function promptExportName(def){
+  return new Promise(resolve=>{
+    const old=$('exportNameModal'); if(old) old.remove();
+    const m=document.createElement('div'); m.id='exportNameModal';
+    m.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;';
+    m.innerHTML=`<div style="background:#1e293b;border:1px solid #334155;border-radius:14px;width:360px;max-width:94vw;padding:20px;box-shadow:0 24px 60px rgba(0,0,0,.6);display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:center;gap:10px;"><i class="fa-solid fa-file-image" style="color:#22c55e;font-size:15px;"></i>
+        <span style="font-size:13px;font-weight:700;color:#e2e8f0;flex:1;">Görsel Adı</span>
+        <button id="enClose" style="background:none;border:none;color:#64748b;font-size:16px;cursor:pointer;padding:2px 6px;">✕</button></div>
+      <div><label style="font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:6px;">Dosya adı (opsiyonel)</label>
+        <input id="enInput" type="text" placeholder="${def}" value="${def}" style="width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;border-radius:8px;padding:8px 11px;font-size:12.5px;outline:none;font-family:inherit;box-sizing:border-box;"></div>
+      <div style="display:flex;gap:8px;">
+        <button id="enCancel" style="flex:1;padding:8px;border-radius:8px;border:none;background:#334155;color:#94a3b8;font-size:12px;font-weight:600;cursor:pointer;">İptal</button>
+        <button id="enOk" style="flex:2;padding:8px;border-radius:8px;border:none;background:linear-gradient(135deg,#22c55e,#15803d);color:#fff;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;"><i class="fa-solid fa-download"></i> İndir</button>
+      </div></div>`;
+    document.body.appendChild(m);
+    const inp=$('enInput'); setTimeout(()=>{inp.select();inp.focus();},80);
+    const ok=()=>{const v=inp.value;m.remove();resolve(v);};
+    const cancel=()=>{m.remove();resolve(null);};
+    $('enOk').onclick=ok; $('enCancel').onclick=cancel; $('enClose').onclick=cancel;
+    m.onclick=e=>{if(e.target===m)cancel();};
+    inp.onkeydown=e=>{if(e.key==='Enter')ok();if(e.key==='Escape')cancel();};
+  });
+}
+
+function downloadBlob(blob,name){
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);
+}
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+(function init(){
+  // Varsayılan marjinleri frame boyutuna göre hesapla
+  // (frame henüz render olmamış olabilir, requestAnimationFrame ile bekle)
+  requestAnimationFrame(() => {
+    calcDefaultMargins();
+    syncMargins('all');
+    $('bgFrame').style.padding = `${mg.top}px ${mg.right}px ${mg.bottom}px ${mg.left}px`;
+  });
+  // Apply initial styles
+  applyBgGrad();
+  applyBarColor();
+  applyText();
+  updateNameBarRadius();
+  card.style.borderRadius = _cardR + 'px';
+})();
+</script>
+</body>
+</html>
