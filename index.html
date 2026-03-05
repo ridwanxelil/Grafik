@@ -6,32 +6,6 @@
 <title>Grafik Şablon 2025</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-<style>
-@font-face {
-  font-family: 'TRT';
-  src: local('TRT'), local('TRT Ailes'), local('TRTAiles'),
-       url('fonts/TRTAiles-Regular.woff2') format('woff2'),
-       url('fonts/TRTAiles-Regular.woff') format('woff'),
-       url('fonts/TRTAiles-Regular.ttf') format('truetype');
-  font-weight: 400; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: 'TRT';
-  src: local('TRT Bold'), local('TRT Ailes Bold'), local('TRTAiles-Bold'),
-       url('fonts/TRTAiles-Bold.woff2') format('woff2'),
-       url('fonts/TRTAiles-Bold.woff') format('woff'),
-       url('fonts/TRTAiles-Bold.ttf') format('truetype');
-  font-weight: 700; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: 'TRT';
-  src: local('TRT Light'), local('TRT Ailes Light'), local('TRTAiles-Light'),
-       url('fonts/TRTAiles-Light.woff2') format('woff2'),
-       url('fonts/TRTAiles-Light.woff') format('woff'),
-       url('fonts/TRTAiles-Light.ttf') format('truetype');
-  font-weight: 300; font-style: normal; font-display: swap;
-}
-</style>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Roboto:wght@300;400;700&family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;600;700;800&family=Lato:wght@300;400;700&family=Oswald:wght@400;600;700&family=Raleway:wght@400;600;700&family=Poppins:wght@300;400;600;700&family=Source+Sans+3:wght@300;400;600;700&family=Nunito:wght@300;400;600;700&family=Ubuntu:wght@300;400;700&family=Playfair+Display:wght@400;700&family=Merriweather:wght@300;400;700&family=PT+Sans:wght@400;700&family=PT+Serif:wght@400;700&family=Noto+Sans:wght@300;400;700&family=Roboto+Condensed:wght@300;400;700&family=Roboto+Slab:wght@300;400;700&family=Roboto+Mono:wght@300;400;700&family=Fira+Sans:wght@300;400;600;700&family=Titillium+Web:wght@300;400;600;700&family=Barlow:wght@300;400;600;700&family=DM+Sans:wght@300;400;600;700&family=Karla:wght@300;400;600;700&family=Mulish:wght@300;400;600;700&family=Quicksand:wght@300;400;600;700&family=Cabin:wght@400;600;700&family=Josefin+Sans:wght@300;400;600;700&family=Exo+2:wght@300;400;600;700&family=Jost:wght@300;400;600;700&family=Work+Sans:wght@300;400;600;700&family=Rubik:wght@300;400;600;700&family=Manrope:wght@300;400;600;700&family=Outfit:wght@300;400;600;700&family=Sora:wght@300;400;600;700&family=Be+Vietnam+Pro:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;600;700&family=Lexend:wght@300;400;600;700&family=Libre+Baskerville:wght@400;700&family=EB+Garamond:wght@400;700&family=Cormorant+Garamond:wght@300;400;600;700&family=Lora:wght@400;600;700&family=Crimson+Text:wght@400;600;700&family=Spectral:wght@300;400;600;700&family=Libre+Franklin:wght@300;400;600;700&family=Source+Serif+4:wght@300;400;600;700&family=Arvo:wght@400;700&family=Bitter:wght@300;400;600;700&family=Zilla+Slab:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -301,28 +275,22 @@ input[type=color]{
 
 /* content panel */
 .content-panel{
-  flex:1;position:relative;display:flex;flex-direction:column;justify-content:flex-end;overflow:visible;
+  flex:1;position:relative;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;
 }
 
 /* quote area */
 .quote-area{
-  position:absolute;top:0;left:0;right:0;
-  bottom:var(--bar-h,clamp(44px,9%,96px));
-  padding:clamp(10px,2vw,30px);
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  padding:25px;
   display:flex;
   align-items:center;
   transition:top .25s,bottom .25s;
+  overflow:hidden;
 }
-.content-panel.namebar-bottom .quote-area{
-  top:0;
-  bottom:var(--bar-h,clamp(44px,9%,96px));
-}
-.content-panel.namebar-top .quote-area{
-  top:var(--bar-h,clamp(44px,9%,96px));
-  bottom:0;
-}
+.content-panel.namebar-bottom .quote-area{top:0;bottom:0;}
+.content-panel.namebar-top .quote-area{top:0;bottom:0;}
 #quoteText{
-  color:#fff;line-height:1.65;font-weight:400;
+  color:#fff;line-height:1.2;font-weight:400;
   outline:none;width:100%;
   text-shadow:0 1px 3px rgba(0,0,0,.22);
   cursor:text;white-space:pre-wrap;word-break:break-word;
@@ -337,7 +305,7 @@ input[type=color]{
 .name-bar-wrap.pos-top-right    {top:0;right:0;bottom:auto;left:auto;align-items:flex-start;justify-content:flex-end;}
 .name-bar{
   display:block;
-  padding:clamp(7px,1vw,14px) clamp(14px,2vw,32px);
+  padding:10px 25px;
   border-radius:0 var(--bar-r,clamp(14px,2.6vw,36px)) 0 0;
   min-width:48%;max-width:100%;width:fit-content;
   transition:border-radius .2s;
@@ -353,7 +321,7 @@ input[type=color]{
 #nameField:empty::before{content:attr(data-ph);color:rgba(255,255,255,.38);font-style:italic;pointer-events:none;font-size:0.65em;font-weight:400;letter-spacing:0;text-transform:none;}
 #titleField{
   color:rgba(255,255,255,.86);font-weight:400;letter-spacing:.03em;
-  outline:none;display:block;margin-top:3px;cursor:text;white-space:normal;word-break:break-word;
+  outline:none;display:block;margin-top:0;cursor:text;white-space:normal;word-break:break-word;
 }
 #titleField:empty::before{content:attr(data-ph);color:rgba(255,255,255,.32);font-style:italic;pointer-events:none;font-size:0.7em;}
 #nameField:focus,#titleField:focus{background:rgba(255,255,255,.07);border-radius:3px;}
@@ -603,10 +571,10 @@ input[type=color]{
       <div class="sb-card">
         <div class="sb-card-head"><small><i class="fa-solid fa-sliders"></i> Boyut &amp; Köşe</small></div>
         <div class="sb-card-body">
-          <div class="row"><span class="lbl">Foto Gen.</span><input type="range" class="flex-fill" id="slPhotoW" min="20" max="70" value="40" oninput="setPhotoW(this.value)"><span class="val" id="photoWVal">40%</span></div>
+          <div class="row"><span class="lbl">Foto Gen.</span><input type="range" class="flex-fill" id="slPhotoW" min="20" max="70" value="42" oninput="setPhotoW(this.value)"><span class="val" id="photoWVal">42%</span></div>
           <div class="sb-hr"></div>
-          <div class="row"><span class="lbl">Kart Köşe</span><input type="range" class="flex-fill" id="slCardR" min="0" max="32" value="10" oninput="setCardR(this.value)"><span class="val" id="cardRVal">10px</span></div>
-          <div class="row"><span class="lbl">Bar Köşe</span><input type="range" class="flex-fill" id="slBarR" min="0" max="60" value="10" oninput="setBarR(this.value)"><span class="val" id="barRVal">10px</span></div>
+          <div class="row"><span class="lbl">Kart Köşe</span><input type="range" class="flex-fill" id="slCardR" min="0" max="32" value="14" oninput="setCardR(this.value)"><span class="val" id="cardRVal">14px</span></div>
+          <div class="row"><span class="lbl">Bar Köşe</span><input type="range" class="flex-fill" id="slBarR" min="0" max="60" value="28" oninput="setBarR(this.value)"><span class="val" id="barRVal">28px</span></div>
         </div>
       </div>
 
@@ -646,11 +614,6 @@ input[type=color]{
           <div class="row"><span class="lbl">Doygunluk</span><input type="range" class="flex-fill" id="slSat" min="0" max="200" value="100" oninput="applyFilters()"><span class="val" id="satVal">100</span></div>
           <div class="row"><span class="lbl">Bulanıklık</span><input type="range" class="flex-fill" id="slBlur" min="0" max="20" value="0" step=".5" oninput="applyFilters()"><span class="val" id="blurVal">0</span></div>
           <div class="row"><span class="lbl">Opaklık</span><input type="range" class="flex-fill" id="slImgOp" min="10" max="100" value="100" oninput="applyFilters()"><span class="val" id="imgOpVal">100%</span></div>
-          <div class="row" style="margin-top:4px">
-            <button onclick="resetFilters()" style="flex:1;padding:6px 10px;border-radius:7px;border:none;background:#1e293b;color:#94a3b8;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;">
-              <i class="fa-solid fa-rotate-left" style="font-size:11px"></i> Filtreleri Sıfırla
-            </button>
-          </div>
         </div>
       </div>
 
@@ -687,63 +650,62 @@ input[type=color]{
         <div class="sb-card-body">
           <div class="row"><span class="lbl">Font</span>
             <select class="flex-fill" id="selQFont" onchange="applyText()">
-              <option value="'TRT','TRT Ailes','Poppins',sans-serif" selected>TRT</option>
-              <option value="'Arvo',serif">Arvo</option>
-              <option value="'Barlow',sans-serif">Barlow</option>
-              <option value="'Be Vietnam Pro',sans-serif">Be Vietnam Pro</option>
-              <option value="'Bitter',serif">Bitter</option>
-              <option value="'Cabin',sans-serif">Cabin</option>
-              <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
-              <option value="'Crimson Text',serif">Crimson Text</option>
-              <option value="'DM Sans',sans-serif">DM Sans</option>
-              <option value="'EB Garamond',serif">EB Garamond</option>
-              <option value="'Exo 2',sans-serif">Exo 2</option>
-              <option value="'Fira Sans',sans-serif">Fira Sans</option>
               <option value="'Inter',sans-serif">Inter</option>
-              <option value="'Josefin Sans',sans-serif">Josefin Sans</option>
-              <option value="'Jost',sans-serif">Jost</option>
-              <option value="'Karla',sans-serif">Karla</option>
-              <option value="'Lato',sans-serif">Lato</option>
-              <option value="'Lexend',sans-serif">Lexend</option>
-              <option value="'Libre Baskerville',serif">Libre Baskerville</option>
-              <option value="'Libre Franklin',sans-serif">Libre Franklin</option>
-              <option value="'Lora',serif">Lora</option>
-              <option value="'Manrope',sans-serif">Manrope</option>
-              <option value="'Merriweather',serif">Merriweather</option>
-              <option value="'Montserrat',sans-serif">Montserrat</option>
-              <option value="'Mulish',sans-serif">Mulish</option>
-              <option value="'Noto Sans',sans-serif">Noto Sans</option>
-              <option value="'Nunito',sans-serif">Nunito</option>
+              <option value="'Roboto',sans-serif">Roboto</option>
               <option value="'Open Sans',sans-serif">Open Sans</option>
+              <option value="'Montserrat',sans-serif">Montserrat</option>
+              <option value="'Lato',sans-serif">Lato</option>
               <option value="'Oswald',sans-serif">Oswald</option>
+              <option value="'Raleway',sans-serif">Raleway</option>
+              <option value="'Poppins',sans-serif" selected>Poppins</option>
+              <option value="'Source Sans 3',sans-serif">Source Sans 3</option>
+              <option value="'Nunito',sans-serif">Nunito</option>
+              <option value="'Ubuntu',sans-serif">Ubuntu</option>
+              <option value="'Fira Sans',sans-serif">Fira Sans</option>
+              <option value="'Titillium Web',sans-serif">Titillium Web</option>
+              <option value="'Barlow',sans-serif">Barlow</option>
+              <option value="'DM Sans',sans-serif">DM Sans</option>
+              <option value="'Karla',sans-serif">Karla</option>
+              <option value="'Mulish',sans-serif">Mulish</option>
+              <option value="'Quicksand',sans-serif">Quicksand</option>
+              <option value="'Cabin',sans-serif">Cabin</option>
+              <option value="'Josefin Sans',sans-serif">Josefin Sans</option>
+              <option value="'Exo 2',sans-serif">Exo 2</option>
+              <option value="'Jost',sans-serif">Jost</option>
+              <option value="'Work Sans',sans-serif">Work Sans</option>
+              <option value="'Rubik',sans-serif">Rubik</option>
+              <option value="'Manrope',sans-serif">Manrope</option>
               <option value="'Outfit',sans-serif">Outfit</option>
+              <option value="'Sora',sans-serif">Sora</option>
+              <option value="'Be Vietnam Pro',sans-serif">Be Vietnam Pro</option>
+              <option value="'Plus Jakarta Sans',sans-serif">Plus Jakarta Sans</option>
+              <option value="'Space Grotesk',sans-serif">Space Grotesk</option>
+              <option value="'Lexend',sans-serif">Lexend</option>
+              <option value="'Libre Franklin',sans-serif">Libre Franklin</option>
+              <option value="'Roboto Condensed',sans-serif">Roboto Condensed</option>
+              <option value="'Roboto Slab',serif">Roboto Slab</option>
+              <option value="'Playfair Display',serif">Playfair Display</option>
+              <option value="'Merriweather',serif">Merriweather</option>
+              <option value="'Libre Baskerville',serif">Libre Baskerville</option>
+              <option value="'EB Garamond',serif">EB Garamond</option>
+              <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+              <option value="'Lora',serif">Lora</option>
+              <option value="'Crimson Text',serif">Crimson Text</option>
+              <option value="'Spectral',serif">Spectral</option>
+              <option value="'Source Serif 4',serif">Source Serif 4</option>
+              <option value="'Arvo',serif">Arvo</option>
+              <option value="'Bitter',serif">Bitter</option>
+              <option value="'Zilla Slab',serif">Zilla Slab</option>
               <option value="'PT Sans',sans-serif">PT Sans</option>
               <option value="'PT Serif',serif">PT Serif</option>
-              <option value="'Playfair Display',serif">Playfair Display</option>
-              <option value="'Plus Jakarta Sans',sans-serif">Plus Jakarta Sans</option>
-              <option value="'Poppins',sans-serif">Poppins</option>
-              <option value="'Quicksand',sans-serif">Quicksand</option>
-              <option value="'Raleway',sans-serif">Raleway</option>
-              <option value="'Roboto',sans-serif">Roboto</option>
-              <option value="'Roboto Condensed',sans-serif">Roboto Condensed</option>
+              <option value="'Noto Sans',sans-serif">Noto Sans</option>
               <option value="'Roboto Mono',monospace">Roboto Mono</option>
-              <option value="'Roboto Slab',serif">Roboto Slab</option>
-              <option value="'Rubik',sans-serif">Rubik</option>
               <option value="'Segoe UI',sans-serif">Segoe UI</option>
-              <option value="'Sora',sans-serif">Sora</option>
-              <option value="'Source Sans 3',sans-serif">Source Sans 3</option>
-              <option value="'Source Serif 4',serif">Source Serif 4</option>
-              <option value="'Space Grotesk',sans-serif">Space Grotesk</option>
-              <option value="'Spectral',serif">Spectral</option>
-              <option value="'Titillium Web',sans-serif">Titillium Web</option>
-              <option value="'Ubuntu',sans-serif">Ubuntu</option>
-              <option value="'Work Sans',sans-serif">Work Sans</option>
-              <option value="'Zilla Slab',serif">Zilla Slab</option>
             </select>
           </div>
           <div class="row">
             <span class="lbl">Punto</span>
-            <input type="number" style="width:52px" id="inpQSz" value="36" min="8" max="80" onchange="applyText()">
+            <input type="number" style="width:52px" id="inpQSz" value="25" min="8" max="80" onchange="applyText()">
             <div class="ibg ms-1">
               <button class="wb" id="qw300" onclick="setW('q',300,this)">Thin</button>
               <button class="wb active" id="qw400" onclick="setW('q',400,this)">Reg</button>
@@ -766,7 +728,7 @@ input[type=color]{
               <button class="ib" id="qv-end" onclick="setVAlign('flex-end',this)" title="Aşağı hizala" style="flex-direction:column;gap:1px;font-size:9px"><i class="fa-solid fa-align-right" style="transform:rotate(-90deg);font-size:11px"></i></button>
             </div>
           </div>
-          <div class="row"><span class="lbl">Satır Aralığı</span><input type="range" class="flex-fill" id="slQLH" min="1" max="3" step=".05" value="1.65" oninput="applyText()"><span class="val" id="qLHVal">1.65</span></div>
+          <div class="row"><span class="lbl">Satır Aralığı</span><input type="range" class="flex-fill" id="slQLH" min="1" max="3" step=".05" value="1.2" oninput="applyText()"><span class="val" id="qLHVal">1.20</span></div>
           <div class="row"><span class="lbl">Harf Aralığı</span><input type="range" class="flex-fill" id="slQLS" min="-2" max="10" step=".5" value="0" oninput="applyText()"><span class="val" id="qLSVal">0px</span></div>
           <div class="row"><span class="lbl">Renk</span><input type="color" id="qColor" value="#ffffff" oninput="applyText()"></div>
         </div>
@@ -777,70 +739,69 @@ input[type=color]{
         <div class="sb-card-body">
           <div class="row"><span class="lbl">Font</span>
             <select class="flex-fill" id="selNFont" onchange="applyText()">
-              <option value="'TRT','TRT Ailes','Poppins',sans-serif" selected>TRT</option>
-              <option value="'Arvo',serif">Arvo</option>
-              <option value="'Barlow',sans-serif">Barlow</option>
-              <option value="'Be Vietnam Pro',sans-serif">Be Vietnam Pro</option>
-              <option value="'Bitter',serif">Bitter</option>
-              <option value="'Cabin',sans-serif">Cabin</option>
-              <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
-              <option value="'Crimson Text',serif">Crimson Text</option>
-              <option value="'DM Sans',sans-serif">DM Sans</option>
-              <option value="'EB Garamond',serif">EB Garamond</option>
-              <option value="'Exo 2',sans-serif">Exo 2</option>
-              <option value="'Fira Sans',sans-serif">Fira Sans</option>
-              <option value="'Inter',sans-serif">Inter</option>
-              <option value="'Josefin Sans',sans-serif">Josefin Sans</option>
-              <option value="'Jost',sans-serif">Jost</option>
-              <option value="'Karla',sans-serif">Karla</option>
-              <option value="'Lato',sans-serif">Lato</option>
-              <option value="'Lexend',sans-serif">Lexend</option>
-              <option value="'Libre Baskerville',serif">Libre Baskerville</option>
-              <option value="'Libre Franklin',sans-serif">Libre Franklin</option>
-              <option value="'Lora',serif">Lora</option>
-              <option value="'Manrope',sans-serif">Manrope</option>
-              <option value="'Merriweather',serif">Merriweather</option>
               <option value="'Montserrat',sans-serif">Montserrat</option>
-              <option value="'Mulish',sans-serif">Mulish</option>
-              <option value="'Noto Sans',sans-serif">Noto Sans</option>
-              <option value="'Nunito',sans-serif">Nunito</option>
+              <option value="'Inter',sans-serif">Inter</option>
+              <option value="'Roboto',sans-serif">Roboto</option>
               <option value="'Open Sans',sans-serif">Open Sans</option>
+              <option value="'Lato',sans-serif">Lato</option>
               <option value="'Oswald',sans-serif">Oswald</option>
+              <option value="'Raleway',sans-serif">Raleway</option>
+              <option value="'Poppins',sans-serif" selected>Poppins</option>
+              <option value="'Source Sans 3',sans-serif">Source Sans 3</option>
+              <option value="'Nunito',sans-serif">Nunito</option>
+              <option value="'Ubuntu',sans-serif">Ubuntu</option>
+              <option value="'Fira Sans',sans-serif">Fira Sans</option>
+              <option value="'Titillium Web',sans-serif">Titillium Web</option>
+              <option value="'Barlow',sans-serif">Barlow</option>
+              <option value="'DM Sans',sans-serif">DM Sans</option>
+              <option value="'Karla',sans-serif">Karla</option>
+              <option value="'Mulish',sans-serif">Mulish</option>
+              <option value="'Quicksand',sans-serif">Quicksand</option>
+              <option value="'Cabin',sans-serif">Cabin</option>
+              <option value="'Josefin Sans',sans-serif">Josefin Sans</option>
+              <option value="'Exo 2',sans-serif">Exo 2</option>
+              <option value="'Jost',sans-serif">Jost</option>
+              <option value="'Work Sans',sans-serif">Work Sans</option>
+              <option value="'Rubik',sans-serif">Rubik</option>
+              <option value="'Manrope',sans-serif">Manrope</option>
               <option value="'Outfit',sans-serif">Outfit</option>
+              <option value="'Sora',sans-serif">Sora</option>
+              <option value="'Be Vietnam Pro',sans-serif">Be Vietnam Pro</option>
+              <option value="'Plus Jakarta Sans',sans-serif">Plus Jakarta Sans</option>
+              <option value="'Space Grotesk',sans-serif">Space Grotesk</option>
+              <option value="'Lexend',sans-serif">Lexend</option>
+              <option value="'Libre Franklin',sans-serif">Libre Franklin</option>
+              <option value="'Roboto Condensed',sans-serif">Roboto Condensed</option>
+              <option value="'Roboto Slab',serif">Roboto Slab</option>
+              <option value="'Playfair Display',serif">Playfair Display</option>
+              <option value="'Merriweather',serif">Merriweather</option>
+              <option value="'Libre Baskerville',serif">Libre Baskerville</option>
+              <option value="'EB Garamond',serif">EB Garamond</option>
+              <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+              <option value="'Lora',serif">Lora</option>
+              <option value="'Crimson Text',serif">Crimson Text</option>
+              <option value="'Spectral',serif">Spectral</option>
+              <option value="'Source Serif 4',serif">Source Serif 4</option>
+              <option value="'Arvo',serif">Arvo</option>
+              <option value="'Bitter',serif">Bitter</option>
+              <option value="'Zilla Slab',serif">Zilla Slab</option>
               <option value="'PT Sans',sans-serif">PT Sans</option>
               <option value="'PT Serif',serif">PT Serif</option>
-              <option value="'Playfair Display',serif">Playfair Display</option>
-              <option value="'Plus Jakarta Sans',sans-serif">Plus Jakarta Sans</option>
-              <option value="'Poppins',sans-serif">Poppins</option>
-              <option value="'Quicksand',sans-serif">Quicksand</option>
-              <option value="'Raleway',sans-serif">Raleway</option>
-              <option value="'Roboto',sans-serif">Roboto</option>
-              <option value="'Roboto Condensed',sans-serif">Roboto Condensed</option>
+              <option value="'Noto Sans',sans-serif">Noto Sans</option>
               <option value="'Roboto Mono',monospace">Roboto Mono</option>
-              <option value="'Roboto Slab',serif">Roboto Slab</option>
-              <option value="'Rubik',sans-serif">Rubik</option>
               <option value="'Segoe UI',sans-serif">Segoe UI</option>
-              <option value="'Sora',sans-serif">Sora</option>
-              <option value="'Source Sans 3',sans-serif">Source Sans 3</option>
-              <option value="'Source Serif 4',serif">Source Serif 4</option>
-              <option value="'Space Grotesk',sans-serif">Space Grotesk</option>
-              <option value="'Spectral',serif">Spectral</option>
-              <option value="'Titillium Web',sans-serif">Titillium Web</option>
-              <option value="'Ubuntu',sans-serif">Ubuntu</option>
-              <option value="'Work Sans',sans-serif">Work Sans</option>
-              <option value="'Zilla Slab',serif">Zilla Slab</option>
             </select>
           </div>
           <div class="row">
             <span class="lbl">Punto</span>
-            <input type="number" style="width:52px" id="inpNSz" value="32" min="6" max="72" onchange="applyText()">
+            <input type="number" style="width:52px" id="inpNSz" value="25" min="6" max="72" onchange="applyText()">
             <div class="ibg ms-1">
               <button class="wb" id="nw400" onclick="setW('n',400,this)">Reg</button>
               <button class="wb active" id="nw700" onclick="setW('n',700,this)">Bold</button>
               <button class="wb" id="nw800" onclick="setW('n',800,this)">Black</button>
             </div>
           </div>
-          <div class="row"><span class="lbl">Harf Aralığı</span><input type="range" class="flex-fill" id="slNLS" min="-2" max="14" step=".5" value="5" oninput="applyText()"><span class="val" id="nLSVal">5px</span></div>
+          <div class="row"><span class="lbl">Harf Aralığı</span><input type="range" class="flex-fill" id="slNLS" min="-2" max="14" step=".5" value="0" oninput="applyText()"><span class="val" id="nLSVal">0px</span></div>
           <div class="row"><span class="lbl">Renk</span><input type="color" id="nColor" value="#ffffff" oninput="applyText()"></div>
         </div>
       </div>
@@ -850,70 +811,69 @@ input[type=color]{
         <div class="sb-card-body">
           <div class="row"><span class="lbl">Font</span>
             <select class="flex-fill" id="selTFont" onchange="applyText()">
-              <option value="'TRT','TRT Ailes','Poppins',sans-serif" selected>TRT</option>
-              <option value="'Arvo',serif">Arvo</option>
-              <option value="'Barlow',sans-serif">Barlow</option>
-              <option value="'Be Vietnam Pro',sans-serif">Be Vietnam Pro</option>
-              <option value="'Bitter',serif">Bitter</option>
-              <option value="'Cabin',sans-serif">Cabin</option>
-              <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
-              <option value="'Crimson Text',serif">Crimson Text</option>
-              <option value="'DM Sans',sans-serif">DM Sans</option>
-              <option value="'EB Garamond',serif">EB Garamond</option>
-              <option value="'Exo 2',sans-serif">Exo 2</option>
-              <option value="'Fira Sans',sans-serif">Fira Sans</option>
+              <option value="'Poppins',sans-serif" selected>Poppins</option>
               <option value="'Inter',sans-serif">Inter</option>
-              <option value="'Josefin Sans',sans-serif">Josefin Sans</option>
-              <option value="'Jost',sans-serif">Jost</option>
-              <option value="'Karla',sans-serif">Karla</option>
-              <option value="'Lato',sans-serif">Lato</option>
-              <option value="'Lexend',sans-serif">Lexend</option>
-              <option value="'Libre Baskerville',serif">Libre Baskerville</option>
-              <option value="'Libre Franklin',sans-serif">Libre Franklin</option>
-              <option value="'Lora',serif">Lora</option>
-              <option value="'Manrope',sans-serif">Manrope</option>
-              <option value="'Merriweather',serif">Merriweather</option>
-              <option value="'Montserrat',sans-serif">Montserrat</option>
-              <option value="'Mulish',sans-serif">Mulish</option>
-              <option value="'Noto Sans',sans-serif">Noto Sans</option>
-              <option value="'Nunito',sans-serif">Nunito</option>
+              <option value="'Roboto',sans-serif">Roboto</option>
               <option value="'Open Sans',sans-serif">Open Sans</option>
+              <option value="'Montserrat',sans-serif">Montserrat</option>
+              <option value="'Lato',sans-serif">Lato</option>
               <option value="'Oswald',sans-serif">Oswald</option>
+              <option value="'Raleway',sans-serif">Raleway</option>
+              <option value="'Source Sans 3',sans-serif">Source Sans 3</option>
+              <option value="'Nunito',sans-serif">Nunito</option>
+              <option value="'Ubuntu',sans-serif">Ubuntu</option>
+              <option value="'Fira Sans',sans-serif">Fira Sans</option>
+              <option value="'Titillium Web',sans-serif">Titillium Web</option>
+              <option value="'Barlow',sans-serif">Barlow</option>
+              <option value="'DM Sans',sans-serif">DM Sans</option>
+              <option value="'Karla',sans-serif">Karla</option>
+              <option value="'Mulish',sans-serif">Mulish</option>
+              <option value="'Quicksand',sans-serif">Quicksand</option>
+              <option value="'Cabin',sans-serif">Cabin</option>
+              <option value="'Josefin Sans',sans-serif">Josefin Sans</option>
+              <option value="'Exo 2',sans-serif">Exo 2</option>
+              <option value="'Jost',sans-serif">Jost</option>
+              <option value="'Work Sans',sans-serif">Work Sans</option>
+              <option value="'Rubik',sans-serif">Rubik</option>
+              <option value="'Manrope',sans-serif">Manrope</option>
               <option value="'Outfit',sans-serif">Outfit</option>
+              <option value="'Sora',sans-serif">Sora</option>
+              <option value="'Be Vietnam Pro',sans-serif">Be Vietnam Pro</option>
+              <option value="'Plus Jakarta Sans',sans-serif">Plus Jakarta Sans</option>
+              <option value="'Space Grotesk',sans-serif">Space Grotesk</option>
+              <option value="'Lexend',sans-serif">Lexend</option>
+              <option value="'Libre Franklin',sans-serif">Libre Franklin</option>
+              <option value="'Roboto Condensed',sans-serif">Roboto Condensed</option>
+              <option value="'Roboto Slab',serif">Roboto Slab</option>
+              <option value="'Playfair Display',serif">Playfair Display</option>
+              <option value="'Merriweather',serif">Merriweather</option>
+              <option value="'Libre Baskerville',serif">Libre Baskerville</option>
+              <option value="'EB Garamond',serif">EB Garamond</option>
+              <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+              <option value="'Lora',serif">Lora</option>
+              <option value="'Crimson Text',serif">Crimson Text</option>
+              <option value="'Spectral',serif">Spectral</option>
+              <option value="'Source Serif 4',serif">Source Serif 4</option>
+              <option value="'Arvo',serif">Arvo</option>
+              <option value="'Bitter',serif">Bitter</option>
+              <option value="'Zilla Slab',serif">Zilla Slab</option>
               <option value="'PT Sans',sans-serif">PT Sans</option>
               <option value="'PT Serif',serif">PT Serif</option>
-              <option value="'Playfair Display',serif">Playfair Display</option>
-              <option value="'Plus Jakarta Sans',sans-serif">Plus Jakarta Sans</option>
-              <option value="'Poppins',sans-serif">Poppins</option>
-              <option value="'Quicksand',sans-serif">Quicksand</option>
-              <option value="'Raleway',sans-serif">Raleway</option>
-              <option value="'Roboto',sans-serif">Roboto</option>
-              <option value="'Roboto Condensed',sans-serif">Roboto Condensed</option>
+              <option value="'Noto Sans',sans-serif">Noto Sans</option>
               <option value="'Roboto Mono',monospace">Roboto Mono</option>
-              <option value="'Roboto Slab',serif">Roboto Slab</option>
-              <option value="'Rubik',sans-serif">Rubik</option>
               <option value="'Segoe UI',sans-serif">Segoe UI</option>
-              <option value="'Sora',sans-serif">Sora</option>
-              <option value="'Source Sans 3',sans-serif">Source Sans 3</option>
-              <option value="'Source Serif 4',serif">Source Serif 4</option>
-              <option value="'Space Grotesk',sans-serif">Space Grotesk</option>
-              <option value="'Spectral',serif">Spectral</option>
-              <option value="'Titillium Web',sans-serif">Titillium Web</option>
-              <option value="'Ubuntu',sans-serif">Ubuntu</option>
-              <option value="'Work Sans',sans-serif">Work Sans</option>
-              <option value="'Zilla Slab',serif">Zilla Slab</option>
             </select>
           </div>
           <div class="row">
             <span class="lbl">Punto</span>
-            <input type="number" style="width:52px" id="inpTSz" value="20" min="6" max="60" onchange="applyText()">
+            <input type="number" style="width:52px" id="inpTSz" value="15" min="6" max="60" onchange="applyText()">
             <div class="ibg ms-1">
               <button class="wb" id="tw300" onclick="setW('t',300,this)">Thin</button>
               <button class="wb active" id="tw400" onclick="setW('t',400,this)">Reg</button>
               <button class="wb" id="tw700" onclick="setW('t',700,this)">Bold</button>
             </div>
           </div>
-          <div class="row"><span class="lbl">Ad/Ünvan Aralığı</span><input type="range" class="flex-fill" id="slTGap" min="-6" max="24" value="3" oninput="applyText()"><span class="val" id="tGapVal">3px</span></div>
+          <div class="row"><span class="lbl">Ad/Ünvan Aralığı</span><input type="range" class="flex-fill" id="slTGap" min="-6" max="24" value="-6" oninput="applyText()"><span class="val" id="tGapVal">-6px</span></div>
           <div class="row"><span class="lbl">Renk</span><input type="color" id="tColor" value="#e0e0e0" oninput="applyText()"></div>
         </div>
       </div>
@@ -925,15 +885,15 @@ input[type=color]{
         <div class="sb-card-head"><small><i class="fa-solid fa-fill-drip"></i> İçerik Paneli</small></div>
         <div class="sb-card-body">
           <div class="row">
-            <span class="lbl">Renk 1</span><input type="color" id="bgC1" value="#142052" oninput="applyBgGrad()">
-            <span class="lbl ms-2">Renk 2</span><input type="color" id="bgC2" value="#2d49b6" oninput="applyBgGrad()">
+            <span class="lbl">Renk 1</span><input type="color" id="bgC1" value="#3a5298" oninput="applyBgGrad()">
+            <span class="lbl ms-2">Renk 2</span><input type="color" id="bgC2" value="#6b8fdf" oninput="applyBgGrad()">
           </div>
           <div class="row"><span class="lbl">Açı</span><input type="range" class="flex-fill" id="slBgAngle" min="0" max="360" value="135" oninput="applyBgGrad()"><span class="val" id="bgAngleVal">135°</span></div>
           <div class="sb-hr"></div>
           <div class="row">
             <span class="lbl">Düz Renk</span>
             <div class="form-check form-switch ms-1"><input class="form-check-input" type="checkbox" id="cbSolidBg" onchange="applyBgGrad()"></div>
-            <input type="color" id="bgSolid" value="#142052" oninput="applyBgGrad()" style="margin-left:7px">
+            <input type="color" id="bgSolid" value="#3a5298" oninput="applyBgGrad()" style="margin-left:7px">
           </div>
           <div class="sb-hr"></div>
           <div class="row"><span class="lbl">Panel Opaklık</span><input type="range" class="flex-fill" id="slPanelOp" min="0" max="100" value="100" oninput="applyBgGrad()"><span class="val" id="panelOpVal">100%</span></div>
@@ -944,15 +904,15 @@ input[type=color]{
         <div class="sb-card-head"><small><i class="fa-solid fa-rectangle-ad"></i> Name Bar Rengi</small></div>
         <div class="sb-card-body">
           <div class="row">
-            <span class="lbl">Renk 1</span><input type="color" id="barC1" value="#a21827" oninput="applyBarColor()">
-            <span class="lbl ms-2">Renk 2</span><input type="color" id="barC2" value="#ed174c" oninput="applyBarColor()">
+            <span class="lbl">Renk 1</span><input type="color" id="barC1" value="#9b1c2e" oninput="applyBarColor()">
+            <span class="lbl ms-2">Renk 2</span><input type="color" id="barC2" value="#c0273d" oninput="applyBarColor()">
           </div>
           <div class="row"><span class="lbl">Açı</span><input type="range" class="flex-fill" id="slBarAngle" min="0" max="360" value="90" oninput="applyBarColor()"><span class="val" id="barAngleVal">90°</span></div>
           <div class="sb-hr"></div>
           <div class="row">
             <span class="lbl">Düz Renk</span>
             <div class="form-check form-switch ms-1"><input class="form-check-input" type="checkbox" id="cbSolidBar" onchange="applyBarColor()"></div>
-            <input type="color" id="barSolid" value="#a21827" oninput="applyBarColor()" style="margin-left:7px">
+            <input type="color" id="barSolid" value="#9b1c2e" oninput="applyBarColor()" style="margin-left:7px">
           </div>
           <div class="row"><span class="lbl">Bar Opaklık</span><input type="range" class="flex-fill" id="slBarOp" min="0" max="100" value="100" oninput="applyBarColor()"><span class="val" id="barOpVal">100%</span></div>
         </div>
@@ -1225,13 +1185,33 @@ function setNamePos(pos, btn) {
   document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   updateNameBarRadius();
+  setTimeout(updateQuoteArea, 30);
+}
+
+// ── QUOTE AREA: name bar yüksekliğine göre offset ──
+function updateQuoteArea() {
+  const qa   = $('quoteArea');
+  const wrap = $('nameBarWrap');
+  if (!qa || !wrap) return;
+  const visible = wrap.style.display !== 'none';
+  const nbH = visible ? wrap.offsetHeight : 0;
+  const isTop = _namePos && _namePos.startsWith('top');
+  qa.style.top    = isTop  ? nbH + 'px' : '0';
+  qa.style.bottom = !isTop ? nbH + 'px' : '0';
+  if (typeof autoShrinkQuote === 'function') autoShrinkQuote();
 }
 
 // ── ÜNVAN ALANINI GÖSTER/GİZLE ──
-function toggleTitleField(show) { $('titleField').style.display = show ? '' : 'none'; }
+function toggleTitleField(show) {
+  $('titleField').style.display = show ? '' : 'none';
+  setTimeout(updateQuoteArea, 30);
+}
 
 // ── AD/ÜNVAN BARINI GÖSTER/GİZLE ──
-function toggleNameBar(show) { $('nameBarWrap').style.display = show ? '' : 'none'; }
+function toggleNameBar(show) {
+  $('nameBarWrap').style.display = show ? '' : 'none';
+  setTimeout(updateQuoteArea, 30);
+}
 
 // ── NAME BAR RADIUS GÜNCELLE ──
 function updateNameBarRadius() {
@@ -1269,11 +1249,9 @@ function syncMargins(changed){
     $('m'+cap(s)+'Val').textContent=margins[s]+'px';
   });
   $('bgFrame').style.padding=`${margins.top}px ${margins.right}px ${margins.bottom}px ${margins.left}px`;
+  setTimeout(updateQuoteArea, 50);
 }
 syncMargins('all');
-setCardR($('slCardR').value);
-setBarR($('slBarR').value);
-setPhotoW($('slPhotoW').value);
 
 // ══════════════════════════════════════════
 // KİŞİ KAYIT SİSTEMİ
@@ -1412,21 +1390,18 @@ function renderRpList() {
     return;
   }
 
-  // Veriyi DOM'a data-attribute olarak göm, onclick içinde string kullanma
   el.innerHTML = list.map(p => {
     const ini = initials(p.name);
     const t1  = p.title1 || '';
     const t2  = p.title2 || '';
     const id  = p.id;
-    const esc = s => s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-    const defaultTitle = t1 || t2 || '';
-
+    // Fix 3: Encode strings to handle spaces and quotes correctly in inline onclick handler
     const titleRow = (label, title) => title
-      ? `<div class="pk-title-row" data-load-name="${esc(p.name)}" data-load-title="${esc(title)}">
+      ? `<div class="pk-title-row" onclick="event.stopPropagation(); loadPersonTitle(decodeURIComponent('${encodeURIComponent(p.name)}'), decodeURIComponent('${encodeURIComponent(title)}'))">
            <span class="pt-badge">${label}</span>
-           <span class="pt-text" title="${esc(title)}">${esc(title)}</span>
-           <button class="pt-load" data-load-name="${esc(p.name)}" data-load-title="${esc(title)}" title="Grafiğe yükle">
+           <span class="pt-text" title="${title.replace(/"/g,'&quot;')}">${title}</span>
+           <button class="pt-load" onclick="event.stopPropagation(); loadPersonTitle(decodeURIComponent('${encodeURIComponent(p.name)}'), decodeURIComponent('${encodeURIComponent(title)}'))" title="Grafiğe yükle">
              <i class="fa-solid fa-arrow-up-right-from-square"></i>
            </button>
          </div>`
@@ -1438,12 +1413,14 @@ function renderRpList() {
            </button>
          </div>`;
 
+    const defaultTitle = t1 || t2 || '';
+    
     return `
     <div class="pk" id="pk-${id}">
-      <div class="pk-top" data-load-name="${esc(p.name)}" data-load-title="${esc(defaultTitle)}" style="cursor:pointer" title="Grafiğe yükle">
+      <div class="pk-top" onclick="loadPersonTitle(decodeURIComponent('${encodeURIComponent(p.name)}'), decodeURIComponent('${encodeURIComponent(defaultTitle)}'))" style="cursor:pointer" title="Grafiğe yükle">  
         <div class="pk-avatar">${ini}</div>
         <div class="pk-name-wrap">
-          <div class="pk-name" title="${esc(p.name)}">${esc(p.name)}</div>
+          <div class="pk-name" title="${p.name.replace(/"/g,'&quot;')}">${p.name}</div>
           <div class="pk-meta">${[t1,t2].filter(Boolean).length} ünvan</div>
         </div>
         <div class="pk-actions">
@@ -1509,54 +1486,41 @@ function importPersonsXLSX(inp) {
 }
 
 (function init() {
-  const run = () => {
-    renderRpList();
-    // Event delegation: data-load-name/data-load-title ile kişi yükleme
-    const rpList = $('rpList');
-    if (rpList) {
-      rpList.addEventListener('click', function(e) {
-        // En yakın data-load-name attribute'lu elementi bul
-        const target = e.target.closest('[data-load-name]');
-        if (!target) return;
-        e.stopPropagation();
-        const name  = target.dataset.loadName  || '';
-        const title = target.dataset.loadTitle || '';
-        loadPersonTitle(name, title);
-      });
-    }
-  };
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
+    document.addEventListener('DOMContentLoaded', renderRpList);
   } else {
-    run();
+    renderRpList();
   }
 })();
 
 // ── BG IMAGE ──
 let bgBase64=null;
 (function tryLoadDefaultBg() {
-  // fetch + FileReader: CORS olmadan base64'e çevirir (file:// dahil)
-  fetch('background.jpg?' + Date.now())
-    .then(r => { if (!r.ok) throw new Error('not found'); return r.blob(); })
-    .then(blob => new Promise((res, rej) => {
-      const fr = new FileReader();
-      fr.onload  = () => res(fr.result);
-      fr.onerror = rej;
-      fr.readAsDataURL(blob);
-    }))
-    .then(b64 => {
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = function() {
+    const canvas = document.createElement('canvas');
+    canvas.width  = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    try {
+      const b64 = canvas.toDataURL('image/jpeg', 0.92);
       bgBase64 = b64;
       $('bgImgLayer').style.backgroundImage = "url('" + b64 + "')";
       applyBgStyle();
       $('bgClearRow').style.display = 'flex';
       $('bgFitRow').style.display   = 'flex';
       $('bgOpRow').style.display    = 'flex';
-    })
-    .catch(() => {
-      // fetch çalışmadı (örn. file://) — sadece önizleme için URL kullan
+    } catch(e) {
+      // CORS nedeniyle toDataURL çalışmadı — bgBase64 null kalır, sadece preview için URL set et
+      bgBase64 = null;
       $('bgImgLayer').style.backgroundImage = "url('background.jpg')";
       $('bgClearRow').style.display = 'flex';
-    });
+    }
+  };
+  img.onerror = function() { };
+  img.src = 'background.jpg?' + Date.now();
 })();
 
 $('bgImgInput').addEventListener('change',function(e){
@@ -1654,24 +1618,6 @@ function setVAlign(val,btn){
   document.querySelectorAll('[id^="qv-"]').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 }
-function fitTextToBox(el, container, baseFontSize, minFontSize) {
-  // Elementi container'a sığana kadar font küçült
-  if (!el || !container) return;
-  let fs = baseFontSize;
-  el.style.fontSize = fs + 'px';
-  const minFs = minFontSize || Math.max(8, baseFontSize * 0.4);
-  // Scroll height container height'ı aşıyorsa küçült
-  let tries = 0;
-  while (tries < 60 && fs > minFs) {
-    const cH = container.getBoundingClientRect().height;
-    const eH = el.scrollHeight;
-    if (eH <= cH + 2) break;
-    fs = Math.max(minFs, fs - 0.5);
-    el.style.fontSize = fs + 'px';
-    tries++;
-  }
-}
-
 function applyText(){
   const q=$('quoteText'), n=$('nameField'), t=$('titleField');
   q.style.fontFamily=$('selQFont').value;
@@ -1694,46 +1640,28 @@ function applyText(){
   $('qLSVal').textContent=$('slQLS').value+'px';
   $('nLSVal').textContent=$('slNLS').value+'px';
   $('tGapVal').textContent=$('slTGap').value+'px';
-  // Auto-fit: taşarsa orantılı küçült
-  const quoteArea = document.querySelector('.quote-area');
-  fitTextToBox(q, quoteArea, parseFloat($('inpQSz').value), 8);
-  // Ad + ünvan alanı: nameBar içinde sığdır
-  const nameBar = $('nameBar');
-  if (nameBar) {
-    const baseN = parseFloat($('inpNSz').value);
-    const baseT = parseFloat($('inpTSz').value);
-    fitTextToBox(n, nameBar, baseN, 8);
-    // Ad için bulunan orandan ünvanı da orantılı küçült
-    const actualN = parseFloat(n.style.fontSize);
-    const ratio   = actualN / baseN;
-    const newT    = Math.max(8, baseT * ratio);
-    t.style.fontSize = newT + 'px';
-  }
 }
 applyText();
-applyFilters();
-applyTint();
 
-// ── Bar yüksekliği gözlemcisi (quote-area otomatik ölçeklenir) ──
-(function watchBarHeight(){
-  const card = $('card');
-  const bar  = $('nameBarWrap');
-  if (!card || !bar) return;
-  const update = () => {
-    const h = bar.offsetHeight;
-    card.style.setProperty('--bar-h', h + 'px');
-  };
-  update();
-  new ResizeObserver(update).observe(bar);
-  new MutationObserver(update).observe(bar, {childList:true, subtree:true, characterData:true});
-})();
+// ── AUTO-SHRINK ──
+function autoShrinkQuote(){
+  const el=$('quoteText'), area=$('quoteArea');
+  if(!el||!area) return;
+  const baseSz=parseInt($('inpQSz').value)||25;
+  el.style.fontSize=baseSz+'px';
+  let sz=baseSz;
+  while(sz>8 && el.scrollHeight>area.clientHeight){ sz--; el.style.fontSize=sz+'px'; }
+}
+$('quoteText').addEventListener('input', autoShrinkQuote);
+(function(){ const _o=applyText; applyText=function(){_o();autoShrinkQuote();}; })();
+setTimeout(()=>{
+  updateQuoteArea();
+  autoShrinkQuote();
+  const btnCenter=$('qv-center');
+  if(btnCenter) setVAlign('center', btnCenter);
+}, 120);
 
 // ── PHOTO FILTERS ──
-function resetFilters(){
-  $('slBr').value=100; $('slCt').value=100; $('slSat').value=100;
-  $('slBlur').value=0; $('slImgOp').value=100;
-  applyFilters();
-}
 function applyFilters(){
   const img=$('photoImg');
   const br=$('slBr').value, ct=$('slCt').value, sat=$('slSat').value;
@@ -1864,28 +1792,6 @@ async function exportImg() {
   await sleep(200);
 
   try {
-    // ── BG HAZIRLA: export öncesi bgBase64 garantile ──
-    if (!bgBase64 || !bgBase64.startsWith('data:')) {
-      // Önce bgImgLayer'a bakılır (kullanıcı yükledi mi?)
-      const layerBg = $('bgImgLayer').style.backgroundImage;
-      const urlM = layerBg && layerBg !== 'none'
-        ? layerBg.match(/url\(["']?([^"')]+)["']?\)/) : null;
-      const srcToLoad = urlM ? urlM[1] : 'background.jpg';
-      try {
-        bgBase64 = await fetch(srcToLoad)
-          .then(r => { if(!r.ok) throw 0; return r.blob(); })
-          .then(b => new Promise((res,rej)=>{
-            const fr=new FileReader();
-            fr.onload=()=>res(fr.result);
-            fr.onerror=rej;
-            fr.readAsDataURL(b);
-          }));
-        // Önizlemeye de yansıt
-        if (!$('bgImgLayer').style.backgroundImage || $('bgImgLayer').style.backgroundImage==='none')
-          $('bgImgLayer').style.backgroundImage = "url('"+bgBase64+"')";
-      } catch(e) { bgBase64 = null; }
-    }
-
     const resVal = $('selRes').value;
     let W, H;
     if (resVal==='custom'){W=parseInt($('cusW').value)||1920;H=parseInt($('cusH').value)||1080;}
@@ -1912,56 +1818,28 @@ async function exportImg() {
       h: r.height*sY
     });
 
-    // ── Card köşe yardımcısı ──
-    const cardEl0  = $('card');
-    const cRect0   = cardEl0.getBoundingClientRect();
-    const cX0 = (cRect0.left - bfRect.left)*sX;
-    const cY0 = (cRect0.top  - bfRect.top)*sY;
-    const cW0 = cRect0.width*sX;
-    const cH0 = cRect0.height*sY;
-    const cardRpx = parseFloat(cardEl0.style.borderRadius) || 0;
-    const cR0 = cardRpx * Math.min(sX,sY);
-
-    const roundedClip = () => {
-      ctx.beginPath();
-      if (cR0 > 0) {
-        ctx.moveTo(cX0+cR0, cY0);
-        ctx.lineTo(cX0+cW0-cR0, cY0); ctx.arcTo(cX0+cW0,cY0,   cX0+cW0,cY0+cR0,   cR0);
-        ctx.lineTo(cX0+cW0, cY0+cH0-cR0); ctx.arcTo(cX0+cW0,cY0+cH0, cX0+cW0-cR0,cY0+cH0, cR0);
-        ctx.lineTo(cX0+cR0, cY0+cH0); ctx.arcTo(cX0,cY0+cH0, cX0,cY0+cH0-cR0, cR0);
-        ctx.lineTo(cX0, cY0+cR0); ctx.arcTo(cX0,cY0, cX0+cR0,cY0, cR0);
-      } else {
-        ctx.rect(cX0, cY0, cW0, cH0);
-      }
-      ctx.closePath();
-      ctx.clip();
-    };
-
-    // ── L1: bgFrame radial gradient (card alanına clip) ──
-    ctx.save(); roundedClip();
+    // ── L1: bgFrame radial gradient ──
     const g1 = ctx.createRadialGradient(W*0.3,H*0.4,0,W*0.3,H*0.4,Math.max(W,H)*0.85);
     g1.addColorStop(0,'#1e3a5f'); g1.addColorStop(0.55,'#0b1728'); g1.addColorStop(1,'#070d1a');
     ctx.fillStyle=g1; ctx.fillRect(0,0,W,H);
 
-    // ── L2: Vignette (card alanına clip) ──
+    // ── L2: Vignette ──
     const g2=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*0.2,W/2,H/2,Math.max(W,H)*0.7);
     g2.addColorStop(0,'rgba(0,0,0,0)'); g2.addColorStop(1,'rgba(0,0,0,0.45)');
     ctx.fillStyle=g2; ctx.fillRect(0,0,W,H);
-    ctx.restore();
 
     // ── L3: Background görseli ──
+    // SADECE base64 data URL kabul et — file:// veya http URL canvas'ı taint eder!
     if (bgBase64 && bgBase64.startsWith('data:')) {
       try {
-        const bi  = await loadImg(bgBase64);
-        const fit = $('selBgFit') ? $('selBgFit').value : 'cover';
-        const bop = $('slBgOp')  ? parseFloat($('slBgOp').value)/100 : 1;
+        const bi = await loadImg(bgBase64);
+        const fit=$('selBgFit')?$('selBgFit').value:'cover';
+        const bop=$('slBgOp')?parseFloat($('slBgOp').value)/100:1;
         let dx=0,dy=0,dw=W,dh=H;
         if(fit==='cover'){const s=Math.max(W/bi.naturalWidth,H/bi.naturalHeight);dw=bi.naturalWidth*s;dh=bi.naturalHeight*s;dx=(W-dw)/2;dy=(H-dh)/2;}
         else if(fit==='contain'){const s=Math.min(W/bi.naturalWidth,H/bi.naturalHeight);dw=bi.naturalWidth*s;dh=bi.naturalHeight*s;dx=(W-dw)/2;dy=(H-dh)/2;}
-        ctx.save(); roundedClip();
         ctx.globalAlpha=bop; ctx.drawImage(bi,dx,dy,dw,dh); ctx.globalAlpha=1;
-        ctx.restore();
-      } catch(e) { console.warn('BG draw failed:', e); }
+      } catch(e) { console.warn('BG image draw failed:', e); }
     }
 
     // ── L4: İçerik paneli arka planı ──
@@ -1971,7 +1849,7 @@ async function exportImg() {
     if (pbEl && pbEl.style.background) {
       const pbOp = pbEl.style.opacity!==''?parseFloat(pbEl.style.opacity):1;
       const bgStr= pbEl.style.background;
-      ctx.save(); roundedClip(); ctx.globalAlpha=pbOp;
+      ctx.save(); ctx.globalAlpha=pbOp;
       const colors=[...(bgStr.matchAll(/#[0-9a-fA-F]{3,8}|rgba?\([^)]+\)/g))].map(m=>m[0]);
       if (bgStr.includes('gradient') && colors.length>=2) {
         const am=bgStr.match(/(\d+)deg/); const ang=(am?parseInt(am[1]):135)*Math.PI/180;
@@ -1987,10 +1865,8 @@ async function exportImg() {
     // ── L5: Fotoğraf paneli ──
     const ppEl  = $('photoPanel');
     const ppR   = mapRect(ppEl.getBoundingClientRect());
-    ctx.save(); roundedClip();
     ctx.fillStyle=$('photoBgColor')?$('photoBgColor').value:'#1a1a2e';
     ctx.fillRect(ppR.x,ppR.y,ppR.w,ppR.h);
-    ctx.restore();
 
     if (imgLoaded && photoBase64 && photoBase64.startsWith('data:')) {
       const pi=await loadImg(photoBase64);
@@ -2044,113 +1920,45 @@ async function exportImg() {
     }
 
     // ── L7: Metinler ──
-    // Tarayıcının word-wrap'ini Range API ile satır satır okuyoruz
-    const getRenderedLines = (el) => {
-      const tt = window.getComputedStyle(el).textTransform;
-      const transform = s => tt==='uppercase'?s.toUpperCase():tt==='lowercase'?s.toLowerCase():s;
-      const lines = [];
-      // Her text node'u Range ile tara, satır değişimini BoundingRect farkıyla tespit et
-      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
-      let node;
-      while ((node = walker.nextNode())) {
-        const text = node.textContent;
-        if (!text.trim() && text !== ' ') continue;
-        const range = document.createRange();
-        let lineStart = 0;
-        let lastTop = null;
-        for (let i = 0; i <= text.length; i++) {
-          range.setStart(node, lineStart);
-          range.setEnd(node, i);
-          const rects = range.getClientRects();
-          if (!rects.length) continue;
-          const top = Math.round(rects[rects.length-1].top);
-          if (lastTop === null) lastTop = top;
-          if (top !== lastTop || i === text.length) {
-            const endIdx = (top !== lastTop) ? i-1 : i;
-            range.setStart(node, lineStart);
-            range.setEnd(node, endIdx);
-            const lineText = transform(text.slice(lineStart, endIdx));
-            const lineRect = range.getBoundingClientRect();
-            if (lineText.trim() || lines.length > 0) {
-              lines.push({ text: lineText, rect: lineRect, top: lastTop });
-            }
-            lineStart = (top !== lastTop) ? i-1 : i;
-            lastTop = top;
-          }
-        }
-      }
-      return lines;
-    };
-
     const drawText = (el, clip) => {
       if (!el || !el.innerText.trim()) return;
+      const er  = mapRect(el.getBoundingClientRect());
       const cs  = window.getComputedStyle(el);
       const fs  = parseFloat(cs.fontSize) * Math.min(sX, sY);
-      const lhRaw = parseFloat(cs.lineHeight);
-      const lh  = (isNaN(lhRaw) ? fs * 1.5 : lhRaw * Math.min(sX, sY));
-      const ta  = cs.textAlign;
-
+      const rawLH = parseFloat(cs.lineHeight);
+      const lh  = (isNaN(rawLH) ? fs * 1.2 : rawLH) * Math.min(sX, sY);
       ctx.save();
       if (clip) { ctx.beginPath(); ctx.rect(clip.x, clip.y, clip.w, clip.h); ctx.clip(); }
-      ctx.font        = `${cs.fontWeight} ${fs}px ${cs.fontFamily}`;
-      ctx.fillStyle   = cs.color;
+      ctx.font = `${cs.fontWeight} ${fs}px ${cs.fontFamily}`;
+      ctx.fillStyle = cs.color;
       ctx.textBaseline = 'top';
-
-      const elRect = el.getBoundingClientRect();
-      const elW    = elRect.width * sX;
-      const elX    = (elRect.left - bfRect.left) * sX;
-      const elY    = (elRect.top  - bfRect.top)  * sY;
-
-      // Tarayıcıdan gerçek render satırlarını al
-      const renderedLines = getRenderedLines(el);
-
-      if (renderedLines.length > 0) {
-        // İlk satırın top'unu referans al
-        const firstTop = renderedLines[0].top;
-        renderedLines.forEach(line => {
-          const rowY = elY + (line.top - firstTop) * sY;
-          let rowX = elX;
-          if (ta === 'center') {
-            const tw = ctx.measureText(line.text).width;
-            rowX = elX + (elW - tw) / 2;
-          } else if (ta === 'right') {
-            const tw = ctx.measureText(line.text).width;
-            rowX = elX + elW - tw;
-          }
-          ctx.fillText(line.text, rowX, rowY);
-        });
-      } else {
-        // Fallback: manuel word-wrap
-        const tt  = cs.textTransform;
-        const transform = s => tt==='uppercase'?s.toUpperCase():tt==='lowercase'?s.toLowerCase():s;
-        const words = el.innerText.split(/\s+/);
-        const maxW  = elW;
-        let curLine = '';
-        let rowY    = elY;
-        const flush = (line) => {
-          let rowX = elX;
-          if (ta==='center') rowX = elX + (maxW - ctx.measureText(line).width)/2;
-          else if (ta==='right') rowX = elX + maxW - ctx.measureText(line).width;
-          ctx.fillText(line, rowX, rowY);
-          rowY += lh;
-        };
-        words.forEach(word => {
-          const test = curLine ? curLine + ' ' + word : word;
-          if (ctx.measureText(transform(test)).width > maxW && curLine) {
-            flush(transform(curLine));
-            curLine = word;
-          } else {
-            curLine = test;
-          }
-        });
-        if (curLine) flush(transform(curLine));
-      }
+      const tt = cs.textTransform;
+      const ta = cs.textAlign || 'left';
+      ctx.textAlign = ta;
+      const baseX = ta==='center' ? er.x+er.w/2 : ta==='right' ? er.x+er.w : er.x;
+      const maxW  = er.w;
+      const wrapLine = (raw) => {
+        const txt = tt==='uppercase' ? raw.toUpperCase() : tt==='lowercase' ? raw.toLowerCase() : raw;
+        const words = txt.split(' '); const lines = []; let cur = '';
+        for (const w of words) {
+          const test = cur ? cur+' '+w : w;
+          if (ctx.measureText(test).width <= maxW) { cur = test; }
+          else { if (cur) lines.push(cur); cur = w; }
+        }
+        if (cur) lines.push(cur);
+        return lines.length ? lines : [''];
+      };
+      let row = 0;
+      el.innerText.split('\n').forEach(para => {
+        wrapLine(para).forEach(line => { ctx.fillText(line, baseX, er.y + row * lh); row++; });
+      });
       ctx.restore();
     };
-
-    const cpR2 = mapRect($('contentPanel').getBoundingClientRect());
-    const nbR2 = nbEl ? mapRect(nbEl.getBoundingClientRect()) : null;
-    drawText($('quoteText'),  cpR2);
+    // quoteText için clip = quoteArea (önizlemeyle birebir eşleşir)
+    // nameField/titleField için clip = nameBar
+    const qaR2  = mapRect($('quoteArea').getBoundingClientRect());
+    const nbR2  = nbEl ? mapRect(nbEl.getBoundingClientRect()) : null;
+    drawText($('quoteText'), qaR2);
     if (nbR2) { drawText($('nameField'), nbR2); drawText($('titleField'), nbR2); }
 
     const blob = await canvasToBlob(fc, mime, qual);
