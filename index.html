@@ -785,7 +785,7 @@ input[type=color]{
               <option value="'Lato',sans-serif">Lato</option>
               <option value="'Oswald',sans-serif">Oswald</option>
               <option value="'Raleway',sans-serif">Raleway</option>
-              <option value="'Poppins',sans-serif">Poppins</option>
+              <option value="'Poppins',sans-serif" selected>Poppins</option>
               <option value="'Source Sans 3',sans-serif">Source Sans 3</option>
               <option value="'Nunito',sans-serif">Nunito</option>
               <option value="'Ubuntu',sans-serif">Ubuntu</option>
@@ -836,8 +836,8 @@ input[type=color]{
             <input type="number" style="width:52px" id="inpQSz" value="36" min="8" max="80" onchange="applyText()">
             <div class="ibg ms-1">
               <button class="wb" id="qw300" onclick="setW('q',300,this)">Thin</button>
-              <button class="wb active" id="qw400" onclick="setW('q',400,this)">Reg</button>
-              <button class="wb" id="qw700" onclick="setW('q',700,this)">Bold</button>
+              <button class="wb" id="qw400" onclick="setW('q',400,this)">Reg</button>
+              <button class="wb active" id="qw700" onclick="setW('q',700,this)">Bold</button>
             </div>
           </div>
           <div class="row">
@@ -867,14 +867,14 @@ input[type=color]{
         <div class="sb-card-body">
           <div class="row"><span class="lbl">Font</span>
             <select class="flex-fill" id="selNFont" onchange="applyText()">
-              <option value="'Montserrat',sans-serif" selected>Montserrat</option>
+              <option value="'Montserrat',sans-serif">Montserrat</option>
               <option value="'Inter',sans-serif">Inter</option>
               <option value="'Roboto',sans-serif">Roboto</option>
               <option value="'Open Sans',sans-serif">Open Sans</option>
               <option value="'Lato',sans-serif">Lato</option>
               <option value="'Oswald',sans-serif">Oswald</option>
               <option value="'Raleway',sans-serif">Raleway</option>
-              <option value="'Poppins',sans-serif">Poppins</option>
+              <option value="'Poppins',sans-serif" selected>Poppins</option>
               <option value="'Source Sans 3',sans-serif">Source Sans 3</option>
               <option value="'Nunito',sans-serif">Nunito</option>
               <option value="'Ubuntu',sans-serif">Ubuntu</option>
@@ -922,7 +922,7 @@ input[type=color]{
           </div>
           <div class="row">
             <span class="lbl">Punto</span>
-            <input type="number" style="width:52px" id="inpNSz" value="32" min="6" max="72" onchange="applyText()">
+            <input type="number" style="width:52px" id="inpNSz" value="25" min="6" max="72" onchange="applyText()">
             <div class="ibg ms-1">
               <button class="wb" id="nw400" onclick="setW('n',400,this)">Reg</button>
               <button class="wb active" id="nw700" onclick="setW('n',700,this)">Bold</button>
@@ -1756,7 +1756,7 @@ function applyBarColor(){
 applyBarColor();
 
 // ── TEXT ──
-const wMap={q:400,n:800,t:400};
+const wMap={q:700,n:800,t:400};
 function setW(f,w,btn){
   wMap[f]=w;
   const pre=f==='q'?'q':f==='n'?'n':'t';
