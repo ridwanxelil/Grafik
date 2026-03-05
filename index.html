@@ -2013,6 +2013,28 @@ function buildRenderBox(W, H) {
     }
   });
 
+  // fontWeight clone'da kaybolabilir — tüm metin alanlarına explicit uygula
+  const fwMap = [
+    { sel: '#quoteText', fw: wMap.q },
+    { sel: '#nameField', fw: wMap.n },
+    { sel: '#titleField', fw: wMap.t },
+  ];
+  fwMap.forEach(({ sel, fw }) => {
+    const el = cardClone.querySelector(sel);
+    if (el) el.style.fontWeight = String(fw);
+  });
+
+  // fontFamily de explicit uygula (html2canvas font yükleme sorunu için)
+  const ffMap = [
+    { sel: '#quoteText', ff: $('selQFont').value },
+    { sel: '#nameField', ff: $('selNFont').value },
+    { sel: '#titleField', ff: $('selTFont').value },
+  ];
+  ffMap.forEach(({ sel, ff }) => {
+    const el = cardClone.querySelector(sel);
+    if (el) el.style.fontFamily = ff;
+  });
+
   rb.appendChild(cardClone);
   return rb;
 }
@@ -2042,7 +2064,11 @@ async function exportImg() {
     const ext     = exportFmt==='png' ? 'png'       : exportFmt==='webp' ? 'webp'       : 'jpg';
 
     buildRenderBox(W, H);
-    await sleep(300);
+    await document.fonts.ready;
+    await sleep(400);
+
+    // Font yüklenmesini bekle
+    await document.fonts.ready;
 
     const cv = await html2canvas($('renderBox'), {
       scale          : 1,
@@ -2053,6 +2079,18 @@ async function exportImg() {
       backgroundColor: null,
       logging        : false,
       imageTimeout   : 0,
+      onclone        : (doc) => {
+        // Klonlanmış dokümanda da fontWeight'i garantile
+        const fw = [
+          { id:'quoteText', w: String(wMap.q) },
+          { id:'nameField', w: String(wMap.n) },
+          { id:'titleField', w: String(wMap.t) },
+        ];
+        fw.forEach(({ id, w }) => {
+          const el = doc.getElementById(id);
+          if (el) el.style.fontWeight = w;
+        });
+      }
     });
 
     const blob = await canvasToBlob(cv, mime, quality);
