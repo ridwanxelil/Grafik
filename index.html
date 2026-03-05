@@ -10,25 +10,25 @@
 @font-face {
   font-family: 'TRT';
   src: local('TRT'), local('TRT Ailes'), local('TRTAiles'),
-       url('fonts/TRT-Regular.woff2') format('woff2'),
-       url('fonts/TRT-Regular.woff') format('woff'),
-       url('fonts/TRT-Regular.ttf') format('truetype');
+       url('fonts/TRTAiles-Regular.woff2') format('woff2'),
+       url('fonts/TRTAiles-Regular.woff') format('woff'),
+       url('fonts/TRTAiles-Regular.ttf') format('truetype');
   font-weight: 400; font-style: normal; font-display: swap;
 }
 @font-face {
   font-family: 'TRT';
   src: local('TRT Bold'), local('TRT Ailes Bold'), local('TRTAiles-Bold'),
-       url('fonts/TRT-Bold.woff2') format('woff2'),
-       url('fonts/TRT-Bold.woff') format('woff'),
-       url('fonts/TRT-Bold.ttf') format('truetype');
+       url('fonts/TRTAiles-Bold.woff2') format('woff2'),
+       url('fonts/TRTAiles-Bold.woff') format('woff'),
+       url('fonts/TRTAiles-Bold.ttf') format('truetype');
   font-weight: 700; font-style: normal; font-display: swap;
 }
 @font-face {
   font-family: 'TRT';
   src: local('TRT Light'), local('TRT Ailes Light'), local('TRTAiles-Light'),
-       url('fonts/TRT-Light.woff2') format('woff2'),
-       url('fonts/TRT-Light.woff') format('woff'),
-       url('fonts/TRT-Light.ttf') format('truetype');
+       url('fonts/TRTAiles-Light.woff2') format('woff2'),
+       url('fonts/TRTAiles-Light.woff') format('woff'),
+       url('fonts/TRTAiles-Light.ttf') format('truetype');
   font-weight: 300; font-style: normal; font-display: swap;
 }
 </style>
@@ -1864,6 +1864,28 @@ async function exportImg() {
   await sleep(200);
 
   try {
+    // ── BG HAZIRLA: export öncesi bgBase64 garantile ──
+    if (!bgBase64 || !bgBase64.startsWith('data:')) {
+      // Önce bgImgLayer'a bakılır (kullanıcı yükledi mi?)
+      const layerBg = $('bgImgLayer').style.backgroundImage;
+      const urlM = layerBg && layerBg !== 'none'
+        ? layerBg.match(/url\(["']?([^"')]+)["']?\)/) : null;
+      const srcToLoad = urlM ? urlM[1] : 'background.jpg';
+      try {
+        bgBase64 = await fetch(srcToLoad)
+          .then(r => { if(!r.ok) throw 0; return r.blob(); })
+          .then(b => new Promise((res,rej)=>{
+            const fr=new FileReader();
+            fr.onload=()=>res(fr.result);
+            fr.onerror=rej;
+            fr.readAsDataURL(b);
+          }));
+        // Önizlemeye de yansıt
+        if (!$('bgImgLayer').style.backgroundImage || $('bgImgLayer').style.backgroundImage==='none')
+          $('bgImgLayer').style.backgroundImage = "url('"+bgBase64+"')";
+      } catch(e) { bgBase64 = null; }
+    }
+
     const resVal = $('selRes').value;
     let W, H;
     if (resVal==='custom'){W=parseInt($('cusW').value)||1920;H=parseInt($('cusH').value)||1080;}
@@ -1928,19 +1950,18 @@ async function exportImg() {
     ctx.restore();
 
     // ── L3: Background görseli ──
-    // SADECE base64 data URL kabul et — file:// veya http URL canvas'ı taint eder!
     if (bgBase64 && bgBase64.startsWith('data:')) {
       try {
-        const bi = await loadImg(bgBase64);
-        const fit=$('selBgFit')?$('selBgFit').value:'cover';
-        const bop=$('slBgOp')?parseFloat($('slBgOp').value)/100:1;
+        const bi  = await loadImg(bgBase64);
+        const fit = $('selBgFit') ? $('selBgFit').value : 'cover';
+        const bop = $('slBgOp')  ? parseFloat($('slBgOp').value)/100 : 1;
         let dx=0,dy=0,dw=W,dh=H;
         if(fit==='cover'){const s=Math.max(W/bi.naturalWidth,H/bi.naturalHeight);dw=bi.naturalWidth*s;dh=bi.naturalHeight*s;dx=(W-dw)/2;dy=(H-dh)/2;}
         else if(fit==='contain'){const s=Math.min(W/bi.naturalWidth,H/bi.naturalHeight);dw=bi.naturalWidth*s;dh=bi.naturalHeight*s;dx=(W-dw)/2;dy=(H-dh)/2;}
         ctx.save(); roundedClip();
         ctx.globalAlpha=bop; ctx.drawImage(bi,dx,dy,dw,dh); ctx.globalAlpha=1;
         ctx.restore();
-      } catch(e) { console.warn('BG image draw failed:', e); }
+      } catch(e) { console.warn('BG draw failed:', e); }
     }
 
     // ── L4: İçerik paneli arka planı ──
