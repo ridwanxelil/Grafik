@@ -975,6 +975,20 @@ input[type=color]{
         </div>
       </div>
 
+      <div class="sb-card">
+        <div class="sb-card-head"><small><i class="fa-solid fa-box-archive"></i> Evrensel Yedek</small></div>
+        <div class="sb-card-body" style="gap:6px">
+          <p style="font-size:10px;color:#94a3b8;margin:0 0 4px">Tüm ayarları ve kişi kayıtlarını tek bir JSON dosyasına yedekle veya geri yükle.</p>
+          <button class="btn btn-green w-100" style="justify-content:center;" onclick="backupAll()">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Yedeği İndir
+          </button>
+          <button class="btn w-100" style="justify-content:center;background:#334155;color:#e2e8f0;border:1px solid #475569;" onclick="$('backupImport').click()">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Yedeği Geri Yükle
+          </button>
+          <input type="file" id="backupImport" accept=".json" style="display:none" onchange="restoreAll(this)">
+        </div>
+      </div>
+
     </div></div><div class="sb-footer">
     <button class="btn btn-green w-100" style="justify-content:center;" onclick="exportImg()">
       <i class="fa-solid fa-download"></i> Görseli İndir
@@ -1094,14 +1108,14 @@ input[type=color]{
           font-family:inherit;">
       </div>
       <div>
-        <label style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px;">Ünvan 1</label>
+        <label style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px;">Kurmanci</label>
         <input id="pkModalT1" type="text" placeholder="Birinci ünvan veya görev" style="
           width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;
           border-radius:8px;padding:7px 10px;font-size:12px;outline:none;
           font-family:inherit;">
       </div>
       <div>
-        <label style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px;">Ünvan 2</label>
+        <label style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px;">Zazaki</label>
         <input id="pkModalT2" type="text" placeholder="İkinci ünvan veya görev (opsiyonel)" style="
           width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;
           border-radius:8px;padding:7px 10px;font-size:12px;outline:none;
@@ -1257,6 +1271,104 @@ syncMargins('all');
 // KİŞİ KAYIT SİSTEMİ
 // ══════════════════════════════════════════
 const PERSON_KEY = 'grafik_persons_v3';
+
+// ── EVRENSEL YEDEK ──
+const SETTINGS_IDS = [
+  'selQFont','inpQSz','slQLH','slQLS','qColor',
+  'selNFont','inpNSz','slNLS','nColor',
+  'selTFont','inpTSz','slTGap','tColor',
+  'bgC1','bgC2','slBgAngle','cbSolidBg','bgSolid','slPanelOp',
+  'barC1','barC2','slBarAngle','cbSolidBar','barSolid','slBarOp',
+  'photoBgColor','slBr','slCt','slSat','slBlur','slImgOp','slTint','tintColor',
+  'slBarR','selPhotoLayout','selRes','selBgFit'
+];
+
+function collectSettings() {
+  const s = {};
+  SETTINGS_IDS.forEach(id => {
+    const el = $(id);
+    if (!el) return;
+    s[id] = el.type === 'checkbox' ? el.checked : el.value;
+  });
+  // quoteText ve nameField içerikleri
+  s['__quoteText']  = $('quoteText')  ? $('quoteText').innerText  : '';
+  s['__nameField']  = $('nameField')  ? $('nameField').innerText  : '';
+  s['__titleField'] = $('titleField') ? $('titleField').innerText : '';
+  // name bar pozisyonu
+  s['__namePos'] = typeof _namePos !== 'undefined' ? _namePos : 'bottom-left';
+  // panel active weights
+  ['q','n','t'].forEach(p => {
+    const active = document.querySelector(`.wb.active[id^="${p}w"]`);
+    if (active) s[`__weight_${p}`] = active.id;
+  });
+  return s;
+}
+
+function applySettings(s) {
+  SETTINGS_IDS.forEach(id => {
+    if (!(id in s)) return;
+    const el = $(id);
+    if (!el) return;
+    if (el.type === 'checkbox') el.checked = s[id];
+    else el.value = s[id];
+  });
+  if (s['__quoteText']  !== undefined && $('quoteText'))  $('quoteText').innerText  = s['__quoteText'];
+  if (s['__nameField']  !== undefined && $('nameField'))  $('nameField').innerText  = s['__nameField'];
+  if (s['__titleField'] !== undefined && $('titleField')) $('titleField').innerText = s['__titleField'];
+  ['q','n','t'].forEach(p => {
+    const wid = s[`__weight_${p}`];
+    if (wid) {
+      document.querySelectorAll(`.wb[id^="${p}w"]`).forEach(b => b.classList.remove('active'));
+      const wb = $(wid);
+      if (wb) { wb.classList.add('active'); }
+    }
+  });
+  // uygula
+  if (typeof applyText       === 'function') applyText();
+  if (typeof applyBgGrad     === 'function') applyBgGrad();
+  if (typeof applyBarColor   === 'function') applyBarColor();
+  if (typeof applyFilters    === 'function') applyFilters();
+  if (typeof updateQuoteArea === 'function') setTimeout(updateQuoteArea, 80);
+  if (s['__namePos']) {
+    const btn = document.querySelector(`.nb[onclick*="${s['__namePos']}"]`);
+    if (typeof setNamePos === 'function') setNamePos(s['__namePos'], btn);
+  }
+}
+
+function backupAll() {
+  const payload = {
+    version: 1,
+    date: new Date().toISOString(),
+    settings: collectSettings(),
+    persons: loadPersons()
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `grafik-yedek-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function restoreAll(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const payload = JSON.parse(e.target.result);
+      if (payload.settings) applySettings(payload.settings);
+      if (payload.persons && Array.isArray(payload.persons)) {
+        savePersons(payload.persons);
+        if (typeof renderRpList === 'function') renderRpList();
+      }
+      alert('✅ Yedek başarıyla geri yüklendi!');
+    } catch(err) {
+      alert('❌ Geçersiz yedek dosyası:\n' + err.message);
+    }
+    input.value = '';
+  };
+  reader.readAsText(file);
+}
 let _modalEditId  = null;
 
 function loadPersons()    { try { return JSON.parse(localStorage.getItem(PERSON_KEY))||[]; } catch(e) { return []; } }
@@ -1443,7 +1555,7 @@ function renderRpList() {
 function exportPersonsXLSX() {
   const list = loadPersons();
   if (!list.length) { alert('Dışa aktarılacak kayıt yok.'); return; }
-  const rows = [['Ad Soyad', 'Ünvan 1', 'Ünvan 2'], ...list.map(p => [p.name||'', p.title1||'', p.title2||''])];
+  const rows = [['Ad Soyad', 'Kurmanci', 'Zazaki'], ...list.map(p => [p.name||'', p.title1||'', p.title2||''])];
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.aoa_to_sheet(rows);
   ws['!cols'] = [{wch:28},{wch:36},{wch:36}];
@@ -1954,8 +2066,7 @@ async function exportImg() {
       });
       ctx.restore();
     };
-    // quoteText için clip = quoteArea (önizlemeyle birebir eşleşir)
-    // nameField/titleField için clip = nameBar
+    // clip = quoteArea → önizlemeyle birebir eşleşir
     const qaR2  = mapRect($('quoteArea').getBoundingClientRect());
     const nbR2  = nbEl ? mapRect(nbEl.getBoundingClientRect()) : null;
     drawText($('quoteText'), qaR2);
