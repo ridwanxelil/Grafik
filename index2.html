@@ -87,35 +87,36 @@ html, body { height: 100%; overflow: hidden; background: #03070f; background: va
   position: absolute;
   bottom: 0; left: 0; right: 0;
   z-index: 10;
-  height: 36px;
+  height: 48px;
   display: flex;
   align-items: center;
-  gap: 2px;
-  background: rgba(7,12,24,.88);
+  gap: 1px;
+  background: rgba(7,12,24,.92);
   backdrop-filter: blur(8px);
   border-top: 1px solid rgba(255,255,255,.07);
-  padding: 0 8px;
+  padding: 0 6px;
 }
 .ptb-btn {
-  width: 32px; height: 28px;
+  width: 38px; height: 44px;
   border: none; border-radius: 7px;
   background: transparent; color: #64748b;
-  font-size: 13px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px;
   transition: background .15s, color .15s; flex-shrink: 0;
 }
+.ptb-btn i { font-size: 13px; line-height: 1; }
+.ptb-btn span { font-size: 7.5px; font-weight: 600; letter-spacing: .02em; line-height: 1; white-space: nowrap; }
 .ptb-btn:hover  { background: #1e293b; color: #cbd5e1; }
 .ptb-btn.active { background: rgba(99,102,241,.25); color: #a5b4fc; }
-.ptb-sep { width: 1px; height: 18px; background: #1e293b; margin: 0 2px; flex-shrink: 0; }
+.ptb-sep { width: 1px; height: 24px; background: #1e293b; margin: 0 2px; flex-shrink: 0; }
 .ptb-grow { flex: 1; }
 .ptb-dl {
-  width: auto !important; padding: 0 12px !important; gap: 5px;
-  font-size: 11px !important; font-weight: 700 !important;
-  color: #4ade80 !important; background: rgba(34,197,94,.1) !important;
-  border: 1px solid rgba(34,197,94,.25) !important; border-radius: 8px !important;
-  letter-spacing: .04em;
+  width: 42px !important;
+  color: #4ade80 !important; background: rgba(34,197,94,.08) !important;
+  border: 1px solid rgba(34,197,94,.2) !important; border-radius: 8px !important;
 }
-.ptb-dl:hover { background: rgba(34,197,94,.2) !important; color: #86efac !important; }
+.ptb-dl:hover { background: rgba(34,197,94,.18) !important; color: #86efac !important; }
 
 .bg-wrap { width: 100%; display: flex; align-items: center; justify-content: center; }
 
@@ -206,7 +207,7 @@ html, body { height: 100%; overflow: hidden; background: #03070f; background: va
 .quote-area {
   flex: 1;
   min-height: 0;
-  padding: clamp(6px, 1.2vw, 18px);
+  padding: clamp(4px, 0.8vw, 12px) clamp(4px, 0.8vw, 12px) clamp(2px, 0.4vw, 5px);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -248,11 +249,11 @@ html, body { height: 100%; overflow: hidden; background: #03070f; background: va
 .name-bar-wrap.pos-top-right  { justify-content: flex-end; }
 
 .name-bar {
-  display: block;
-  padding: clamp(6px,.9vw,12px) clamp(12px,1.8vw,28px);
+  padding: clamp(4px,.5vw,7px) clamp(10px,1.4vw,20px) clamp(3px,.4vw,5px);
   min-width: 44%; max-width: 100%; width: fit-content;
   position: relative; background: transparent !important;
   transition: border-radius .2s;
+  display: flex; flex-direction: column; gap: 1px;
 }
 /* namebar-bottom'da bar alanı üstte görünür (order:2), köşe üst */
 .content-panel.namebar-bottom .name-bar-wrap.pos-bottom-left  .name-bar { border-radius: 0 var(--bar-r,26px) 0 0; }
@@ -267,11 +268,13 @@ html, body { height: 100%; overflow: hidden; background: #03070f; background: va
 #nameField {
   color: #fff; font-weight: 800; letter-spacing: 0; text-transform: none;
   outline: none; display: block; cursor: text; white-space: normal; word-break: break-word;
+  line-height: 1.15;
 }
 #nameField:empty::before { content: attr(data-ph); color: rgba(255,255,255,.35); font-style: italic; pointer-events: none; font-size: 15px; font-weight: 400; letter-spacing: 0; text-transform: none; }
 #titleField {
   color: rgba(255,255,255,.85); font-weight: 400; letter-spacing: .03em;
   outline: none; display: block; margin-top: 0; cursor: text; white-space: normal; word-break: break-word;
+  line-height: 1.15;
 }
 #titleField:empty::before { content: attr(data-ph); color: rgba(255,255,255,.3); font-style: italic; pointer-events: none; font-size: 15px; font-weight: 400; }
 #nameField:focus, #titleField:focus { background: rgba(255,255,255,.07); border-radius: 3px; }
@@ -642,13 +645,13 @@ input[type=color] {
                   <div class="photo-controls" id="photoControls">
                     <button class="pc-btn pc-camera" onclick="$('fileInput').click()"><i class="fa-solid fa-camera"></i></button>
                     <div class="pc-sep"></div>
-                    <button class="pc-btn" id="btnZoomIn"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
-                    <button class="pc-btn" id="btnZoomOut"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+                    <button class="pc-btn" id="pcBtnZoomIn"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+                    <button class="pc-btn" id="pcBtnZoomOut"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
                     <div class="pc-sep"></div>
-                    <button class="pc-btn" id="btnFlipH"><i class="fa-solid fa-left-right"></i></button>
-                    <button class="pc-btn" id="btnFlipV"><i class="fa-solid fa-up-down"></i></button>
+                    <button class="pc-btn" id="pcBtnFlipH"><i class="fa-solid fa-left-right"></i></button>
+                    <button class="pc-btn" id="pcBtnFlipV"><i class="fa-solid fa-up-down"></i></button>
                     <div class="pc-sep"></div>
-                    <button class="pc-btn" id="btnReset"><i class="fa-solid fa-rotate-left"></i></button>
+                    <button class="pc-btn" id="pcBtnReset"><i class="fa-solid fa-rotate-left"></i></button>
                   </div>
                 </div>
 
@@ -673,18 +676,20 @@ input[type=color] {
           </div><!-- card-wrap end -->
 
           <!-- ── TOOLBAR: bg-frame içinde, kart altında ── -->
+          <input type="file" id="bgImgToolbar" accept="image/*" style="display:none" onchange="onBgImgToolbar(this)">
           <div id="photoToolbar">
-            <button class="ptb-btn" onclick="$('fileInput').click()" title="Fotoğraf Yükle"><i class="fa-solid fa-camera"></i></button>
+            <button class="ptb-btn" onclick="$('fileInput').click()" title="Fotoğraf Yükle"><i class="fa-solid fa-camera"></i><span>Foto</span></button>
+            <button class="ptb-btn" id="ptbBgImg" onclick="onBgImgBtnClick()" title="Arka Plan Seç"><i class="fa-solid fa-panorama"></i><span>Arka Plan</span></button>
             <div class="ptb-sep"></div>
-            <button class="ptb-btn" id="btnZoomIn"  title="Yakınlaştır"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
-            <button class="ptb-btn" id="btnZoomOut" title="Uzaklaştır"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+            <button class="ptb-btn" id="btnZoomIn"  title="Yakınlaştır" onclick="tbZoomIn(event)"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Yakın</span></button>
+            <button class="ptb-btn" id="btnZoomOut" title="Uzaklaştır" onclick="tbZoomOut(event)"><i class="fa-solid fa-magnifying-glass-minus"></i><span>Uzak</span></button>
             <div class="ptb-sep"></div>
-            <button class="ptb-btn" id="btnFlipH" title="Yatay Çevir"><i class="fa-solid fa-left-right"></i></button>
-            <button class="ptb-btn" id="btnFlipV" title="Dikey Çevir"><i class="fa-solid fa-up-down"></i></button>
+            <button class="ptb-btn" id="btnFlipH" title="Yatay Çevir" onclick="tbFlipH(event)"><i class="fa-solid fa-left-right"></i><span>Yatay</span></button>
+            <button class="ptb-btn" id="btnFlipV" title="Dikey Çevir" onclick="tbFlipV(event)"><i class="fa-solid fa-up-down"></i><span>Dikey</span></button>
             <div class="ptb-sep"></div>
-            <button class="ptb-btn" id="btnReset" title="Sıfırla"><i class="fa-solid fa-rotate-left"></i></button>
+            <button class="ptb-btn" id="btnReset" title="Sıfırla" onclick="tbReset(event)"><i class="fa-solid fa-rotate-left"></i><span>Sıfırla</span></button>
             <div class="ptb-grow"></div>
-            <button class="ptb-btn ptb-dl" onclick="exportImg()" title="İndir"><i class="fa-solid fa-download"></i>&nbsp;İndir</button>
+            <button class="ptb-btn ptb-dl" onclick="exportImg()" title="İndir"><i class="fa-solid fa-download"></i><span>İndir</span></button>
           </div><!-- photoToolbar -->
 
         </div><!-- bg-frame -->
@@ -820,21 +825,7 @@ const PANELS = {
     <div class="row"><span class="lbl">Bar Köşe</span><input type="range" class="flex-fill" id="slBarR" min="0" max="60" value="${_barR}" oninput="setBarR(this.value)"><span class="val" id="barRVal">${_barR}px</span></div>
   </div>
 </div>
-<div class="sb-card">
-  <div class="sb-card-head"><small><i class="fa-solid fa-panorama"></i> Arka Plan</small></div>
-  <div class="sb-card-body">
-    <button class="btn btn-ghost w-100" style="justify-content:center;" onclick="$('bgImgInput').click()"><i class="fa-solid fa-image"></i> Arka Plan Seç</button>
-    <input type="file" id="bgImgInput" accept="image/*" style="display:none">
-    <button class="btn w-100" id="bgClearRow" style="${bgBase64?'':'display:none;'}justify-content:center;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);" onclick="clearBgImg()"><i class="fa-solid fa-trash"></i> Arka Planı Kaldır</button>
-    <div class="row" id="bgFitRow" style="${bgBase64?'':'display:none'}"><span class="lbl">Yerleşim</span>
-      <select class="flex-fill" id="selBgFit" onchange="applyBgStyle()">
-        <option value="cover" ${_bgFit==='cover'?'selected':''}>Cover</option>
-        <option value="contain" ${_bgFit==='contain'?'selected':''}>Contain</option>
-        <option value="fill" ${_bgFit==='fill'?'selected':''}>Esnet</option>
-      </select></div>
-    <div class="row" id="bgOpRow" style="${bgBase64?'':'display:none'}"><span class="lbl">Opaklık</span><input type="range" class="flex-fill" id="slBgOp" min="5" max="100" value="${_bgOp}" oninput="applyBgStyle()"><span class="val" id="bgOpVal">${_bgOp}%</span></div>
-  </div>
-</div>`
+`
   },
 
   photo: {
@@ -945,11 +936,33 @@ const PANELS = {
     <div class="row"><span class="lbl">Düz Renk</span>
       <div class="form-check form-switch ms-1"><input class="form-check-input" type="checkbox" id="cbSolidBg" ${cl.bgSolid?'checked':''} onchange="cl.bgSolid=this.checked;applyBgGrad()"></div>
       <input type="color" id="bgSolid" value="${cl.bgSolidColor}" oninput="applyBgGrad()" style="margin-left:7px"></div>
+    <div class="row"><span class="lbl">Opaklık</span>
+      <input type="range" class="flex-fill" id="slCpOp" min="0" max="100" value="${Math.round((cl.cpOp??1)*100)}" oninput="applyCpOp(this.value)">
+      <span class="val" id="cpOpVal">${Math.round((cl.cpOp??1)*100)}%</span></div>
     <div class="sb-hr"></div>
     <div class="row"><span class="lbl">Yazı Zemini</span>
       <input type="color" id="quoteBgColor" value="${cl.quoteBgColor}" oninput="applyQuoteBg()" style="flex-shrink:0">
       <input type="range" class="flex-fill" id="slQuoteBgOp" min="0" max="100" value="${cl.quoteBgOp}" oninput="applyQuoteBg()">
       <span class="val" id="quoteBgOpVal">${cl.quoteBgOp}%</span></div>
+  </div>
+</div>
+<div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-panorama"></i> Arka Plan Rengi</small></div>
+  <div class="sb-card-body">
+    <div class="row"><span class="lbl">Şeffaf</span>
+      <div class="form-check form-switch ms-1"><input class="form-check-input" type="checkbox" id="cbFrameTransparent" ${cl.frameTransparent?'checked':''} onchange="cl.frameTransparent=this.checked;applyFrameColor()"></div></div>
+    <div id="frameColorRows" style="${cl.frameTransparent?'display:none':''}">
+      <div class="row"><span class="lbl">Renk 1</span><input type="color" id="frameC1" value="${cl.frameC1}" oninput="applyFrameColor()">
+        <span class="lbl ms-2">Renk 2</span><input type="color" id="frameC2" value="${cl.frameC2}" oninput="applyFrameColor()"></div>
+      <div class="row"><span class="lbl">Açı</span><input type="range" class="flex-fill" id="slFrameAngle" min="0" max="360" value="${cl.frameAngle}" oninput="applyFrameColor()"><span class="val" id="frameAngleVal">${cl.frameAngle}°</span></div>
+      <div class="sb-hr"></div>
+      <div class="row"><span class="lbl">Düz Renk</span>
+        <div class="form-check form-switch ms-1"><input class="form-check-input" type="checkbox" id="cbSolidFrame" ${cl.frameSolid?'checked':''} onchange="cl.frameSolid=this.checked;applyFrameColor()"></div>
+        <input type="color" id="frameSolid" value="${cl.frameSolidColor}" oninput="applyFrameColor()" style="margin-left:7px"></div>
+      <div class="row"><span class="lbl">Opaklık</span>
+        <input type="range" class="flex-fill" id="slFrameOp" min="0" max="100" value="${Math.round((cl.frameOp??1)*100)}" oninput="applyFrameOp(this.value)">
+        <span class="val" id="frameOpVal">${Math.round((cl.frameOp??1)*100)}%</span></div>
+    </div>
   </div>
 </div>
 <div class="sb-card">
@@ -977,7 +990,7 @@ const PANELS = {
     title: 'Dışa Aktar', icon: 'fa-download', iconCls: 'ic-green',
     html: () => `
 <div class="sb-card">
-  <div class="sb-card-head"><small><i class="fa-solid fa-photo-film"></i> Çözünürlük</small></div>
+  <div class="sb-card-head"><small><i class="fa-solid fa-download"></i> Görseli İndir</small></div>
   <div class="sb-card-body">
     <div class="row"><span class="lbl" style="width:70px">Boyut</span>
       <select class="flex-fill" id="selRes" onchange="onResChange(this.value)">
@@ -993,11 +1006,7 @@ const PANELS = {
       <span style="color:#64748b;font-size:11px;padding:0 4px">×</span>
       <input type="number" id="cusH" value="${_cusH}" style="width:62px">
     </div>
-  </div>
-</div>
-<div class="sb-card">
-  <div class="sb-card-head"><small><i class="fa-solid fa-file-image"></i> Format</small></div>
-  <div class="sb-card-body">
+    <div class="sb-hr"></div>
     <div class="row"><div class="ibg gap-2">
       <button class="wb ${_fmt==='jpg'?'active':''}" id="fmtJpg" onclick="setFmt('jpg',this)">JPG</button>
       <button class="wb ${_fmt==='png'?'active':''}" id="fmtPng" onclick="setFmt('png',this)">PNG</button>
@@ -1007,12 +1016,27 @@ const PANELS = {
       <span class="lbl">Kalite</span>
       <input type="range" class="flex-fill" id="slQuality" min="50" max="100" value="${_quality}" oninput="_quality=this.value;$('qualVal').textContent=this.value+'%'">
       <span class="val" id="qualVal">${_quality}%</span></div>
+    <div class="sb-hr"></div>
+    <button class="btn btn-green w-100" style="justify-content:center;" onclick="exportImg()">
+      <i class="fa-solid fa-download"></i> Görseli İndir
+    </button>
   </div>
 </div>
 <div class="sb-card">
-  <div class="sb-card-body" style="padding:8px;">
-    <button class="btn btn-green w-100" style="justify-content:center;" onclick="exportImg()">
-      <i class="fa-solid fa-download"></i> Görseli İndir
+  <div class="sb-card-head"><small><i class="fa-solid fa-sliders"></i> Ayar Yedekleme</small></div>
+  <div class="sb-card-body" style="gap:6px;">
+    <p style="font-size:9px;color:#475569;line-height:1.6;margin:0;">Tüm tasarım ayarlarını (renkler, yazı tipi, düzen) JSON olarak dışa aktarın veya içe alın.</p>
+    <div style="display:flex;gap:6px;">
+      <button class="btn btn-ghost" style="flex:1;justify-content:center;" onclick="exportSettings()">
+        <i class="fa-solid fa-file-export"></i> Dışa Aktar
+      </button>
+      <button class="btn btn-ghost" style="flex:1;justify-content:center;" onclick="$('settingsImportFile').click()">
+        <i class="fa-solid fa-file-import"></i> İçe Al
+      </button>
+    </div>
+    <input type="file" id="settingsImportFile" accept=".json" style="display:none" onchange="importSettings(this)">
+    <button class="btn w-100" style="justify-content:center;background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25);" onclick="resetSettings()">
+      <i class="fa-solid fa-rotate-right"></i> Varsayılana Sıfırla
     </button>
   </div>
 </div>`
@@ -1080,34 +1104,79 @@ function fontSelect(id, val) {
 }
 
 /* ══════════════════════════════════════
-   STATE
+   STATE — varsayılanlar
 ══════════════════════════════════════ */
-let _layout = 'photo-left', _namePos = 'bottom-left';
-let _showTitle = true, _showNameBar = true, _marginLink = true;
-let _photoW = 42, _cardR = 14, _barR = 28;
-let _bgFit = 'cover', _bgOp = 100;
-let _res = '1920x1080', _cusW = 1920, _cusH = 1080, _fmt = 'png', _quality = 95;
+const SETTINGS_KEY = 'grafik_settings_v1';
+
+const DEFAULTS = {
+  layout:'photo-left', namePos:'bottom-left',
+  showTitle:true, showNameBar:true, marginLink:true,
+  photoW:42, cardR:14, barR:28,
+  bgFit:'cover', bgOp:100,
+  res:'1920x1080', cusW:1920, cusH:1080, fmt:'png', quality:95,
+  mg:{ top:80, right:80, bottom:90, left:80 },
+  fs:{ br:100, ct:100, sat:100, blur:0, op:100 },
+  ts:{ color:'#000000', amount:0 },
+  tx:{
+    qFont:"'Poppins',sans-serif", qSz:16, qW:700, qAlign:'left', qVAlign:'center',
+    qLH:1.65, qLS:0, qColor:'#ffffff',
+    nFont:"'Poppins',sans-serif", nSz:14, nW:800, nLS:0, nColor:'#ffffff',
+    tFont:"'Poppins',sans-serif", tSz:14, tW:400, tGap:0, tColor:'#e0e0e0'
+  },
+  cl:{
+    bgC1:'#3a5298', bgC2:'#6b8fdf', bgAngle:135, bgSolid:false, bgSolidColor:'#3a5298', cpOp:1,
+    frameC1:'#1e3a5f', frameC2:'#070d1a', frameAngle:135, frameSolid:false, frameSolidColor:'#0b1728', frameOp:1, frameTransparent:false,
+    quoteBgColor:'#000000', quoteBgOp:0,
+    barC1:'#9b1c2e', barC2:'#c0273d', barAngle:90, barSolid:false, barSolidColor:'#9b1c2e', barOp:100,
+    photoBg:'#1a1a2e'
+  }
+};
+
+function loadSavedSettings() {
+  try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}; } catch(e) { return {}; }
+}
+function saveSettings() {
+  const s = {
+    version:1,
+    layout:_layout, namePos:_namePos,
+    showTitle:_showTitle, showNameBar:_showNameBar, marginLink:_marginLink,
+    photoW:_photoW, cardR:_cardR, barR:_barR,
+    bgFit:_bgFit, bgOp:_bgOp,
+    res:_res, cusW:_cusW, cusH:_cusH, fmt:_fmt, quality:_quality,
+    mg:{...mg}, fs:{...fs}, ts:{...ts}, tx:{...tx}, cl:{...cl}
+  };
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); } catch(e) {}
+}
+
+// Kaydedilmiş veya varsayılan değerlerle başlat
+(function() {
+  const saved = loadSavedSettings();
+  const d = DEFAULTS;
+  window._layout      = saved.layout      ?? d.layout;
+  window._namePos     = saved.namePos     ?? d.namePos;
+  window._showTitle   = saved.showTitle   ?? d.showTitle;
+  window._showNameBar = saved.showNameBar ?? d.showNameBar;
+  window._marginLink  = saved.marginLink  ?? d.marginLink;
+  window._photoW      = saved.photoW      ?? d.photoW;
+  window._cardR       = saved.cardR       ?? d.cardR;
+  window._barR        = saved.barR        ?? d.barR;
+  window._bgFit       = saved.bgFit       ?? d.bgFit;
+  window._bgOp        = saved.bgOp        ?? d.bgOp;
+  window._res         = saved.res         ?? d.res;
+  window._cusW        = saved.cusW        ?? d.cusW;
+  window._cusH        = saved.cusH        ?? d.cusH;
+  window._fmt         = saved.fmt         ?? d.fmt;
+  window._quality     = saved.quality     ?? d.quality;
+})();
+
 let bgBase64 = null;
 let _currentPanel = null;
 
-const mg = { top: 80, right: 80, bottom: 90, left: 80 }; // init'te güncellenir
-
-const fs = { br: 100, ct: 100, sat: 100, blur: 0, op: 100 };
-const ts = { color: '#000000', amount: 0 };
-
-const tx = {
-  qFont: "'Poppins',sans-serif", qSz: 20, qW: 700, qAlign: 'left', qVAlign: 'center',
-  qLH: 1.65, qLS: 0, qColor: '#ffffff',
-  nFont: "'Poppins',sans-serif", nSz: 20, nW: 800, nLS: 0, nColor: '#ffffff',
-  tFont: "'Poppins',sans-serif", tSz: 20, tW: 400, tGap: 0, tColor: '#e0e0e0'
-};
-
-const cl = {
-  bgC1: '#3a5298', bgC2: '#6b8fdf', bgAngle: 135, bgSolid: false, bgSolidColor: '#3a5298',
-  quoteBgColor: '#000000', quoteBgOp: 0,
-  barC1: '#9b1c2e', barC2: '#c0273d', barAngle: 90, barSolid: false, barSolidColor: '#9b1c2e', barOp: 100,
-  photoBg: '#1a1a2e'
-};
+const mg = Object.assign({}, DEFAULTS.mg, loadSavedSettings().mg);
+const fs = Object.assign({}, DEFAULTS.fs, loadSavedSettings().fs);
+const ts = Object.assign({}, DEFAULTS.ts, loadSavedSettings().ts);
+const tx = Object.assign({}, DEFAULTS.tx, loadSavedSettings().tx);
+const cl = Object.assign({}, DEFAULTS.cl, loadSavedSettings().cl);
 
 /* ══════════════════════════════════════
    PANEL TOGGLE
@@ -1176,20 +1245,23 @@ function setLayout(mode, btn) {
   }
   if (imgLoaded) setTimeout(fitCover, 50);
   updateNameBarRadius();
+  if(window._scheduleSave) window._scheduleSave();
 }
 
 function setPhotoW(v) {
   _photoW = parseInt(v);
   if (_layout !== 'photo-top' && _layout !== 'photo-bottom') $('photoPanel').style.width = v + '%';
   const el = $('photoWVal'); if (el) el.textContent = v + '%';
+  if(window._scheduleSave) window._scheduleSave();
 }
-function setCardR(v) { _cardR = parseInt(v); card.style.borderRadius = v + 'px'; const el = $('cardRVal'); if (el) el.textContent = v + 'px'; }
+function setCardR(v) { _cardR = parseInt(v); card.style.borderRadius = v + 'px'; const el = $('cardRVal'); if (el) el.textContent = v + 'px'; if(window._scheduleSave) window._scheduleSave(); }
 function setBarR(v) {
   _barR = parseInt(v);
   document.documentElement.style.setProperty('--bar-r', v + 'px');
   $('nameBar').style.borderRadius = '';
   updateNameBarRadius();
   const el = $('barRVal'); if (el) el.textContent = v + 'px';
+  if(window._scheduleSave) window._scheduleSave();
 }
 
 function setNamePos(pos, btn) {
@@ -1203,6 +1275,7 @@ function setNamePos(pos, btn) {
   document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   updateNameBarRadius();
+  if(window._scheduleSave) window._scheduleSave();
 }
 
 
@@ -1258,12 +1331,26 @@ document.addEventListener('change', e => {
       _bgOp = 100; _bgFit = 'cover';
       $('bgImgLayer').style.backgroundImage = `url('${bgBase64}')`;
       applyBgStyle();
-      // refresh panel if open
       if (_currentPanel === 'layout') togglePanel('layout', document.querySelector('[data-key="layout"]'));
     };
     r.readAsDataURL(f); e.target.value = '';
   }
 });
+
+function onBgImgToolbar(input) {
+  const f = input.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    bgBase64 = ev.target.result;
+    _bgOp = 100; _bgFit = 'cover';
+    $('bgImgLayer').style.backgroundImage = `url('${bgBase64}')`;
+    applyBgStyle();
+    // Toolbar butonunu aktif göster
+    const btn = $('ptbBgImg');
+    if (btn) { btn.classList.add('active'); btn.title = 'Arka Planı Kaldır'; }
+  };
+  r.readAsDataURL(f); input.value = '';
+}
 
 function applyBgStyle() {
   const layer = $('bgImgLayer');
@@ -1282,20 +1369,174 @@ function applyBgStyle() {
 function clearBgImg() {
   bgBase64 = null;
   $('bgImgLayer').style.backgroundImage = 'none';
+  const btn = $('ptbBgImg');
+  if (btn) { btn.classList.remove('active'); btn.title = 'Arka Plan Seç'; }
   if (_currentPanel === 'layout') togglePanel('layout', document.querySelector('[data-key="layout"]'));
+}
+
+// Toolbar'daki arka plan butonuna tıklandığında: varsa kaldır, yoksa seç
+function onBgImgBtnClick() {
+  if (bgBase64) {
+    clearBgImg();
+  } else {
+    $('bgImgToolbar').click();
+  }
+}
+
+/* ══════════════════════════════════════
+   AYAR EXPORT / IMPORT / RESET
+══════════════════════════════════════ */
+function resetSettings() {
+  if (!confirm('Tüm tasarım ayarları varsayılana sıfırlanacak. Emin misiniz?')) return;
+  try { localStorage.removeItem(SETTINGS_KEY); } catch(e) {}
+  location.reload();
+}
+
+function exportSettings() {
+  // saveSettings ile aynı yapı — localStorage'daki güncel veriyi kullan
+  saveSettings();
+  const raw = localStorage.getItem(SETTINGS_KEY) || '{}';
+  const blob = new Blob([raw], {type:'application/json'});
+  downloadBlob(blob, 'grafik_ayarlari.json');
+}
+
+function importSettings(input) {
+  const file = input.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    try {
+      const s = JSON.parse(ev.target.result);
+      if (!s.version) throw new Error('Geçersiz ayar dosyası');
+      // State güncelle
+      if (s.layout)    { _layout = s.layout; }
+      if (s.namePos)   { _namePos = s.namePos; }
+      if (s.showTitle !== undefined) _showTitle = s.showTitle;
+      if (s.showNameBar !== undefined) _showNameBar = s.showNameBar;
+      if (s.photoW)    _photoW = s.photoW;
+      if (s.cardR !== undefined) _cardR = s.cardR;
+      if (s.barR !== undefined)  _barR = s.barR;
+      if (s.bgFit)     _bgFit = s.bgFit;
+      if (s.bgOp)      _bgOp = s.bgOp;
+      if (s.res)       _res = s.res;
+      if (s.cusW)      _cusW = s.cusW;
+      if (s.cusH)      _cusH = s.cusH;
+      if (s.fmt)       _fmt = s.fmt;
+      if (s.quality)   _quality = s.quality;
+      if (s.mg)        Object.assign(mg, s.mg);
+      if (s.fs)        Object.assign(fs, s.fs);
+      if (s.ts)        Object.assign(ts, s.ts);
+      if (s.tx)        Object.assign(tx, s.tx);
+      if (s.cl)        Object.assign(cl, s.cl);
+      // Görsel uygula
+      setLayout(_layout);
+      setNamePos(_namePos, null);
+      applyBgGrad();
+      applyBarColor();
+      applyText();
+      card.style.borderRadius = _cardR + 'px';
+      document.documentElement.style.setProperty('--bar-r', _barR + 'px');
+      updateNameBarRadius();
+      applyMargins();
+      applyBgStyle();
+      applyFilters();
+      applyTint();
+      // Açık paneli yenile
+      if (_currentPanel) {
+        const btn = document.querySelector(`[data-key="${_currentPanel}"]`);
+        togglePanel(_currentPanel, btn);
+      }
+      alert('✓ Ayarlar yüklendi.');
+    } catch(e) { alert('Hata: ' + e.message); }
+    input.value = '';
+  };
+  r.readAsText(file);
 }
 
 /* ══════════════════════════════════════
    COLORS
 ══════════════════════════════════════ */
+function applyFrameColor() {
+  const f = $('bgFrame');
+  const rows = $('frameColorRows');
+  const cb = $('cbFrameTransparent');
+  if(cb) cl.frameTransparent = cb.checked;
+  if(rows) rows.style.display = cl.frameTransparent ? 'none' : '';
+  if(cl.frameTransparent) {
+    f.style.background = 'transparent';
+    f.style.boxShadow = 'none';
+    return;
+  }
+  f.style.boxShadow = '0 0 0 1px rgba(255,255,255,.06), 0 24px 60px rgba(0,0,0,.8)';
+  const c1=$('frameC1'),c2=$('frameC2'),ang=$('slFrameAngle'),cb2=$('cbSolidFrame'),fs2=$('frameSolid');
+  if(c1) cl.frameC1=c1.value; if(c2) cl.frameC2=c2.value;
+  if(ang){ cl.frameAngle=parseInt(ang.value); const v=$('frameAngleVal'); if(v) v.textContent=cl.frameAngle+'°'; }
+  if(cb2) cl.frameSolid=cb2.checked;
+  if(fs2) cl.frameSolidColor=fs2.value;
+  const alpha = cl.frameOp ?? 1;
+  if(cl.frameSolid) {
+    f.style.background = hexToRgba(cl.frameSolidColor, alpha);
+  } else {
+    f.style.background = gradWithAlpha(cl.frameC1, cl.frameC2, cl.frameAngle, alpha);
+  }
+  if(window._scheduleSave) window._scheduleSave();
+}
+
+function applyFrameOp(val) {
+  cl.frameOp = parseInt(val) / 100;
+  const v = $('frameOpVal'); if(v) v.textContent = val + '%';
+  // sadece opaklık değişince rengi yeniden uygula
+  const f = $('bgFrame');
+  if(cl.frameTransparent) return;
+  const alpha = cl.frameOp;
+  if(cl.frameSolid) {
+    f.style.background = hexToRgba(cl.frameSolidColor, alpha);
+  } else {
+    f.style.background = gradWithAlpha(cl.frameC1, cl.frameC2, cl.frameAngle, alpha);
+  }
+  if(window._scheduleSave) window._scheduleSave();
+}
+
+// hex rengi rgba'ya çevir (alpha: 0-1)
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+// gradient içindeki hex renklere alpha uygula
+function gradWithAlpha(c1, c2, angle, alpha) {
+  return `linear-gradient(${angle}deg,${hexToRgba(c1,alpha)},${hexToRgba(c2,alpha)})`;
+}
+
+function applyCpOp(val) {
+  cl.cpOp = parseInt(val) / 100;
+  const v = $('cpOpVal'); if(v) v.textContent = val + '%';
+  // opacity yerine background'un alpha'sını değiştir — yazılar etkilenmez
+  const cp = $('contentPanel');
+  cp.style.opacity = '';  // önceki opacity varsa temizle
+  if(cl.bgSolid) {
+    cp.style.background = hexToRgba(cl.bgSolidColor, cl.cpOp);
+  } else {
+    cp.style.background = gradWithAlpha(cl.bgC1, cl.bgC2, cl.bgAngle, cl.cpOp);
+  }
+  if(window._scheduleSave) window._scheduleSave();
+}
+
 function applyBgGrad() {
   const c1=$('bgC1'),c2=$('bgC2'),ang=$('slBgAngle'),cb=$('cbSolidBg'),bs=$('bgSolid');
   if(c1) cl.bgC1=c1.value; if(c2) cl.bgC2=c2.value;
   if(ang){ cl.bgAngle=parseInt(ang.value); const v=$('bgAngleVal'); if(v) v.textContent=cl.bgAngle+'°'; }
   if(cb) cl.bgSolid=cb.checked;
   if(bs) cl.bgSolidColor=bs.value;
-  $('contentPanel').style.background = cl.bgSolid ? cl.bgSolidColor
-    : `linear-gradient(${cl.bgAngle}deg,${cl.bgC1},${cl.bgC2})`;
+  const alpha = cl.cpOp ?? 1;
+  const cp = $('contentPanel');
+  cp.style.opacity = '';  // önceki opacity varsa temizle
+  if(cl.bgSolid) {
+    cp.style.background = hexToRgba(cl.bgSolidColor, alpha);
+  } else {
+    cp.style.background = gradWithAlpha(cl.bgC1, cl.bgC2, cl.bgAngle, alpha);
+  }
+  if(window._scheduleSave) window._scheduleSave();
 }
 
 function applyQuoteBg() {
@@ -1348,26 +1589,13 @@ function applyText(manualField) {
   const tg=r('slTGap'); if(tg){tx.tGap=parseFloat(tg.value);const v=r('tGapVal');if(v)v.textContent=tx.tGap+'px';} t.style.marginTop=tx.tGap+'px';
   const tc=r('tColor'); if(tc){tx.tColor=tc.value;} t.style.color=tx.tColor;
 
-  // Orantılı küçültme: manuel punto değiştiyse diğer alanları oranla güncelle
-  if (manualField) {
-    const base = manualField==='q' ? tx.qSz : manualField==='n' ? tx.nSz : tx.tSz;
-    const ref = 20; // varsayılan baz punto
-    const ratio = base / ref;
-    if (manualField !== 'q') { tx.qSz = Math.max(8, Math.round(ref * ratio)); q.style.fontSize = tx.qSz+'px'; }
-    if (manualField !== 'n') { tx.nSz = Math.max(8, Math.round(ref * ratio)); n.style.fontSize = tx.nSz+'px'; }
-    if (manualField !== 't') { tx.tSz = Math.max(8, Math.round(ref * ratio)); t.style.fontSize = tx.tSz+'px'; }
-    // Panel'daki slider/input değerlerini güncelle
-    const qi=r('inpQSz');if(qi)qi.value=tx.qSz;
-    const ni=r('inpNSz');if(ni)ni.value=tx.nSz;
-    const ti=r('inpTSz');if(ti)ti.value=tx.tSz;
-  }
-
   // Taşma kontrolü — her alan için auto-fit
   requestAnimationFrame(() => {
     autoFitField(q, $('quoteArea'),  tx.qSz,  8);
     autoFitField(n, $('nameBar'),    tx.nSz,  7);
     autoFitField(t, $('nameBar'),    tx.tSz,  7);
   });
+  if(window._scheduleSave) window._scheduleSave();
 }
 
 /* Alanın container'ına sığana kadar font küçült (min: minSz) */
@@ -1405,6 +1633,9 @@ function setAlign(v,btn) {
   tx.qAlign=v; $('quoteText').style.textAlign=v;
   document.querySelectorAll('[id^="qa-"]').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
+  if(window._scheduleSave) window._scheduleSave();
+  if(window._scheduleSave) window._scheduleSave();
+  if(window._scheduleSave) window._scheduleSave();
 }
 function setVAlign(v,btn) {
   tx.qVAlign=v; $('quoteArea').style.alignItems=v;
@@ -1425,11 +1656,13 @@ function applyFilters() {
   if(op){fs.op=parseInt(op.value);const v=$('imgOpVal');if(v)v.textContent=fs.op+'%';}
   img.style.filter=`brightness(${fs.br}%) contrast(${fs.ct}%) saturate(${fs.sat}%) blur(${fs.blur}px)`;
   img.style.opacity=fs.op/100;
+  if(window._scheduleSave) window._scheduleSave();
 }
 function applyTint() {
   const tc=$('tintColor'),sl=$('slTint');
   if(tc) ts.color=tc.value; if(sl){ts.amount=parseInt(sl.value);const v=$('tintVal');if(v)v.textContent=ts.amount+'%';}
   const t=$('photoTint'); t.style.background=ts.color; t.style.opacity=ts.amount/100;
+  if(window._scheduleSave) window._scheduleSave();
 }
 function applyPreset(t){
   const p={normal:{br:100,ct:100,sat:100,blur:0},bw:{br:100,ct:110,sat:0,blur:0},
@@ -1526,11 +1759,20 @@ panel.addEventListener('wheel',e=>{
   zoomAt(e.clientX-r.left,e.clientY-r.top,e.deltaY<0?.1:-.1);
 },{passive:false});
 
-$('btnZoomIn').addEventListener('click',e=>{e.stopPropagation();zoomAt(panel.offsetWidth/2,panel.offsetHeight/2,.15);});
-$('btnZoomOut').addEventListener('click',e=>{e.stopPropagation();zoomAt(panel.offsetWidth/2,panel.offsetHeight/2,-.15);});
-$('btnFlipH').addEventListener('click',e=>{e.stopPropagation();flipH=!flipH;e.currentTarget.classList.toggle('active');applyTransform();});
-$('btnFlipV').addEventListener('click',e=>{e.stopPropagation();flipV=!flipV;e.currentTarget.classList.toggle('active');applyTransform();});
-$('btnReset').addEventListener('click',e=>{e.stopPropagation();flipH=flipV=false;$('btnFlipH').classList.remove('active');$('btnFlipV').classList.remove('active');fitCover();});
+// Toolbar kontrol butonları — onclick ile bağlı (HTML'de)
+function tbZoomIn(e){e.stopPropagation();zoomAt(panel.offsetWidth/2,panel.offsetHeight/2,.15);}
+function tbZoomOut(e){e.stopPropagation();zoomAt(panel.offsetWidth/2,panel.offsetHeight/2,-.15);}
+function tbFlipH(e){e.stopPropagation();flipH=!flipH;$('btnFlipH').classList.toggle('active',flipH);applyTransform();}
+function tbFlipV(e){e.stopPropagation();flipV=!flipV;$('btnFlipV').classList.toggle('active',flipV);applyTransform();}
+function tbReset(e){e.stopPropagation();flipH=flipV=false;$('btnFlipH').classList.remove('active');$('btnFlipV').classList.remove('active');fitCover();}
+// photo-controls paneli için de bağla
+document.addEventListener('DOMContentLoaded',()=>{
+  const pcZI=$('pcBtnZoomIn'); if(pcZI) pcZI.onclick=e=>{e.stopPropagation();zoomAt(panel.offsetWidth/2,panel.offsetHeight/2,.15);};
+  const pcZO=$('pcBtnZoomOut'); if(pcZO) pcZO.onclick=e=>{e.stopPropagation();zoomAt(panel.offsetWidth/2,panel.offsetHeight/2,-.15);};
+  const pcFH=$('pcBtnFlipH'); if(pcFH) pcFH.onclick=e=>{e.stopPropagation();flipH=!flipH;$('btnFlipH').classList.toggle('active',flipH);applyTransform();};
+  const pcFV=$('pcBtnFlipV'); if(pcFV) pcFV.onclick=e=>{e.stopPropagation();flipV=!flipV;$('btnFlipV').classList.toggle('active',flipV);applyTransform();};
+  const pcR=$('pcBtnReset'); if(pcR) pcR.onclick=e=>{e.stopPropagation();flipH=flipV=false;$('btnFlipH').classList.remove('active');$('btnFlipV').classList.remove('active');fitCover();};
+});
 
 /* ══════════════════════════════════════
    ASPECT RATIO & FORMAT
@@ -1769,9 +2011,27 @@ async function exportImg(){
     canvas.width=W; canvas.height=H;
     const ctx=canvas.getContext('2d');
 
-    // 1. bg-frame arkaplan rengi (her zaman önce çiz)
-    ctx.fillStyle = '#0b1728';
-    ctx.fillRect(0,0,W,H);
+    // 1. bg-frame arka plan rengi — şeffaf ise PNG için saydam bırak
+    if(cl.frameTransparent) {
+      // şeffaf — hiçbir şey çizme, PNG şeffaf çıkar
+    } else {
+      const fAlpha = cl.frameOp ?? 1;
+      if(cl.frameSolid) {
+        const r=parseInt(cl.frameSolidColor.slice(1,3),16),g=parseInt(cl.frameSolidColor.slice(3,5),16),b=parseInt(cl.frameSolidColor.slice(5,7),16);
+        ctx.fillStyle=`rgba(${r},${g},${b},${fAlpha})`;
+      } else {
+        const grad=ctx.createLinearGradient(
+          W/2-Math.cos((cl.frameAngle-90)*Math.PI/180)*W/2, H/2-Math.sin((cl.frameAngle-90)*Math.PI/180)*H/2,
+          W/2+Math.cos((cl.frameAngle-90)*Math.PI/180)*W/2, H/2+Math.sin((cl.frameAngle-90)*Math.PI/180)*H/2
+        );
+        const r1=parseInt(cl.frameC1.slice(1,3),16),g1=parseInt(cl.frameC1.slice(3,5),16),b1=parseInt(cl.frameC1.slice(5,7),16);
+        const r2=parseInt(cl.frameC2.slice(1,3),16),g2=parseInt(cl.frameC2.slice(3,5),16),b2=parseInt(cl.frameC2.slice(5,7),16);
+        grad.addColorStop(0,`rgba(${r1},${g1},${b1},${fAlpha})`);
+        grad.addColorStop(1,`rgba(${r2},${g2},${b2},${fAlpha})`);
+        ctx.fillStyle=grad;
+      }
+      ctx.fillRect(0,0,W,H);
+    }
 
     // 2. Arka plan görseli — bgBase64 varsa üstüne çiz
     if(bgBase64){
@@ -1789,7 +2049,7 @@ async function exportImg(){
           ctx.drawImage(bImg,(W-bImg.naturalWidth*s)/2,(H-bImg.naturalHeight*s)/2,bImg.naturalWidth*s,bImg.naturalHeight*s);
         }
         ctx.restore();
-      } catch(imgErr){ ctx.restore(); console.warn('bg img err',imgErr); }
+      } catch(imgErr){ console.warn('bg img err',imgErr); }
     }
 
     // 3. İçerik paneli için arka plan rengi (kart çizilmeden önce tüm yüzey)
@@ -1822,11 +2082,27 @@ async function exportImg(){
       ctx.restore();
     }
 
-    // Content panel
+    // Content panel — rgba alpha ile çiz (yazılar etkilenmiyor)
     ctx.globalAlpha=1; ctx.filter='none';
     const cpC=dc(cpEl);
-    ctx.fillStyle=parseCssGradient(ctx,cpEl.style.background,cpC.x,cpC.y,cpC.w,cpC.h)||cpEl.style.background||cl.bgC1;
-    ctx.fillRect(cpC.x,cpC.y,cpC.w,cpC.h);
+    const cpAlpha = cl.cpOp ?? 1;
+    if(cl.bgSolid) {
+      const r=parseInt(cl.bgSolidColor.slice(1,3),16),g=parseInt(cl.bgSolidColor.slice(3,5),16),b=parseInt(cl.bgSolidColor.slice(5,7),16);
+      ctx.fillStyle=`rgba(${r},${g},${b},${cpAlpha})`;
+      ctx.fillRect(cpC.x,cpC.y,cpC.w,cpC.h);
+    } else {
+      const grad=parseCssGradient(ctx,cpEl.style.background,cpC.x,cpC.y,cpC.w,cpC.h);
+      if(grad){ ctx.fillStyle=grad; ctx.globalAlpha=cpAlpha; ctx.fillRect(cpC.x,cpC.y,cpC.w,cpC.h); ctx.globalAlpha=1; }
+      else {
+        // fallback: iki renk arasında manuel gradient
+        const g2=ctx.createLinearGradient(cpC.x+cpC.w/2-Math.cos((cl.bgAngle-90)*Math.PI/180)*cpC.w/2,cpC.y+cpC.h/2,cpC.x+cpC.w/2+Math.cos((cl.bgAngle-90)*Math.PI/180)*cpC.w/2,cpC.y+cpC.h/2);
+        const r1=parseInt(cl.bgC1.slice(1,3),16),g1=parseInt(cl.bgC1.slice(3,5),16),b1=parseInt(cl.bgC1.slice(5,7),16);
+        const r2=parseInt(cl.bgC2.slice(1,3),16),g2b=parseInt(cl.bgC2.slice(3,5),16),b2=parseInt(cl.bgC2.slice(5,7),16);
+        g2.addColorStop(0,`rgba(${r1},${g1},${b1},${cpAlpha})`);
+        g2.addColorStop(1,`rgba(${r2},${g2b},${b2},${cpAlpha})`);
+        ctx.fillStyle=g2; ctx.fillRect(cpC.x,cpC.y,cpC.w,cpC.h);
+      }
+    }
 
     // Alıntı zemini
     if(cl.quoteBgOp>0){ const qC=dc($('quoteBg')); ctx.globalAlpha=cl.quoteBgOp/100; ctx.fillStyle=cl.quoteBgColor; ctx.fillRect(qC.x,qC.y,qC.w,qC.h); ctx.globalAlpha=1; }
@@ -1848,20 +2124,89 @@ async function exportImg(){
       ctx.closePath(); ctx.fill(); ctx.globalAlpha=1;
     }
 
-    // Metinler
-    ctx.textBaseline='top';
-    const rS=Math.min(scX,scY);
-    const nfEl=$('nameField');
-    const nfC=dc(nfEl);
-    ctx.fillStyle=tx.nColor;
-    ctx.font=`${tx.nW} ${tx.nSz*rS}px ${tx.nFont.replace(/'/g,'')}`;
-    ctx.letterSpacing=(tx.nLS*rS)+'px';
-    wrapAndDraw(ctx,nfEl.textContent||'',nfC.x,nfC.y,nfC.w,tx.nSz*rS*1.3);
-    if(_showTitle){ const tfEl=$('titleField'); if(tfEl&&tfEl.style.display!=='none'){ const tfC=dc(tfEl); ctx.fillStyle=tx.tColor; ctx.font=`${tx.tW} ${tx.tSz*rS}px ${tx.tFont.replace(/'/g,'')}`; ctx.letterSpacing='0px'; wrapAndDraw(ctx,tfEl.textContent||'',tfC.x,tfC.y,tfC.w,tx.tSz*rS*1.3); } }
-    const qtEl=$('quoteText'); const qtC=dc(qtEl);
-    ctx.fillStyle=tx.qColor; ctx.font=`${tx.qW} ${tx.qSz*rS}px ${tx.qFont.replace(/'/g,'')}`; ctx.letterSpacing=(tx.qLS*rS)+'px';
-    wrapAndDraw(ctx,qtEl.textContent||'',qtC.x,qtC.y,qtC.w,tx.qSz*rS*tx.qLH);
-    ctx.restore();
+    // ── Metinler: DOM'dan gerçek computed değerleri oku ──
+    ctx.restore(); // kart clip'i kapat
+    // Yeniden kart clip — metin için
+    roundRectPath(ctx,cc.x,cc.y,cc.w,cc.h,_cardR*Math.min(scX,scY));
+    ctx.save(); ctx.clip();
+
+    function drawTextField(el, colorVal) {
+      if (!el) return;
+      const cs = window.getComputedStyle(el);
+      const elC = dc(el);
+      const sc = Math.min(scX, scY);
+      // DOM'dan gerçek font boyutu — autoFit sonrası gerçek değer
+      const domSzPx  = parseFloat(cs.fontSize) || 16;
+      const scaledSz = domSzPx * sc;
+      const fontFamily    = cs.fontFamily;
+      const fontWeight    = cs.fontWeight;
+      // lineHeight: DOM'dan oku, normal ise 1.4x kullan
+      const domLH   = parseFloat(cs.lineHeight);
+      const realLH  = (isNaN(domLH) ? domSzPx * 1.4 : domLH) * sc;
+      const letterSpacing = parseFloat(cs.letterSpacing) || 0;
+      const textAlign = cs.textAlign || 'left';
+      const color = colorVal || cs.color || '#fff';
+      const text = el.textContent || '';
+      if (!text.trim()) return;
+
+      ctx.save();
+      // clip to el bounding box
+      ctx.beginPath();
+      ctx.rect(elC.x, elC.y, elC.w, elC.h);
+      ctx.clip();
+
+      ctx.textBaseline = 'top';
+      ctx.font = `${fontWeight} ${scaledSz}px ${fontFamily}`;
+      ctx.letterSpacing = (letterSpacing * Math.min(scX,scY)) + 'px';
+      ctx.fillStyle = color;
+
+      // metin sarmala ve çiz
+      const lines = [];
+      for (const rawLine of text.split('\n')) {
+        const words = rawLine.split(' ');
+        let cur = '';
+        for (const w of words) {
+          const test = cur ? cur + ' ' + w : w;
+          if (ctx.measureText(test).width > elC.w && cur) {
+            lines.push(cur); cur = w;
+          } else { cur = test; }
+        }
+        lines.push(cur);
+      }
+
+      let startX = elC.x;
+      if (textAlign === 'center') startX = elC.x + elC.w / 2;
+      else if (textAlign === 'right') startX = elC.x + elC.w;
+
+      let y = elC.y;
+      for (const line of lines) {
+        if (textAlign === 'center') ctx.textAlign = 'center';
+        else if (textAlign === 'right') ctx.textAlign = 'right';
+        else ctx.textAlign = 'left';
+        ctx.fillText(line, startX, y);
+        y += realLH;
+        if (y > elC.y + elC.h) break; // clip korur ama satır boşa gitmesin
+      }
+      ctx.restore();
+    }
+
+    // Quote alanı
+    const qtEl = $('quoteText');
+    drawTextField(qtEl, tx.qColor);
+
+    // Ad alanı
+    const nfEl = $('nameField');
+    drawTextField(nfEl, tx.nColor);
+
+    // Ünvan alanı
+    if (_showTitle) {
+      const tfEl = $('titleField');
+      if (tfEl && tfEl.style.display !== 'none') {
+        drawTextField(tfEl, tx.tColor);
+      }
+    }
+
+    ctx.restore(); // son kart clip
 
     canvas.toBlob(blob=>{
       if(blob){
@@ -1944,17 +2289,30 @@ function applyMargins() {
 }
 
 (function init(){
+  // Kaydedilmiş layout/namePos uygula
+  setLayout(_layout);
+  setNamePos(_namePos, null);
+  if (!_showNameBar) { $('nameBarWrap').style.display='none'; }
+  if (!_showTitle)   { const t=$('titleField'); if(t) t.style.display='none'; }
+  applyFrameColor();
   applyBgGrad();
   applyBarColor();
   applyText();
   updateNameBarRadius();
   card.style.borderRadius = _cardR + 'px';
-  requestAnimationFrame(() => {
-    applyMargins();
-  });
-  window.addEventListener('resize', () => {
-    applyMargins();
-  });
+  document.documentElement.style.setProperty('--bar-r', _barR + 'px');
+  applyBgStyle();
+  applyFilters();
+  applyTint();
+  requestAnimationFrame(() => { applyMargins(); });
+  window.addEventListener('resize', () => { applyMargins(); });
+
+  // Tüm state değişikliklerini otomatik kaydet (debounced)
+  let _saveTimer = null;
+  window._scheduleSave = () => {
+    clearTimeout(_saveTimer);
+    _saveTimer = setTimeout(saveSettings, 600);
+  };
 })();
 </script>
 </body>
