@@ -70,31 +70,35 @@ html, body { height: 100%; overflow: hidden; background: #03070f; background: va
 }
 .bg-wrap {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
+  gap: 0;
 }
 .bg-aspect {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100%;
+  flex: 1 1 0;
+  min-height: 0;
 }
-/* ── PHOTO TOOLBAR: bg-frame içinde, kart altına yapışık ── */
+/* ── PHOTO TOOLBAR: bg-wrap içinde, bg-frame altında ── */
 #photoToolbar {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  z-index: 10;
+  width: min(100cqw, calc((100cqh - 48px) * 16 / 9));
   height: 48px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 1px;
   background: rgba(7,12,24,.92);
   backdrop-filter: blur(8px);
   border-top: 1px solid rgba(255,255,255,.07);
+  border-radius: 0 0 10px 10px;
   padding: 0 6px;
+  box-sizing: border-box;
 }
 .ptb-btn {
   width: 38px; height: 44px;
@@ -118,13 +122,12 @@ html, body { height: 100%; overflow: hidden; background: #03070f; background: va
 }
 .ptb-dl:hover { background: rgba(34,197,94,.18) !important; color: #86efac !important; }
 
-.bg-wrap { width: 100%; display: flex; align-items: center; justify-content: center; }
 
 
 .bg-frame {
   /* Kesinlikle 16/9 oran — genişlik ve yükseklik konteyner bazlı */
   aspect-ratio: 16 / 9;
-  width: min(100cqw, calc(100cqh * 16 / 9));
+  width: min(100cqw, calc((100cqh - 48px) * 16 / 9));
   height: auto;
   flex-shrink: 0;
   border-radius: 14px; overflow: hidden;
@@ -675,25 +678,26 @@ input[type=color] {
             </div>
           </div><!-- card-wrap end -->
 
-          <!-- ── TOOLBAR: bg-frame içinde, kart altında ── -->
-          <input type="file" id="bgImgToolbar" accept="image/*" style="display:none" onchange="onBgImgToolbar(this)">
-          <div id="photoToolbar">
-            <button class="ptb-btn" onclick="$('fileInput').click()" title="Fotoğraf Yükle"><i class="fa-solid fa-camera"></i><span>Foto</span></button>
-            <button class="ptb-btn" id="ptbBgImg" onclick="onBgImgBtnClick()" title="Arka Plan Seç"><i class="fa-solid fa-panorama"></i><span>Arka Plan</span></button>
-            <div class="ptb-sep"></div>
-            <button class="ptb-btn" id="btnZoomIn"  title="Yakınlaştır" onclick="tbZoomIn(event)"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Yakın</span></button>
-            <button class="ptb-btn" id="btnZoomOut" title="Uzaklaştır" onclick="tbZoomOut(event)"><i class="fa-solid fa-magnifying-glass-minus"></i><span>Uzak</span></button>
-            <div class="ptb-sep"></div>
-            <button class="ptb-btn" id="btnFlipH" title="Yatay Çevir" onclick="tbFlipH(event)"><i class="fa-solid fa-left-right"></i><span>Yatay</span></button>
-            <button class="ptb-btn" id="btnFlipV" title="Dikey Çevir" onclick="tbFlipV(event)"><i class="fa-solid fa-up-down"></i><span>Dikey</span></button>
-            <div class="ptb-sep"></div>
-            <button class="ptb-btn" id="btnReset" title="Sıfırla" onclick="tbReset(event)"><i class="fa-solid fa-rotate-left"></i><span>Sıfırla</span></button>
-            <div class="ptb-grow"></div>
-            <button class="ptb-btn ptb-dl" onclick="exportImg()" title="İndir"><i class="fa-solid fa-download"></i><span>İndir</span></button>
-          </div><!-- photoToolbar -->
-
         </div><!-- bg-frame -->
       </div><!-- bg-aspect -->
+
+      <!-- ── TOOLBAR: bg-wrap içinde, bg-frame altında ── -->
+      <input type="file" id="bgImgToolbar" accept="image/*" style="display:none" onchange="onBgImgToolbar(this)">
+      <div id="photoToolbar">
+        <button class="ptb-btn" onclick="$('fileInput').click()" title="Fotoğraf Yükle"><i class="fa-solid fa-camera"></i><span>Foto</span></button>
+        <button class="ptb-btn" id="ptbBgImg" onclick="onBgImgBtnClick()" title="Arka Plan Seç"><i class="fa-solid fa-panorama"></i><span>Arka Plan</span></button>
+        <div class="ptb-sep"></div>
+        <button class="ptb-btn" id="btnZoomIn"  title="Yakınlaştır" onclick="tbZoomIn(event)"><i class="fa-solid fa-magnifying-glass-plus"></i><span>Yakın</span></button>
+        <button class="ptb-btn" id="btnZoomOut" title="Uzaklaştır" onclick="tbZoomOut(event)"><i class="fa-solid fa-magnifying-glass-minus"></i><span>Uzak</span></button>
+        <div class="ptb-sep"></div>
+        <button class="ptb-btn" id="btnFlipH" title="Yatay Çevir" onclick="tbFlipH(event)"><i class="fa-solid fa-left-right"></i><span>Yatay</span></button>
+        <button class="ptb-btn" id="btnFlipV" title="Dikey Çevir" onclick="tbFlipV(event)"><i class="fa-solid fa-up-down"></i><span>Dikey</span></button>
+        <div class="ptb-sep"></div>
+        <button class="ptb-btn" id="btnReset" title="Sıfırla" onclick="tbReset(event)"><i class="fa-solid fa-rotate-left"></i><span>Sıfırla</span></button>
+        <div class="ptb-grow"></div>
+        <button class="ptb-btn ptb-dl" onclick="exportImg()" title="İndir"><i class="fa-solid fa-download"></i><span>İndir</span></button>
+      </div><!-- photoToolbar -->
+
     </div><!-- bg-wrap -->
     </div><!-- canvasInner -->
 
@@ -716,7 +720,7 @@ input[type=color] {
       <i class="fa-solid fa-table-columns"></i><span>Düzen</span>
     </button>
     <button class="bn-btn" data-key="photo" onclick="togglePanel('photo',this)">
-      <i class="fa-solid fa-image"></i><span>Fotoğraf</span>
+      <i class="fa-solid fa-wand-magic-sparkles"></i><span>Efekt</span>
     </button>
     <button class="bn-btn" data-key="text" onclick="togglePanel('text',this)">
       <i class="fa-solid fa-font"></i><span>Metin</span>
@@ -817,6 +821,20 @@ const PANELS = {
   </div>
 </div>
 <div class="sb-card">
+  <div class="sb-card-head"><small><i class="fa-solid fa-panorama"></i> Arka Plan Görseli</small></div>
+  <div class="sb-card-body">
+    <div class="row"><span class="lbl">Uyum</span>
+      <select class="flex-fill" id="selBgFit" onchange="applyBgStyle()">
+        <option value="cover" ${_bgFit==='cover'?'selected':''}>Kapla</option>
+        <option value="contain" ${_bgFit==='contain'?'selected':''}>Sığdır</option>
+        <option value="fill" ${_bgFit==='fill'?'selected':''}>Uzat</option>
+      </select></div>
+    <div class="row"><span class="lbl">Opaklık</span>
+      <input type="range" class="flex-fill" id="slBgOp" min="0" max="100" value="${_bgOp}" oninput="applyBgStyle()">
+      <span class="val" id="bgOpVal">${_bgOp}%</span></div>
+  </div>
+</div>
+<div class="sb-card">
   <div class="sb-card-head"><small><i class="fa-solid fa-sliders"></i> Boyut & Köşe</small></div>
   <div class="sb-card-body">
     <div class="row"><span class="lbl">Foto Gen.</span><input type="range" class="flex-fill" id="slPhotoW" min="20" max="70" value="${_photoW}" oninput="setPhotoW(this.value)"><span class="val" id="photoWVal">${_photoW}%</span></div>
@@ -829,7 +847,7 @@ const PANELS = {
   },
 
   photo: {
-    title: 'Fotoğraf', icon: 'fa-image', iconCls: 'ic-green',
+    title: 'Efekt', icon: 'fa-wand-magic-sparkles', iconCls: 'ic-green',
     html: () => `
 <div class="sb-card">
   <div class="sb-card-head"><small><i class="fa-solid fa-wand-magic-sparkles"></i> Filtreler</small></div>
@@ -941,7 +959,8 @@ const PANELS = {
       <span class="val" id="cpOpVal">${Math.round((cl.cpOp??1)*100)}%</span></div>
     <div class="sb-hr"></div>
     <div class="row"><span class="lbl">Yazı Zemini</span>
-      <input type="color" id="quoteBgColor" value="${cl.quoteBgColor}" oninput="applyQuoteBg()" style="flex-shrink:0">
+      <input type="color" id="quoteBgColor" value="${cl.quoteBgColor}" oninput="applyQuoteBg()" style="flex-shrink:0"></div>
+    <div class="row"><span class="lbl">Yazı Zemini Opaklığı</span>
       <input type="range" class="flex-fill" id="slQuoteBgOp" min="0" max="100" value="${cl.quoteBgOp}" oninput="applyQuoteBg()">
       <span class="val" id="quoteBgOpVal">${cl.quoteBgOp}%</span></div>
   </div>
@@ -1118,7 +1137,7 @@ const DEFAULTS = {
   fs:{ br:100, ct:100, sat:100, blur:0, op:100 },
   ts:{ color:'#000000', amount:0 },
   tx:{
-    qFont:"'Poppins',sans-serif", qSz:16, qW:700, qAlign:'left', qVAlign:'center',
+    qFont:"'Poppins',sans-serif", qSz:16, qW:400, qAlign:'left', qVAlign:'center',
     qLH:1.65, qLS:0, qColor:'#ffffff',
     nFont:"'Poppins',sans-serif", nSz:14, nW:800, nLS:0, nColor:'#ffffff',
     tFont:"'Poppins',sans-serif", tSz:14, tW:400, tGap:0, tColor:'#e0e0e0'
@@ -1848,7 +1867,7 @@ function loadPersonTitle(nameEnc, titleEnc) {
     setTimeout(()=>{el.style.background='';el.style.transition='';},700);
   });
   applyText();
-  closePanel();
+  // panel açık kalsın
 }
 
 function deletePerson(id){ if(!confirm('Silmek istiyor musunuz?')) return; savePersons(loadPersons().filter(p=>p.id!==id)); renderPersons(); }
