@@ -329,13 +329,13 @@ input[type=color]{
 .name-bar-wrap.pos-top-left     .name-bar{border-radius:0 0 var(--bar-r,36px) 0;}
 .name-bar-wrap.pos-top-right    .name-bar{border-radius:0 0 0 var(--bar-r,36px);}
 #nameField{
-  color:#fff;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+  color:#fff;font-weight:800;letter-spacing:0;text-transform:uppercase;line-height:1.15;
   outline:none;display:block;cursor:text;white-space:normal;word-break:break-word;
 }
 #nameField:empty::before{content:attr(data-ph);color:rgba(255,255,255,.38);font-style:italic;pointer-events:none;font-size:0.65em;font-weight:400;letter-spacing:0;text-transform:none;}
 #titleField{
-  color:rgba(255,255,255,.86);font-weight:400;letter-spacing:.03em;
-  outline:none;display:block;margin-top:3px;cursor:text;white-space:normal;word-break:break-word;
+  color:rgba(255,255,255,.86);font-weight:400;letter-spacing:.03em;line-height:1.15;
+  outline:none;display:block;margin-top:-6px;cursor:text;white-space:normal;word-break:break-word;
 }
 #titleField:empty::before{content:attr(data-ph);color:rgba(255,255,255,.32);font-style:italic;pointer-events:none;font-size:0.7em;}
 #nameField:focus,#titleField:focus{background:rgba(255,255,255,.07);border-radius:3px;}
@@ -945,7 +945,7 @@ input[type=color]{
               <button class="wb" id="nw800" onclick="setW('n',800,this)">Black</button>
             </div>
           </div>
-          <div class="row"><span class="lbl">Harf Aralığı</span><input type="range" class="flex-fill" id="slNLS" min="-2" max="14" step=".5" value="5" oninput="applyText()"><span class="val" id="nLSVal">5px</span></div>
+          <div class="row"><span class="lbl">Harf Aralığı</span><input type="range" class="flex-fill" id="slNLS" min="-2" max="14" step=".5" value="0" oninput="applyText()"><span class="val" id="nLSVal">0px</span></div>
           <div class="row"><span class="lbl">Renk</span><input type="color" id="nColor" value="#ffffff" oninput="applyText()"></div>
         </div>
       </div>
@@ -1017,7 +1017,7 @@ input[type=color]{
               <button class="wb" id="tw700" onclick="setW('t',700,this)">Bold</button>
             </div>
           </div>
-          <div class="row"><span class="lbl">Ad/Ünvan Aralığı</span><input type="range" class="flex-fill" id="slTGap" min="-6" max="24" value="3" oninput="applyText()"><span class="val" id="tGapVal">3px</span></div>
+          <div class="row"><span class="lbl">Ad/Ünvan Aralığı</span><input type="range" class="flex-fill" id="slTGap" min="-6" max="24" value="-6" oninput="applyText()"><span class="val" id="tGapVal">-6px</span></div>
           <div class="row"><span class="lbl">Renk</span><input type="color" id="tColor" value="#e0e0e0" oninput="applyText()"></div>
         </div>
       </div>
