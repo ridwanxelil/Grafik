@@ -642,6 +642,7 @@ input[type=color]{
   <div class="sb-head">
     <i class="fa-solid fa-sliders" style="color:#6366f1"></i>
     <h6>Grafik Kontrolleri</h6>
+    <button onclick="resetSettings()" title="Tüm ayarları varsayılan değerlere döndür" style="padding:4px 9px;border-radius:7px;border:1px solid #334155;background:#1e293b;color:#cbd5e1;font-size:10.5px;font-weight:600;cursor:pointer;white-space:nowrap;"><i class="fa-solid fa-rotate-left"></i> Ayarları Sıfırla</button>
   </div>
 
   <div class="tab-nav">
@@ -2758,6 +2759,95 @@ function downloadBlob(blob, name) {
   document.body.appendChild(a); a.click();
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
 }
+
+// ══════════════════════════════════════════
+// AYARLARI TARAYICIDA SAKLA / SIFIRLA
+// ══════════════════════════════════════════
+const SETTINGS_KEY = 'grafik_settings_v1';
+const SKIP_IDS = new Set(['rpSearch','vidStart','vidDur']);
+const BTN_GROUPS = {
+  qw:'[id^="qw"]', nw:'[id^="nw"]', tw:'[id^="tw"]',
+  qa:'[id^="qa-"]', qv:'[id^="qv-"]', fmt:'[id^="fmt"]', nb:'.nb'
+};
+let _restoring = false, _saveT = null;
+
+function settingEls() {
+  return [...document.querySelectorAll('input[id],select[id],textarea[id]')].filter(el => {
+    if (['file','text','search'].includes(el.type)) return false;
+    if (SKIP_IDS.has(el.id) || el.id.startsWith('pkModal')) return false;
+    return true;
+  });
+}
+function collectState() {
+  const st = { v:{}, btn:{}, margins:{...margins} };
+  settingEls().forEach(el => { st.v[el.id] = el.type === 'checkbox' ? el.checked : el.value; });
+  st.layout = ['photo-top','photo-bottom','photo-right'].find(m => card.classList.contains(m)) || 'photo-left';
+  for (const [k, sel] of Object.entries(BTN_GROUPS)) {
+    const a = document.querySelector(sel + '.active');
+    st.btn[k] = a ? a.id : null;
+  }
+  return st;
+}
+function applyState(st) {
+  _restoring = true;
+  try {
+    // 1) Düğme grupları (yerleşim, konum, kalınlık, hizalama, format)
+    const lb = document.querySelector(`button[onclick^="setLayout('${st.layout}'"]`);
+    if (lb) lb.click();
+    Object.values(st.btn || {}).forEach(id => {
+      if (!id) return;
+      const b = document.getElementById(id);
+      if (b) b.click();
+    });
+    // 2) Değerleri yaz
+    const els = settingEls().filter(el => el.id in st.v);
+    els.forEach(el => {
+      if (el.type === 'checkbox') el.checked = !!st.v[el.id];
+      else el.value = st.v[el.id];
+    });
+    // 3) Her kontrolün kendi işleyicisini çalıştır (kenar boşlukları hariç)
+    els.forEach(el => {
+      if (/^slM(Top|Right|Bottom|Left)$/.test(el.id) || el.id === 'cbMarginLink') return;
+      el.dispatchEvent(new Event('input',  { bubbles:true }));
+      el.dispatchEvent(new Event('change', { bubbles:true }));
+    });
+    // 4) Kenar boşlukları (bağlı olsa bile kayıtlı dört değeri aynen uygula)
+    if (st.margins) {
+      Object.assign(margins, st.margins);
+      ['top','right','bottom','left'].forEach(sd => {
+        $('slM' + cap(sd)).value = margins[sd];
+        $('m' + cap(sd) + 'Val').textContent = margins[sd] + 'px';
+      });
+      $('bgFrame').style.padding = `${margins.top}px ${margins.right}px ${margins.bottom}px ${margins.left}px`;
+    }
+  } finally {
+    _restoring = false;
+  }
+}
+function saveSettingsNow() {
+  if (_restoring) return;
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(collectState())); } catch (e) {}
+}
+function scheduleSave() {
+  if (_restoring) return;
+  clearTimeout(_saveT);
+  _saveT = setTimeout(saveSettingsNow, 250);
+}
+['input','change','click'].forEach(ev => document.addEventListener(ev, scheduleSave, true));
+window.addEventListener('beforeunload', saveSettingsNow);
+
+function resetSettings() {
+  if (!confirm('Tüm ayarlar varsayılan değerlere dönsün mü?\n(Yazdığınız metinler, fotoğraf ve video etkilenmez.)')) return;
+  try { localStorage.removeItem(SETTINGS_KEY); } catch (e) {}
+  applyState(DEFAULT_STATE);
+}
+
+// Varsayılanları yakala, sonra kayıtlı son ayarları geri yükle
+const DEFAULT_STATE = collectState();
+try {
+  const raw = localStorage.getItem(SETTINGS_KEY);
+  if (raw) applyState(JSON.parse(raw));
+} catch (e) { console.warn('Ayarlar yüklenemedi:', e); }
 </script>
 <div id="renderBox" style="
   position:fixed; left:-9999px; top:0; z-index:-1;
