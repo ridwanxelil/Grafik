@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Grafik Şablon 2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Roboto:wght@300;400;700&family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;600;700;800&family=Lato:wght@300;400;700&family=Oswald:wght@400;600;700&family=Raleway:wght@400;600;700&family=Poppins:wght@300;400;600;700&family=Source+Sans+3:wght@300;400;600;700&family=Nunito:wght@300;400;600;700&family=Ubuntu:wght@300;400;700&family=Playfair+Display:wght@400;700&family=Merriweather:wght@300;400;700&family=PT+Sans:wght@400;700&family=PT+Serif:wght@400;700&family=Noto+Sans:wght@300;400;700&family=Roboto+Condensed:wght@300;400;700&family=Roboto+Slab:wght@300;400;700&family=Roboto+Mono:wght@300;400;700&family=Fira+Sans:wght@300;400;600;700&family=Titillium+Web:wght@300;400;600;700&family=Barlow:wght@300;400;600;700&family=DM+Sans:wght@300;400;600;700&family=Karla:wght@300;400;600;700&family=Mulish:wght@300;400;600;700&family=Quicksand:wght@300;400;600;700&family=Cabin:wght@400;600;700&family=Josefin+Sans:wght@300;400;600;700&family=Exo+2:wght@300;400;600;700&family=Jost:wght@300;400;600;700&family=Work+Sans:wght@300;400;600;700&family=Rubik:wght@300;400;600;700&family=Manrope:wght@300;400;600;700&family=Outfit:wght@300;400;600;700&family=Sora:wght@300;400;600;700&family=Be+Vietnam+Pro:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;600;700&family=Lexend:wght@300;400;600;700&family=Libre+Baskerville:wght@400;700&family=EB+Garamond:wght@400;700&family=Cormorant+Garamond:wght@300;400;600;700&family=Lora:wght@400;600;700&family=Crimson+Text:wght@400;600;700&family=Spectral:wght@300;400;600;700&family=Libre+Franklin:wght@300;400;600;700&family=Source+Serif+4:wght@300;400;600;700&family=Arvo:wght@400;700&family=Bitter:wght@300;400;600;700&family=Zilla+Slab:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -194,13 +196,19 @@ input[type=color]{
   padding:16px;overflow:hidden;background:transparent;
 }
 .bg-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
-.bg-aspect{width:100%;max-height:100%;position:relative;padding-top:56.25%;transition:padding-top .3s;}
+.bg-wrap{overflow:visible;}
+/* Sahne sabit tasarım boyutunda (örn. 1920x1080) çizilir, ekrana sığması için JS ile scale edilir */
+.bg-aspect{width:1920px;height:1080px;flex:none;position:relative;transform-origin:0 0;}
 .bg-frame{
   position:absolute;inset:0;border-radius:16px;overflow:hidden;
   background:radial-gradient(ellipse at 30% 40%, #1e3a5f 0%, #0b1728 55%, #070d1a 100%);
   box-shadow:0 0 0 1px rgba(255,255,255,.05), 0 32px 80px rgba(0,0,0,.75);
   display:flex;align-items:center;justify-content:center;
   padding:255px 255px 265px 255px;transition:padding .25s;
+}
+#bgVideo{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;pointer-events:none;display:none;
 }
 #bgImgLayer{
   position:absolute;inset:0;
@@ -250,7 +258,7 @@ input[type=color]{
 .photo-panel.has-img:hover .photo-overlay{background:rgba(0,0,0,.38);opacity:1;}
 .photo-panel.drag-over .photo-overlay{background:rgba(0,0,0,.6);opacity:1;}
 .photo-panel.drag-over{outline:2px dashed rgba(255,255,255,.6);outline-offset:-3px;}
-.ov-label{color:#fff;font-size:clamp(9px,1vw,12px);font-weight:600;text-align:center;line-height:1.6;}
+.ov-label{color:#fff;font-size:12px;font-weight:600;text-align:center;line-height:1.6;}
 
 /* photo controls */
 .photo-controls{
@@ -282,7 +290,7 @@ input[type=color]{
 .quote-area{
   position:absolute;top:0;left:0;right:0;
   bottom:clamp(44px,9%,96px);
-  padding:clamp(10px,2vw,30px);
+  padding:30px;
   display:flex;
   align-items:center;
   transition:top .25s,bottom .25s;
@@ -311,15 +319,15 @@ input[type=color]{
 .name-bar-wrap.pos-top-right    {top:0;right:0;bottom:auto;left:auto;align-items:flex-start;justify-content:flex-end;}
 .name-bar{
   display:block;
-  padding:clamp(7px,1vw,14px) clamp(14px,2vw,32px);
-  border-radius:0 var(--bar-r,clamp(14px,2.6vw,36px)) 0 0;
+  padding:14px 32px;
+  border-radius:0 var(--bar-r,36px) 0 0;
   min-width:48%;max-width:100%;width:fit-content;
   transition:border-radius .2s;
 }
-.name-bar-wrap.pos-bottom-left  .name-bar{border-radius:0 var(--bar-r,clamp(14px,2.6vw,36px)) 0 0;}
-.name-bar-wrap.pos-bottom-right .name-bar{border-radius:var(--bar-r,clamp(14px,2.6vw,36px)) 0 0 0;}
-.name-bar-wrap.pos-top-left     .name-bar{border-radius:0 0 var(--bar-r,clamp(14px,2.6vw,36px)) 0;}
-.name-bar-wrap.pos-top-right    .name-bar{border-radius:0 0 0 var(--bar-r,clamp(14px,2.6vw,36px));}
+.name-bar-wrap.pos-bottom-left  .name-bar{border-radius:0 var(--bar-r,36px) 0 0;}
+.name-bar-wrap.pos-bottom-right .name-bar{border-radius:var(--bar-r,36px) 0 0 0;}
+.name-bar-wrap.pos-top-left     .name-bar{border-radius:0 0 var(--bar-r,36px) 0;}
+.name-bar-wrap.pos-top-right    .name-bar{border-radius:0 0 0 var(--bar-r,36px);}
 #nameField{
   color:#fff;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
   outline:none;display:block;cursor:text;white-space:normal;word-break:break-word;
@@ -344,6 +352,9 @@ input[type=color]{
   bottom:0;
 }
 #quoteText{position:relative;z-index:1;}
+/* Ad/ünvan barı kapalıyken ana metin alanı tüm paneli kaplasın */
+.content-panel.no-namebar .quote-area,
+.content-panel.no-namebar .quote-bg{top:0;bottom:0;}
 
 /* bar-bg */
 .bar-bg{
@@ -621,7 +632,8 @@ input[type=color]{
 
 <div id="exportOverlay">
   <div class="spinner-border text-success" style="width:2.8rem;height:2.8rem;border-width:.28em;" role="status"></div>
-  <span style="font-size:14px;font-weight:600;">Görsel oluşturuluyor…</span>
+  <span id="exportMsg" style="font-size:14px;font-weight:600;">Görsel oluşturuluyor…</span>
+  <button id="exportCancel" onclick="cancelVideoExport()" style="display:none;padding:7px 22px;border-radius:8px;border:1px solid #475569;background:#1e293b;color:#e2e8f0;font-size:12px;font-weight:600;cursor:pointer;">İptal</button>
 </div>
 
 <div class="app">
@@ -707,12 +719,16 @@ input[type=color]{
       </div>
 
       <div class="sb-card">
-        <div class="sb-card-head"><small><i class="fa-solid fa-panorama"></i> Arka Plan Görseli</small></div>
+        <div class="sb-card-head"><small><i class="fa-solid fa-panorama"></i> Arka Plan Görseli / Video</small></div>
         <div class="sb-card-body">
           <button class="btn btn-ghost w-100" style="justify-content:center;" onclick="$('bgImgInput').click()">
             <i class="fa-solid fa-image"></i> Arka Plan Seç / Değiştir
           </button>
           <input type="file" id="bgImgInput" accept="image/*" style="display:none">
+          <button class="btn btn-ghost w-100" style="justify-content:center;" onclick="$('bgVidInput').click()">
+            <i class="fa-solid fa-film"></i> Arka Plan Video Seç
+          </button>
+          <input type="file" id="bgVidInput" accept="video/*" style="display:none">
           <button class="btn w-100" id="bgClearRow" style="display:none;justify-content:center;background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.3);" onclick="clearBgImg()">
             <i class="fa-solid fa-trash"></i> Arka Planı Kaldır
           </button>
@@ -1070,15 +1086,15 @@ input[type=color]{
             </select>
           </div>
           <div class="row" id="customRow" style="display:none">
-            <input type="number" id="cusW" value="1920" style="width:62px">
+            <input type="number" id="cusW" value="1920" min="100" style="width:62px" oninput="onResChange($('selRes').value)">
             <span style="color:#64748b;font-size:11px;text-align:center;padding:0 4px">×</span>
-            <input type="number" id="cusH" value="1080" style="width:62px">
+            <input type="number" id="cusH" value="1080" min="100" style="width:62px" oninput="onResChange($('selRes').value)">
           </div>
         </div>
       </div>
 
       <div class="sb-card">
-        <div class="sb-card-head"><small><i class="fa-solid fa-file-image"></i> Format</small></div>
+        <div class="sb-card-head"><small><i class="fa-solid fa-file-image"></i> İmaj Olarak Dışarı Aktar</small></div>
         <div class="sb-card-body">
           <div class="row">
             <div class="ibg gap-2">
@@ -1087,19 +1103,55 @@ input[type=color]{
               <button class="wb" id="fmtWebp" onclick="setFmt('webp',this)">WebP</button>
             </div>
           </div>
+          <div style="font-size:9.5px;color:#64748b;line-height:1.5;">Video için aşağıdaki <b style="color:#94a3b8">Video Dışa Aktar</b> kartını kullanın.</div>
           <div class="row" id="qualRow" style="display:none">
             <span class="lbl">Kalite</span>
             <input type="range" class="flex-fill" id="slQuality" min="50" max="100" value="95" oninput="$('qualVal').textContent=this.value+'%'">
             <span class="val" id="qualVal">95%</span>
           </div>
-        </div>
-      </div>
-
-      <div class="sb-card">
-        <div class="sb-card-body">
           <button class="btn btn-green w-100" style="justify-content:center;" onclick="exportImg()">
             <i class="fa-solid fa-download"></i> Görseli İndir
           </button>
+        </div>
+      </div>
+
+      <div class="sb-card" id="vidExportCard">
+        <div class="sb-card-head"><small><i class="fa-solid fa-film"></i> Video Dışa Aktar (MP4 / WebM)</small></div>
+        <div class="sb-card-body">
+          <div id="vidNoneHint" style="font-size:10px;color:#fbbf24;line-height:1.5;">Önce Arka Plan sekmesinden bir video ekleyin.</div>
+          <div class="row">
+            <span class="lbl">Format</span>
+            <select class="flex-fill" id="selVidFmt">
+              <option value="mp4">MP4</option>
+              <option value="webm">WebM</option>
+            </select>
+          </div>
+          <div class="row">
+            <span class="lbl">Başlangıç</span>
+            <input type="number" id="vidStart" min="0" step="0.1" value="0" style="width:70px" oninput="onVidStartChange()">
+            <span class="val" style="width:auto;margin-left:4px">sn</span>
+          </div>
+          <div class="row">
+            <span class="lbl">Süre</span>
+            <input type="number" id="vidDur" min="1" step="0.1" value="10" style="width:70px">
+            <span class="val" style="width:auto;margin-left:4px">sn</span>
+          </div>
+          <div class="row">
+            <span class="lbl">FPS</span>
+            <select class="flex-fill" id="selVidFps">
+              <option value="25">25</option>
+              <option value="30" selected>30</option>
+              <option value="50">50</option>
+              <option value="60">60</option>
+            </select>
+          </div>
+          <div class="row">
+            <label style="font-size:10.5px;color:#94a3b8;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="cbVidAudio" checked> Videonun sesini dahil et</label>
+          </div>
+          <button class="btn btn-green w-100" style="justify-content:center;" onclick="exportVideo()">
+            <i class="fa-solid fa-film"></i> Videoyu İndir
+          </button>
+          <div id="vidInfo" style="font-size:9.5px;color:#64748b;line-height:1.5;">Video gerçek zamanlı kaydedilir (süre kadar bekler); bitene kadar bu sekmeyi açık ve ön planda tutun. Süre, videonun kalan kısmından uzunsa video başa sarar.</div>
         </div>
       </div>
 
@@ -1153,6 +1205,7 @@ input[type=color]{
     <div class="bg-aspect" id="bgAspect">
       <div class="bg-frame" id="bgFrame">
         <div id="bgImgLayer"></div>
+        <video id="bgVideo" muted loop playsinline autoplay></video>
         <div class="card-wrap">
           <div class="card-aspect" id="cardAspect">
             <div class="card-inner" id="card">
@@ -1180,10 +1233,6 @@ input[type=color]{
               <input type="file" id="fileInput" accept="image/*" style="display:none">
 
               <div class="content-panel namebar-bottom" id="contentPanel">
-                <div id="logoArea">
-                  <div class="logo-ph"></div>
-                  <img id="logoImg" alt="">
-                </div>
                 <div class="quote-bg" id="quoteBg"></div>
                 <div class="quote-area" id="quoteArea">
                   <div id="quoteText" contenteditable="true" spellcheck="false" data-ph="Buraya yazınızı yazın…"></div>
@@ -1255,6 +1304,17 @@ input[type=color]{
     </div>
     <div style="display:flex;flex-direction:column;gap:9px;">
       <div>
+        <label style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px;">Fotoğraf (opsiyonel)</label>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div id="pkPhotoPrev" onclick="$('pkModalPhotoInput').click()" title="Fotoğraf seç" style="width:64px;height:64px;border-radius:50%;flex-shrink:0;background:#0f172a center/cover no-repeat;border:1px dashed #475569;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:20px;cursor:pointer;overflow:hidden;"><i class="fa-solid fa-camera"></i></div>
+          <div style="display:flex;flex-direction:column;gap:6px;flex:1;">
+            <button type="button" onclick="$('pkModalPhotoInput').click()" style="padding:6px 8px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#cbd5e1;font-size:11px;font-weight:600;cursor:pointer;"><i class="fa-solid fa-image"></i> Fotoğraf Seç</button>
+            <button type="button" id="pkPhotoDel" onclick="clearModalPhoto()" style="display:none;padding:6px 8px;border-radius:8px;border:1px solid #334155;background:transparent;color:#f87171;font-size:11px;font-weight:600;cursor:pointer;"><i class="fa-solid fa-trash"></i> Kaldır</button>
+          </div>
+          <input type="file" id="pkModalPhotoInput" accept="image/*" style="display:none">
+        </div>
+      </div>
+      <div>
         <label style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px;">Ad Soyad *</label>
         <input id="pkModalName" type="text" placeholder="Ad Soyad" style="
           width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;
@@ -1262,15 +1322,15 @@ input[type=color]{
           font-family:inherit;">
       </div>
       <div>
-        <label style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px;">Ünvan 1</label>
-        <input id="pkModalT1" type="text" placeholder="Birinci ünvan veya görev" style="
+        <label style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px;">Kurmancî</label>
+        <input id="pkModalT1" type="text" placeholder="Kurmancî ünvan" style="
           width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;
           border-radius:8px;padding:7px 10px;font-size:12px;outline:none;
           font-family:inherit;">
       </div>
       <div>
-        <label style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px;">Ünvan 2</label>
-        <input id="pkModalT2" type="text" placeholder="İkinci ünvan veya görev (opsiyonel)" style="
+        <label style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:4px;">Zazakî</label>
+        <input id="pkModalT2" type="text" placeholder="Zazakî ünvan (opsiyonel)" style="
           width:100%;background:#0f172a;border:1px solid #334155;color:#e2e8f0;
           border-radius:8px;padding:7px 10px;font-size:12px;outline:none;
           font-family:inherit;">
@@ -1321,7 +1381,7 @@ function setLayout(mode, btn){
     pp.style.height='';
     setPhotoW($('slPhotoW').value);
   }
-  if(imgLoaded) setTimeout(fitCover,50);
+  if(imgLoaded) setTimeout(fitCover,350);
   updateNameBarRadius();
 }
 function setPhotoW(v){
@@ -1336,8 +1396,6 @@ function setBarR(v){
   document.documentElement.style.setProperty('--bar-r', r);
   $('nameBar').style.borderRadius = '';
 }
-function setContentOp(v){ $('contentPanel').style.opacity=v/100; $('contentOpVal').textContent=v+'%'; }
-function setBarOp2(v){ document.querySelector('.name-bar-wrap').style.opacity=v/100; $('barOp2Val').textContent=v+'%'; }
 
 // ── AD/ÜNVAN KONUMU ──
 let _namePos = 'bottom-left';
@@ -1359,11 +1417,14 @@ function setNamePos(pos, btn) {
 function toggleTitleField(show) { $('titleField').style.display = show ? '' : 'none'; }
 
 // ── AD/ÜNVAN BARINI GÖSTER/GİZLE ──
-function toggleNameBar(show) { $('nameBarWrap').style.display = show ? '' : 'none'; }
+function toggleNameBar(show) {
+  $('nameBarWrap').style.display = show ? '' : 'none';
+  $('contentPanel').classList.toggle('no-namebar', !show);
+}
 
 // ── NAME BAR RADIUS GÜNCELLE ──
 function updateNameBarRadius() {
-  const r = getComputedStyle(document.documentElement).getPropertyValue('--bar-r').trim() || 'clamp(14px,2.6vw,36px)';
+  const r = getComputedStyle(document.documentElement).getPropertyValue('--bar-r').trim() || '36px';
   const isRight = card.classList.contains('photo-right');
   const pos = _namePos;
   let br = '0 0 0 0';
@@ -1405,9 +1466,50 @@ syncMargins('all');
 // ══════════════════════════════════════════
 const PERSON_KEY = 'grafik_persons_v3';
 let _modalEditId  = null;
+let _modalPhoto   = '';
+
+// Fotoğrafı küçült (localStorage dolmasın) → JPEG data URL
+function resizeDataURL(src, maxSide, quality, cb) {
+  const im = new Image();
+  im.onload = () => {
+    const k = Math.min(1, maxSide / Math.max(im.naturalWidth, im.naturalHeight));
+    const c = document.createElement('canvas');
+    c.width  = Math.max(1, Math.round(im.naturalWidth  * k));
+    c.height = Math.max(1, Math.round(im.naturalHeight * k));
+    const g = c.getContext('2d');
+    g.fillStyle = '#000'; g.fillRect(0, 0, c.width, c.height);
+    g.drawImage(im, 0, 0, c.width, c.height);
+    try { cb(c.toDataURL('image/jpeg', quality)); } catch (e) { cb(src); }
+  };
+  im.onerror = () => cb('');
+  im.src = src;
+}
+function updatePkPhotoPreview() {
+  const prev = $('pkPhotoPrev'), del = $('pkPhotoDel');
+  if (_modalPhoto) {
+    prev.style.backgroundImage = "url('" + _modalPhoto + "')";
+    prev.innerHTML = ''; prev.style.borderStyle = 'solid';
+    del.style.display = '';
+  } else {
+    prev.style.backgroundImage = 'none';
+    prev.innerHTML = '<i class="fa-solid fa-camera"></i>'; prev.style.borderStyle = 'dashed';
+    del.style.display = 'none';
+  }
+}
+function clearModalPhoto() { _modalPhoto = ''; updatePkPhotoPreview(); }
+$('pkModalPhotoInput').addEventListener('change', e => {
+  const f = e.target.files[0]; e.target.value = '';
+  if (!f || !f.type.startsWith('image/')) return;
+  const r = new FileReader();
+  r.onload = ev => resizeDataURL(ev.target.result, 1200, 0.85, out => { if (out) { _modalPhoto = out; updatePkPhotoPreview(); } });
+  r.readAsDataURL(f);
+});
 
 function loadPersons()    { try { return JSON.parse(localStorage.getItem(PERSON_KEY))||[]; } catch(e) { return []; } }
-function savePersons(arr) { localStorage.setItem(PERSON_KEY, JSON.stringify(arr)); }
+function savePersons(arr) {
+  try { localStorage.setItem(PERSON_KEY, JSON.stringify(arr)); }
+  catch(e) { alert('Kayıt yapılamadı (tarayıcı depolaması dolu ya da kapalı):\n' + e.message); }
+}
 
 function openAddModal() {
   _modalEditId = null;
@@ -1415,6 +1517,11 @@ function openAddModal() {
   $('pkModalName').value = ($('nameField').textContent||'').trim();
   $('pkModalT1').value   = ($('titleField').textContent||'').trim();
   $('pkModalT2').value   = '';
+  _modalPhoto = '';
+  updatePkPhotoPreview();
+  if (typeof imgLoaded !== 'undefined' && imgLoaded && photoBase64) {
+    resizeDataURL(photoBase64, 1200, 0.85, out => { if (out && _modalEditId === null) { _modalPhoto = out; updatePkPhotoPreview(); } });
+  }
   showModal();
 }
 
@@ -1426,6 +1533,8 @@ function openEditModal(id) {
   $('pkModalName').value = p.name   || '';
   $('pkModalT1').value   = p.title1 || '';
   $('pkModalT2').value   = p.title2 || '';
+  _modalPhoto = p.photo || '';
+  updatePkPhotoPreview();
   showModal();
 }
 
@@ -1443,6 +1552,7 @@ function showModal() {
 function closeModal() {
   $('pkModal').style.display = 'none';
   _modalEditId = null;
+  _modalPhoto = '';
 }
 
 function submitModal() {
@@ -1455,9 +1565,9 @@ function submitModal() {
   const list = loadPersons();
   if (_modalEditId !== null) {
     const idx = list.findIndex(p => p.id === _modalEditId);
-    if (idx >= 0) { list[idx].name = name; list[idx].title1 = title1; list[idx].title2 = title2; }
+    if (idx >= 0) { list[idx].name = name; list[idx].title1 = title1; list[idx].title2 = title2; list[idx].photo = _modalPhoto; }
   } else {
-    list.unshift({ id: Date.now(), name, title1, title2 });
+    list.unshift({ id: Date.now(), name, title1, title2, photo: _modalPhoto });
   }
   savePersons(list);
   closeModal();
@@ -1468,18 +1578,23 @@ function savePerson() {
   const name   = ($('nameField').textContent  || '').trim();
   const title1 = ($('titleField').textContent || '').trim();
   if (!name) { alert('Ad alanı boş olamaz.'); return; }
-  const list = loadPersons();
-  const existing = list.find(p => p.name === name);
-  if (existing) {
-    if (!existing.title1) existing.title1 = title1;
-    else if (!existing.title2) existing.title2 = title1;
-  } else {
-    list.unshift({ id: Date.now(), name, title1, title2: '' });
-  }
-  savePersons(list);
-  renderRpList();
-  const btn = document.querySelector('.rp-btn-save');
-  if (btn) { btn.textContent = '✓ Kaydedildi'; setTimeout(()=>{ btn.innerHTML='<i class=\'fa-solid fa-floppy-disk\'></i> Kaydet'; },1400); }
+  const done = (photo) => {
+    const list = loadPersons();
+    const existing = list.find(p => p.name === name);
+    if (existing) {
+      if (!existing.title1) existing.title1 = title1;
+      else if (title1 && title1 !== existing.title1 && !existing.title2) existing.title2 = title1;
+      if (!existing.photo && photo) existing.photo = photo;
+    } else {
+      list.unshift({ id: Date.now(), name, title1, title2: '', photo: photo || '' });
+    }
+    savePersons(list);
+    renderRpList();
+    const btn = document.querySelector('.rp-btn-save');
+    if (btn) { btn.textContent = '✓ Kaydedildi'; setTimeout(()=>{ btn.innerHTML='<i class=\'fa-solid fa-floppy-disk\'></i> Kaydet'; },1400); }
+  };
+  if (imgLoaded && photoBase64) resizeDataURL(photoBase64, 1200, 0.85, out => done(out));
+  else done('');
 }
 
 function setEditable(el, val) {
@@ -1502,6 +1617,21 @@ function deletePerson(id) {
   if (!confirm('Bu kaydı silmek istediğinizden emin misiniz?')) return;
   savePersons(loadPersons().filter(p => p.id !== id));
   renderRpList();
+}
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// Kayıt id'si ile yükle (inline onclick içinde metin taşımamak için)
+function loadById(id, n) {
+  const p = loadPersons().find(x => x.id === id);
+  if (!p) return;
+  const title = n === 2 ? (p.title2 || '') : n === 1 ? (p.title1 || '') : '';
+  loadPersonTitle(p.name, title);
+  if (p.photo) setPhotoFromDataURL(p.photo);
 }
 
 function initials(name) {
@@ -1538,17 +1668,16 @@ function renderRpList() {
   }
 
   el.innerHTML = list.map(p => {
-    const ini = initials(p.name);
+    const ini = esc(initials(p.name));
     const t1  = p.title1 || '';
     const t2  = p.title2 || '';
     const id  = p.id;
 
-    // Fix 3: Encode strings to handle spaces and quotes correctly in inline onclick handler
-    const titleRow = (label, title) => title
-      ? `<div class="pk-title-row" onclick="event.stopPropagation(); loadPersonTitle(decodeURIComponent('${encodeURIComponent(p.name)}'), decodeURIComponent('${encodeURIComponent(title)}'))">
+    const titleRow = (label, n, title) => title
+      ? `<div class="pk-title-row" onclick="event.stopPropagation(); loadById(${id},${n})">
            <span class="pt-badge">${label}</span>
-           <span class="pt-text" title="${title.replace(/"/g,'&quot;')}">${title}</span>
-           <button class="pt-load" onclick="event.stopPropagation(); loadPersonTitle(decodeURIComponent('${encodeURIComponent(p.name)}'), decodeURIComponent('${encodeURIComponent(title)}'))" title="Grafiğe yükle">
+           <span class="pt-text" title="${esc(title)}">${esc(title)}</span>
+           <button class="pt-load" onclick="event.stopPropagation(); loadById(${id},${n})" title="Grafiğe yükle">
              <i class="fa-solid fa-arrow-up-right-from-square"></i>
            </button>
          </div>`
@@ -1560,14 +1689,14 @@ function renderRpList() {
            </button>
          </div>`;
 
-    const defaultTitle = t1 || t2 || '';
-    
+    const defN = t1 ? 1 : (t2 ? 2 : 0);
+
     return `
     <div class="pk" id="pk-${id}">
-      <div class="pk-top" onclick="loadPersonTitle(decodeURIComponent('${encodeURIComponent(p.name)}'), decodeURIComponent('${encodeURIComponent(defaultTitle)}'))" style="cursor:pointer" title="Grafiğe yükle">  
-        <div class="pk-avatar">${ini}</div>
+      <div class="pk-top" onclick="loadById(${id},${defN})" style="cursor:pointer" title="Grafiğe yükle">
+        <div class="pk-avatar"${p.photo ? ` style="background:url('${esc(p.photo)}') center/cover no-repeat;color:transparent;font-size:0;"` : ''}>${p.photo ? '' : ini}</div>
         <div class="pk-name-wrap">
-          <div class="pk-name" title="${p.name.replace(/"/g,'&quot;')}">${p.name}</div>
+          <div class="pk-name" title="${esc(p.name)}">${esc(p.name)}</div>
           <div class="pk-meta">${[t1,t2].filter(Boolean).length} ünvan</div>
         </div>
         <div class="pk-actions">
@@ -1580,8 +1709,8 @@ function renderRpList() {
         </div>
       </div>
       <div class="pk-titles">
-        ${titleRow('Ü1', t1)}
-        ${titleRow('Ü2', t2)}
+        ${titleRow('Ü1', 1, t1)}
+        ${titleRow('Ü2', 2, t2)}
       </div>
     </div>`;
   }).join('');
@@ -1605,11 +1734,12 @@ function importPersonsXLSX(inp) {
   const reader = new FileReader();
   reader.onload = e => {
     try {
-      const wb   = XLSX.read(e.target.result, {type:'binary'});
+      const wb   = XLSX.read(e.target.result, {type:'array'});
       const ws   = wb.Sheets[wb.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
-      const firstCell = (rows[0] && rows[0][0] ? rows[0][0].toString() : '').toLowerCase();
-      const start = (firstCell.includes('ad') || firstCell.includes('name')) ? 1 : 0;
+      const firstCell = (rows[0] && rows[0][0] ? rows[0][0].toString() : '').toLowerCase().trim();
+      const HEADERS = ['ad soyad','adı soyadı','ad','isim','name','full name'];
+      const start = HEADERS.includes(firstCell) ? 1 : 0;
       let added = 0;
       const list = loadPersons();
       rows.slice(start).forEach(r => {
@@ -1618,7 +1748,7 @@ function importPersonsXLSX(inp) {
         const title2 = (r[2]||'').toString().trim();
         if (!name) return;
         if (list.some(p => p.name === name)) return;
-        list.push({ id: Date.now() + Math.random()*1000, name, title1, title2 });
+        list.push({ id: Date.now() + added, name, title1, title2 });
         added++;
       });
       savePersons(list);
@@ -1629,7 +1759,7 @@ function importPersonsXLSX(inp) {
     }
     inp.value = '';
   };
-  reader.readAsBinaryString(file);
+  reader.readAsArrayBuffer(file);
 }
 
 (function init() {
@@ -1672,6 +1802,7 @@ $('bgImgInput').addEventListener('change',function(e){
   const f=e.target.files[0]; if(!f) return;
   const r=new FileReader();
   r.onload=ev=>{
+    clearBgVideo();
     bgBase64=ev.target.result;
     $('bgImgLayer').style.backgroundImage=`url('${bgBase64}')`;
     applyBgStyle();
@@ -1688,30 +1819,225 @@ function applyBgStyle(){
   layer.style.backgroundSize=fit==='cover'?'cover':fit==='contain'?'contain':'100% 100%';
   layer.style.backgroundPosition='center';
   layer.style.opacity=op;
+  const bv=$('bgVideo');
+  bv.style.objectFit=fit==='cover'?'cover':fit==='contain'?'contain':'fill';
+  bv.style.opacity=op;
   $('bgOpVal').textContent=$('slBgOp').value+'%';
 }
 function clearBgImg(){
+  clearBgVideo();
   bgBase64=null;
   $('bgImgLayer').style.backgroundImage='none';
   ['bgClearRow','bgFitRow','bgOpRow'].forEach(id=>$(id).style.display='none');
 }
 
-// ── LOGO ──
-function toggleLogo(on){
-  $('logoArea').style.display=on?'block':'none';
-  $('logoSzRow').style.display=on?'flex':'none';
-  $('logoPick').style.display=on?'flex':'none';
+// ── ARKA PLAN VİDEO ──
+let bgVideoURL=null, bgVideoDur=0;
+function clearBgVideo(){
+  const bv=$('bgVideo');
+  if(bgVideoURL){ try{ URL.revokeObjectURL(bgVideoURL); }catch(e){} }
+  bgVideoURL=null; bgVideoDur=0;
+  bv.pause(); bv.removeAttribute('src'); try{ bv.load(); }catch(e){}
+  bv.style.display='none';
+  $('vidNoneHint').style.display='';
 }
-function setLogoSz(v){
-  $('logoArea').style.width=v+'px'; $('logoArea').style.height=v+'px';
-  $('logoSzVal').textContent=v+'px';
-}
-if($('logoInput')) $('logoInput').addEventListener('change',e=>{
-  const f=e.target.files[0]; if(!f) return;
-  const r=new FileReader();
-  r.onload=ev=>{ $('logoImg').src=ev.target.result; $('logoImg').style.display='block'; document.querySelector('#logoArea .logo-ph').style.display='none'; };
-  r.readAsDataURL(f);
+$('bgVidInput').addEventListener('change',function(e){
+  const f=e.target.files[0]; this.value='';
+  if(!f||!f.type.startsWith('video/')) return;
+  clearBgVideo();
+  bgBase64=null; $('bgImgLayer').style.backgroundImage='none';
+  const bv=$('bgVideo');
+  bgVideoURL=URL.createObjectURL(f);
+  bv.onloadedmetadata=()=>{
+    bgVideoDur=bv.duration||0;
+    $('vidStart').value=0;
+    $('vidDur').value=(Math.round(bgVideoDur*10)/10)||10;
+  };
+  bv.src=bgVideoURL; bv.muted=true; bv.loop=true;
+  bv.style.display='block';
+  bv.play().catch(()=>{});
+  ['bgClearRow','bgFitRow','bgOpRow'].forEach(id=>$(id).style.display='flex');
+  $('vidNoneHint').style.display='none';
+  applyBgStyle();
 });
+
+// ── VİDEO DIŞA AKTARMA (canvas + MediaRecorder) ──
+let _vidCancel=false;
+function cancelVideoExport(){ _vidCancel=true; }
+function pickVideoMime(fmt){
+  if(!window.MediaRecorder) return null;
+  const mp4=['video/mp4;codecs=avc1.640028,mp4a.40.2','video/mp4;codecs=avc1,mp4a.40.2','video/mp4'];
+  const webm=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
+  for(const m of (fmt==='mp4'?mp4:webm)){ if(MediaRecorder.isTypeSupported(m)) return m; }
+  return '';
+}
+(function initVidFmt(){
+  const sel=$('selVidFmt');
+  if(pickVideoMime('mp4')){ sel.value='mp4'; }
+  else {
+    sel.options[0].textContent='MP4 (bu tarayıcıda desteklenmiyor)';
+    sel.value='webm';
+  }
+})();
+function onVidStartChange(){
+  if(!bgVideoDur) return;
+  let st=parseFloat($('vidStart').value)||0;
+  st=Math.min(Math.max(0,st),Math.max(0,bgVideoDur-0.1));
+  $('vidStart').value=st;
+  $('vidDur').value=Math.max(1,Math.round((bgVideoDur-st)*10)/10);
+  const bv=$('bgVideo'); try{ bv.currentTime=st; }catch(e){}
+}
+// CSS radial-gradient(ellipse farthest-corner) karşılığı
+function ellGrad(ctx,W,H,cxp,cyp,stops){
+  const cx=W*cxp, cy=H*cyp;
+  const rxc=Math.max(1,Math.min(cx,W-cx)), ryc=Math.max(1,Math.min(cy,H-cy));
+  const dx=Math.max(cx,W-cx), dy=Math.max(cy,H-cy);
+  const f=Math.sqrt((dx/rxc)**2+(dy/ryc)**2);
+  const rx=rxc*f, ry=ryc*f;
+  ctx.save(); ctx.translate(cx,cy); ctx.scale(rx,ry);
+  const g=ctx.createRadialGradient(0,0,0,0,0,1);
+  stops.forEach(([o,c])=>g.addColorStop(o,c));
+  ctx.fillStyle=g; ctx.fillRect(-cx/rx,-cy/ry,W/rx,H/ry);
+  ctx.restore();
+}
+
+async function exportVideo(){
+  if(!bgVideoURL){ alert('Önce bir arka plan videosu ekleyin.'); return; }
+  if(!window.MediaRecorder){ alert('Tarayıcınız video kaydını desteklemiyor. Lütfen güncel Chrome veya Edge kullanın.'); return; }
+  let fmt=$('selVidFmt').value;
+  let mime=pickVideoMime(fmt);
+  if(fmt==='mp4' && !mime){
+    if(!confirm('Bu tarayıcı MP4 kaydını desteklemiyor (Chrome 126+ / Edge gerekir). WebM olarak indirilsin mi?')) return;
+    fmt='webm'; mime=pickVideoMime('webm');
+  }
+  const userInput=await promptExportName('grafik_video');
+  if(userInput===null) return;
+  const fileName=(userInput.trim()||'grafik_video').replace(/[^a-zA-Z0-9_\-ğüşıöçĞÜŞİÖÇ ]/g,'_');
+
+  const overlay=$('exportOverlay'), msg=$('exportMsg'), cancelBtn=$('exportCancel');
+  const controls=$('photoControls');
+  const photoOv=document.querySelector('.photo-overlay');
+  _vidCancel=false;
+  overlay.classList.add('on'); msg.textContent='Hazırlanıyor…'; cancelBtn.style.display='';
+  controls.style.opacity='0'; controls.style.pointerEvents='none';
+  if(photoOv) photoOv.style.opacity='0';
+  await sleep(150);
+
+  let v=null, ac=null, rec=null;
+  try{
+    const [W,H]=getResWH($('selRes').value);
+    const fps=parseInt($('selVidFps').value)||30;
+    const startSec=Math.min(Math.max(0,parseFloat($('vidStart').value)||0),Math.max(0,bgVideoDur-0.1));
+    const dur=Math.max(1,parseFloat($('vidDur').value)||bgVideoDur||5);
+    const withAudio=$('cbVidAudio').checked;
+    const fit=$('selBgFit').value, op=$('slBgOp').value/100;
+
+    // 1) Kart katmanını (arka plansız, şeffaf) tek sefer çiz
+    msg.textContent='Kart hazırlanıyor…';
+    buildRenderBox(W,H,true);
+    await document.fonts.ready; await sleep(400);
+    const ov=await html2canvas($('renderBox'),{
+      scale:1,useCORS:true,allowTaint:true,width:W,height:H,
+      backgroundColor:null,logging:false,imageTimeout:0,
+      onclone:(doc)=>{
+        [['quoteText',wMap.q],['nameField',wMap.n],['titleField',wMap.t]].forEach(([id,w])=>{
+          const el=doc.getElementById(id); if(el) el.style.fontWeight=String(w);
+        });
+      }
+    });
+    $('renderBox').innerHTML='';
+    if(_vidCancel) throw new Error('__cancel__');
+
+    // 2) Kayıt için ayrı video elemanı
+    v=document.createElement('video');
+    v.playsInline=true; v.preload='auto';
+    v.loop = false;
+    v.muted = !withAudio;
+    v.style.cssText='position:fixed;left:-9999px;top:0;width:2px;height:2px;';
+    document.body.appendChild(v);
+    v.src=bgVideoURL;
+    await new Promise((res,rej)=>{ v.onloadeddata=res; v.onerror=()=>rej(new Error('Video okunamadı.')); });
+    v.currentTime=startSec;
+
+    // 3) Canvas + akış
+    const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+    const ctx=cv.getContext('2d');
+    const stream=cv.captureStream(fps);
+    if(withAudio){
+      const AC=window.AudioContext||window.webkitAudioContext;
+      ac=new AC(); await ac.resume();
+      const src=ac.createMediaElementSource(v);
+      const dest=ac.createMediaStreamDestination();
+      src.connect(dest);                       // hoparlöre bağlama: kayıt sırasında ses çalmaz
+      dest.stream.getAudioTracks().forEach(t=>stream.addTrack(t));
+    }
+    const opts={videoBitsPerSecond:Math.round(Math.min(40e6,Math.max(4e6,10e6*(W*H)/(1920*1080))))};
+    if(mime) opts.mimeType=mime;
+    if(withAudio) opts.audioBitsPerSecond=192000;
+    rec=new MediaRecorder(stream,opts);
+    const chunks=[];
+    rec.ondataavailable=e=>{ if(e.data&&e.data.size) chunks.push(e.data); };
+    const stopped=new Promise(r=>{ rec.onstop=r; });
+
+    const draw=()=>{
+      ctx.globalAlpha=1; ctx.clearRect(0,0,W,H);
+      ellGrad(ctx,W,H,.3,.4,[[0,'#1e3a5f'],[.55,'#0b1728'],[1,'#070d1a']]);
+      if(v.readyState>=2 && v.videoWidth){
+        const vw=v.videoWidth, vh=v.videoHeight;
+        let dw=W, dh=H, dx=0, dy=0;
+        if(fit!=='fill'){
+          const k=fit==='contain'?Math.min(W/vw,H/vh):Math.max(W/vw,H/vh);
+          dw=vw*k; dh=vh*k; dx=(W-dw)/2; dy=(H-dh)/2;
+        }
+        ctx.globalAlpha=op; ctx.drawImage(v,dx,dy,dw,dh); ctx.globalAlpha=1;
+      }
+      ellGrad(ctx,W,H,.5,.5,[[0,'rgba(0,0,0,0)'],[.4,'rgba(0,0,0,0)'],[1,'rgba(0,0,0,.45)']]);
+      ctx.drawImage(ov,0,0);
+    };
+
+    draw();
+    rec.start(500);
+    try{ await v.play(); }
+    catch(e){ throw new Error('Tarayıcı videoyu oynatmaya izin vermedi. Sayfaya bir kez tıklayıp tekrar deneyin ya da "sesi dahil et" seçeneğini kapatın.'); }
+    const t0=performance.now();
+    await new Promise(resolve=>{
+      const tick=()=>{
+        const el=(performance.now()-t0)/1000;
+        draw();
+        msg.textContent='Video kaydediliyor… %'+Math.min(100,Math.round(el/dur*100))+'  (sekmeyi açık tutun)';
+        // Video sonuna gelindiyse başlangıç noktasına sar (süre kalan kısımdan uzunsa)
+        if(bgVideoDur && (v.ended || v.currentTime >= bgVideoDur-0.04) && el<dur-0.1){
+          v.currentTime=startSec; v.play().catch(()=>{});
+        }
+        if(_vidCancel || el>=dur) return resolve();
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+    v.pause();
+    if(rec.state!=='inactive') rec.stop();
+    await stopped;
+    if(!_vidCancel){
+      const type=(mime||'video/webm').split(';')[0];
+      const ext=type==='video/mp4'?'mp4':'webm';
+      downloadBlob(new Blob(chunks,{type}),`${fileName}.${ext}`);
+    }
+  }catch(err){
+    if(err && err.message!=='__cancel__'){
+      console.error(err);
+      alert('Video dışa aktarma hatası:\n'+(err.message||err));
+    }
+  }finally{
+    try{ if(rec && rec.state!=='inactive') rec.stop(); }catch(e){}
+    if(ac){ try{ ac.close(); }catch(e){} }
+    if(v){ v.pause(); v.remove(); }
+    $('renderBox').innerHTML='';
+    controls.style.opacity=''; controls.style.pointerEvents='';
+    if(photoOv) photoOv.style.opacity='';
+    cancelBtn.style.display='none'; msg.textContent='Görsel oluşturuluyor…';
+    overlay.classList.remove('on');
+  }
+}
 
 // ── COLORS ──
 function applyBgGrad(){
@@ -1798,6 +2124,15 @@ function applyText(){
 }
 applyText();
 
+// Yapıştırılan metni düz metne çevir (dış biçim/font taşınmasın)
+['quoteText','nameField','titleField'].forEach(id => {
+  $(id).addEventListener('paste', e => {
+    e.preventDefault();
+    const txt = (e.clipboardData || window.clipboardData).getData('text/plain');
+    document.execCommand('insertText', false, txt);
+  });
+});
+
 // ── PHOTO FILTERS ──
 function applyFilters(){
   const img=$('photoImg');
@@ -1806,7 +2141,7 @@ function applyFilters(){
   img.style.filter=`brightness(${br}%) contrast(${ct}%) saturate(${sat}%) blur(${bl}px)`;
   img.style.opacity=op;
   $('brVal').textContent=br; $('ctVal').textContent=ct; $('satVal').textContent=sat;
-  $('blurVal').textContent=bl; $('imgOpVal').textContent=op*100+'%';
+  $('blurVal').textContent=bl; $('imgOpVal').textContent=$('slImgOp').value+'%';
 }
 function applyTint(){
   const tint=$('photoTint');
@@ -1826,13 +2161,14 @@ function applyPreset(t){
 // ── PHOTO PAN/ZOOM ──
 const panel=$('photoPanel'), photoImg=$('photoImg'), fileInp=$('fileInput');
 let imgLoaded=false, photoBase64=null;
-let scale=1, ox=0, oy=0, flipH=false, flipV=false;
+let scale=1, ox=0, oy=0, flipH=false, flipV=false, lastPW=0;
 let dragging=false, sx,sy,sox,soy;
 
 function applyTransform(){
   const sw=flipH?-scale:scale, sh=flipV?-scale:scale;
   const tx=flipH?photoImg.naturalWidth*scale:0, ty=flipV?photoImg.naturalHeight*scale:0;
   photoImg.style.transform=`translate(${ox+tx}px,${oy+ty}px) scale(${sw},${sh})`;
+  lastPW=panel.offsetWidth;
 }
 function fitCover(){
   const pw=panel.offsetWidth, ph=panel.offsetHeight;
@@ -1845,18 +2181,19 @@ function zoomAt(cx,cy,d){
   const ix=(cx-ox)/scale, iy=(cy-oy)/scale;
   scale=ns; ox=cx-ix*scale; oy=cy-iy*scale; applyTransform();
 }
+function setPhotoFromDataURL(b64){
+  photoBase64=b64;
+  photoImg.onload=()=>{
+    photoImg.style.display='block'; imgLoaded=true;
+    panel.classList.remove('empty'); panel.classList.add('has-img');
+    fitCover();
+  };
+  photoImg.src=b64;
+}
 function loadFile(file){
   if(!file||!file.type.startsWith('image/')) return;
   const r=new FileReader();
-  r.onload=ev=>{
-    photoBase64=ev.target.result;
-    photoImg.onload=()=>{
-      photoImg.style.display='block'; imgLoaded=true;
-      panel.classList.remove('empty'); panel.classList.add('has-img');
-      fitCover();
-    };
-    photoImg.src=photoBase64;
-  };
+  r.onload=ev=>setPhotoFromDataURL(ev.target.result);
   r.readAsDataURL(file);
 }
 fileInp.addEventListener('change',e=>{ loadFile(e.target.files[0]); fileInp.value=''; });
@@ -1872,11 +2209,11 @@ panel.addEventListener('mousedown',e=>{
   if(!imgLoaded||e.target.closest('.photo-controls')) return;
   dragging=false; sx=e.clientX; sy=e.clientY; sox=ox; soy=oy;
   panel.classList.add('grabbing');
-  const mv=ev=>{ const dx=ev.clientX-sx,dy=ev.clientY-sy; if(Math.abs(dx)+Math.abs(dy)>3) dragging=true; ox=sox+dx; oy=soy+dy; applyTransform(); };
+  const mv=ev=>{ const dx=(ev.clientX-sx)/STAGE_S,dy=(ev.clientY-sy)/STAGE_S; if(Math.abs(dx)+Math.abs(dy)>3) dragging=true; ox=sox+dx; oy=soy+dy; applyTransform(); };
   const up=()=>{ panel.classList.remove('grabbing'); window.removeEventListener('mousemove',mv); window.removeEventListener('mouseup',up); setTimeout(()=>{dragging=false;},0); };
   window.addEventListener('mousemove',mv); window.addEventListener('mouseup',up); e.preventDefault();
 });
-panel.addEventListener('wheel',e=>{ if(!imgLoaded) return; e.preventDefault(); const r=panel.getBoundingClientRect(); zoomAt(e.clientX-r.left,e.clientY-r.top,e.deltaY<0?.1:-.1); },{passive:false});
+panel.addEventListener('wheel',e=>{ if(!imgLoaded) return; e.preventDefault(); const r=panel.getBoundingClientRect(); zoomAt((e.clientX-r.left)/STAGE_S,(e.clientY-r.top)/STAGE_S,e.deltaY<0?.1:-.1); },{passive:false});
 
 $('btnZoomIn').addEventListener('click',e=>{ e.stopPropagation(); zoomAt(panel.offsetWidth/2,panel.offsetHeight/2,.15); });
 $('btnZoomOut').addEventListener('click',e=>{ e.stopPropagation(); zoomAt(panel.offsetWidth/2,panel.offsetHeight/2,-.15); });
@@ -1888,15 +2225,59 @@ $('btnReset').addEventListener('click',e=>{
   fitCover();
 });
 
+// Panel boyutu değişince (pencere, marj, foto genişliği) kadrajı orantılı koru
+if (window.ResizeObserver) {
+  new ResizeObserver(() => {
+    if (!imgLoaded || !lastPW) return;
+    const w = panel.offsetWidth; if (!w) return;
+    const k = w / lastPW;
+    if (Math.abs(k - 1) < 0.001) return;
+    ox *= k; oy *= k; scale *= k;
+    applyTransform();
+  }).observe(panel);
+}
+
 // ── ASPECT RATIO ──
 const RATIOS={'1920x1080':56.25,'3840x2160':56.25,'1280x720':56.25,'1080x1080':100,'1080x1920':177.78,'custom':56.25};
+function getRatioPct(v){
+  if(v==='custom'){
+    const w=parseInt($('cusW').value)||1920, h=parseInt($('cusH').value)||1080;
+    return h/w*100;
+  }
+  return RATIOS[v]??56.25;
+}
+// Sahne tasarım boyutu: uzun kenar 1920px (render çözünürlüğü ile aynı oran)
+let STAGE_S = 1, DESIGN_W = 1920, DESIGN_H = 1080;
+function getResWH(v){
+  if(v==='custom') return [parseInt($('cusW').value)||1920, parseInt($('cusH').value)||1080];
+  return v.split('x').map(Number);
+}
+function fitStage(){
+  const area = document.querySelector('.canvas-area');
+  const st = $('bgAspect');
+  if(!area || !st) return;
+  const aw = Math.max(50, area.clientWidth  - 32);
+  const ah = Math.max(50, area.clientHeight - 32);
+  STAGE_S = Math.min(aw / DESIGN_W, ah / DESIGN_H);
+  st.style.transform    = 'scale(' + STAGE_S + ')';
+  st.style.marginRight  = (DESIGN_W * (STAGE_S - 1)) + 'px';
+  st.style.marginBottom = (DESIGN_H * (STAGE_S - 1)) + 'px';
+}
 function onResChange(v){
   $('customRow').style.display=v==='custom'?'flex':'none';
-  const pct=(RATIOS[v]??56.25).toFixed(4)+'%';
-  $('bgAspect').style.paddingTop=pct;
+  const [W,H] = getResWH(v);
+  const k = 1920 / Math.max(W,H);
+  DESIGN_W = Math.round(W*k); DESIGN_H = Math.round(H*k);
+  $('bgAspect').style.width  = DESIGN_W + 'px';
+  $('bgAspect').style.height = DESIGN_H + 'px';
+  const pct=(DESIGN_H/DESIGN_W*100).toFixed(4)+'%';
   $('cardAspect').style.paddingTop=pct;
-  if(imgLoaded) setTimeout(fitCover,50);
+  fitStage();
+  if(imgLoaded) setTimeout(fitCover,350);
 }
+window.addEventListener('resize', fitStage);
+if (window.ResizeObserver) new ResizeObserver(fitStage).observe(document.querySelector('.canvas-area'));
+onResChange($('selRes').value);
 
 // ── FORMAT ──
 let exportFmt='png';
@@ -1911,7 +2292,22 @@ function setFmt(f,btn){
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const canvasToBlob = (c,t,q) => new Promise(r => c.toBlob(r,t,q));
 
-function buildRenderBox(W, H) {
+// Fotoğraf filtrelerini piksellere işle (html2canvas CSS filter'ı desteklemiyor)
+function bakePhoto() {
+  try {
+    const f = photoImg.style.filter || '';
+    if (!f || /^brightness\(100%\) contrast\(100%\) saturate\(100%\) blur\(0(px)?\)$/.test(f.trim())) return null;
+    const c = document.createElement('canvas');
+    c.width = photoImg.naturalWidth; c.height = photoImg.naturalHeight;
+    const g = c.getContext('2d');
+    if (!('filter' in g)) return null;      // Safari: desteklenmiyor
+    g.filter = f;
+    g.drawImage(photoImg, 0, 0);
+    return c.toDataURL('image/jpeg', 0.95);
+  } catch (e) { console.warn('bakePhoto:', e); return null; }
+}
+
+function buildRenderBox(W, H, cardOnly) {
   const rb = $('renderBox');
   rb.innerHTML = '';
   rb.style.width    = W + 'px';
@@ -1924,14 +2320,30 @@ function buildRenderBox(W, H) {
   const bgFrame = $('bgFrame');
   const cpanel  = $('contentPanel');
 
-  const cpBg = cpanel.style.background || cpanel.style.backgroundColor || '#1e3a5f';
-  rb.style.background = cpBg;
-  rb.style.backgroundImage = 'none';
+  // Önizlemedeki .bg-frame zeminini (radyal gradyan) birebir kullan
+  if (cardOnly) {
+    rb.style.backgroundColor = 'transparent';
+    rb.style.backgroundImage = 'none';
+  } else {
+    rb.style.backgroundColor = '#0b1728';
+    const frameBgImg = getComputedStyle(bgFrame).backgroundImage;
+    rb.style.backgroundImage = (frameBgImg && frameBgImg !== 'none') ? frameBgImg : 'none';
+  }
 
   // Fix 1: Properly clone background image into render box
   const layer = $('bgImgLayer');
-  const currentBg = layer.style.backgroundImage;
-  if (currentBg && currentBg !== 'none') {
+  let currentBg = layer.style.backgroundImage;
+  // Arka plan video ise, görsel dışa aktarmada videonun o anki karesi kullanılır
+  const bvEl = $('bgVideo');
+  if (!cardOnly && bgVideoURL && bvEl.readyState >= 2 && bvEl.videoWidth) {
+    try {
+      const c = document.createElement('canvas');
+      c.width = bvEl.videoWidth; c.height = bvEl.videoHeight;
+      c.getContext('2d').drawImage(bvEl, 0, 0);
+      currentBg = 'url(' + c.toDataURL('image/jpeg', 0.92) + ')';
+    } catch (e) { console.warn('video karesi alınamadı:', e); }
+  }
+  if (!cardOnly && currentBg && currentBg !== 'none') {
     const fitVal = $('selBgFit') ? $('selBgFit').value : 'cover';
     const bgSize = fitVal === 'contain' ? 'contain' : fitVal === 'fill' ? '100% 100%' : 'cover';
     const bgOp   = $('slBgOp') ? parseFloat($('slBgOp').value) / 100 : 1;
@@ -1951,6 +2363,14 @@ function buildRenderBox(W, H) {
     rb.appendChild(bgImgDiv);
   }
 
+  // Önizlemedeki vinyet katmanı (.bg-frame::after)
+  if (!cardOnly) {
+    const vig = document.createElement('div');
+    vig.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;' +
+      'background:radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.45) 100%)';
+    rb.appendChild(vig);
+  }
+
   const cardOrig  = $('card');
   const cardClone = cardOrig.cloneNode(true);
 
@@ -1968,7 +2388,12 @@ function buildRenderBox(W, H) {
 
   if (imgLoaded && photoBase64) {
     const imgEl = cardClone.querySelector('#photoImg');
-    if (imgEl) { imgEl.src = photoBase64; imgEl.style.display = 'block'; }
+    if (imgEl) {
+      imgEl.src = photoBase64; imgEl.style.display = 'block';
+      // html2canvas CSS filter desteklemez → filtreyi canvas'a önceden uygula
+      const baked = bakePhoto();
+      if (baked) { imgEl.src = baked; imgEl.style.filter = 'none'; }
+    }
   }
 
   const cpClone = cardClone.querySelector('#contentPanel') || cardClone.querySelector('.content-panel');
@@ -1981,10 +2406,10 @@ function buildRenderBox(W, H) {
   const scaleY = H / bgFrame.offsetHeight;
   const bfR    = bgFrame.getBoundingClientRect();
   const cardR  = cardOrig.getBoundingClientRect();
-  const relX   = (cardR.left - bfR.left) * scaleX;
-  const relY   = (cardR.top  - bfR.top)  * scaleY;
-  const cardW  = cardR.width  * scaleX;
-  const cardH  = cardR.height * scaleY;
+  const relX   = ((cardR.left - bfR.left) / STAGE_S) * scaleX;
+  const relY   = ((cardR.top  - bfR.top)  / STAGE_S) * scaleY;
+  const cardW  = (cardR.width  / STAGE_S) * scaleX;
+  const cardH  = (cardR.height / STAGE_S) * scaleY;
 
   cardClone.style.cssText += [
     'position:absolute',
@@ -1995,7 +2420,7 @@ function buildRenderBox(W, H) {
     'transform:none',
     'margin:0',
     'z-index:1',
-    'border-radius:' + (cardOrig.style.borderRadius || '14px'),
+    'border-radius:' + ((parseFloat(cardOrig.style.borderRadius) || 14) * (cardW / origW)) + 'px',
   ].join(';');
 
   const ratio = cardW / origW;
@@ -2012,6 +2437,34 @@ function buildRenderBox(W, H) {
         (_, n) => (parseFloat(n) * ratio) + 'px');
     }
   });
+
+  // Fotoğraf kadrajını export ölçeğine çevir (önizleme pikselleri → export pikselleri)
+  {
+    const imgEl = cardClone.querySelector('#photoImg');
+    if (imgEl && imgLoaded) {
+      const s2 = scale * ratio, X = ox * ratio, Y = oy * ratio;
+      const tx = flipH ? photoImg.naturalWidth  * s2 : 0;
+      const ty = flipV ? photoImg.naturalHeight * s2 : 0;
+      imgEl.style.transform =
+        `translate(${X + tx}px,${Y + ty}px) scale(${flipH ? -s2 : s2},${flipV ? -s2 : s2})`;
+    }
+  }
+
+  // clamp()/vw ile gelen padding, köşe ve boşlukları önizlemedeki gerçek değerden ölçekle
+  const px4 = (cs, keys) => keys.map(k => ((parseFloat(cs[k]) || 0) * ratio) + 'px').join(' ');
+  const cloneBar = cardClone.querySelector('#nameBar');
+  if (cloneBar) {
+    const cs = getComputedStyle($('nameBar'));
+    cloneBar.style.borderRadius = px4(cs, ['borderTopLeftRadius','borderTopRightRadius','borderBottomRightRadius','borderBottomLeftRadius']);
+    cloneBar.style.padding      = px4(cs, ['paddingTop','paddingRight','paddingBottom','paddingLeft']);
+  }
+  const cloneQA = cardClone.querySelector('#quoteArea');
+  if (cloneQA) {
+    const cs = getComputedStyle($('quoteArea'));
+    cloneQA.style.padding = px4(cs, ['paddingTop','paddingRight','paddingBottom','paddingLeft']);
+    cloneQA.style.top     = (parseFloat(cs.top)    * ratio) + 'px';
+    cloneQA.style.bottom  = (parseFloat(cs.bottom) * ratio) + 'px';
+  }
 
   // fontWeight clone'da kaybolabilir — tüm metin alanlarına explicit uygula
   const fwMap = [
@@ -2050,6 +2503,7 @@ async function exportImg() {
   const photoOv  = document.querySelector('.photo-overlay');
 
   overlay.classList.add('on');
+  $('exportMsg').textContent = 'Görsel oluşturuluyor…'; $('exportCancel').style.display = 'none';
   controls.style.opacity = '0'; controls.style.pointerEvents = 'none';
   if (photoOv) photoOv.style.opacity = '0';
   await sleep(150);
@@ -2179,7 +2633,7 @@ const HELP_PAGES = {
       <div style="height:4px;"></div>
       <div class="h-tip">
         <div class="h-tip-ic ic-purple"><i class="fa-solid fa-cloud-arrow-down"></i></div>
-        <div class="h-tip-txt"><b>Ayarlarınızı yedekleyin</b><span>Aktar → Evrensel Yedek bölümünden tüm ayarlarınızı ve kişi kayıtlarınızı JSON dosyası olarak indirin.</span></div>
+        <div class="h-tip-txt"><b>Kayıtlarınızı yedekleyin</b><span>Sağ paneldeki Excel butonuyla kişi kayıtlarınızı .xlsx olarak indirin; İçe Aktar ile geri yükleyin.</span></div>
       </div>`
   },
   layout: {
@@ -2223,7 +2677,7 @@ const HELP_PAGES = {
         <div class="hs-title-icon ic-yellow"><i class="fa-solid fa-font"></i></div>
         <div><h3>Metin Ayarları</h3><p>Font, boyut, hizalama ve renk</p></div>
       </div>
-      <div class="h-tip"><div class="h-tip-ic ic-blue"><i class="fa-solid fa-i-cursor"></i></div><div class="h-tip-txt"><b>Doğrudan Düzenleme</b><span>Önizlemede yazı alanına, ad veya ünvan kutusuna tıklayıp doğrudan yazın. Metin taşarsa font otomatik küçülür.</span></div></div>
+      <div class="h-tip"><div class="h-tip-ic ic-blue"><i class="fa-solid fa-i-cursor"></i></div><div class="h-tip-txt"><b>Doğrudan Düzenleme</b><span>Önizlemede yazı alanına, ad veya ünvan kutusuna tıklayıp doğrudan yazın.</span></div></div>
       <div class="h-tip"><div class="h-tip-ic ic-green"><i class="fa-solid fa-font"></i></div><div class="h-tip-txt"><b>Font Seçimi</b><span>50'den fazla Google Fonts seçeneği mevcuttur. Yazı alanı, ad ve ünvan için ayrı ayrı font seçilebilir.</span></div></div>
       <div class="h-tip"><div class="h-tip-ic ic-yellow"><i class="fa-solid fa-text-height"></i></div><div class="h-tip-txt"><b>Punto & Kalınlık</b><span>Punto değerini girin. Thin / Reg / Bold butonlarıyla kalınlığı ayarlayın.</span></div></div>
       <div class="h-tip"><div class="h-tip-ic ic-purple"><i class="fa-solid fa-align-left"></i></div><div class="h-tip-txt"><b>Hizalama</b><span>Yatay hizalama (Sol / Orta / Sağ) ve dikey hizalama (Üst / Orta / Alt) bağımsız olarak ayarlanabilir.</span></div></div>
@@ -2238,12 +2692,12 @@ const HELP_PAGES = {
         <div class="hs-title-icon ic-orange"><i class="fa-solid fa-palette"></i></div>
         <div><h3>Renk Ayarları</h3><p>Panel, bar ve arka plan renkleri</p></div>
       </div>
-      <div class="h-tip"><div class="h-tip-ic ic-blue"><i class="fa-solid fa-fill-drip"></i></div><div class="h-tip-txt"><b>İçerik Paneli Rengi</b><span>İki renk ve açı ile degrade oluşturun veya "Düz Renk" seçeneğiyle tek renk kullanın. Panel opaklığını %0–100 arasında ayarlayın.</span></div></div>
+      <div class="h-tip"><div class="h-tip-ic ic-blue"><i class="fa-solid fa-fill-drip"></i></div><div class="h-tip-txt"><b>İçerik Paneli Rengi</b><span>İki renk ve açı ile degrade oluşturun veya "Düz Renk" seçeneğiyle tek renk kullanın.</span></div></div>
       <div class="h-tip"><div class="h-tip-ic ic-red"><i class="fa-solid fa-rectangle-ad"></i></div><div class="h-tip-txt"><b>Ad Bar Rengi</b><span>Ad barı için bağımsız degrade veya düz renk seçin. Bar opaklığı ayrıca kontrol edilebilir.</span></div></div>
       <div class="h-tip"><div class="h-tip-ic ic-green"><i class="fa-solid fa-image"></i></div><div class="h-tip-txt"><b>Fotoğraf Arka Planı</b><span>Fotoğraf yüklenmediğinde görünen arka plan rengini seçin.</span></div></div>
       <div class="h-highlight" style="margin-top:4px;">
         <i class="fa-solid fa-lightbulb"></i>
-        <p>Panel opaklığını düşürerek arka plan görselinin kısmen görünmesini sağlayabilirsiniz. Bu, şeffaf katmanlı bir etki verir.</p>
+        <p>Yazı Zemini rengi ve opaklığıyla yazı alanının arkasına yarı saydam bir katman ekleyerek okunabilirliği artırabilirsiniz.</p>
       </div>`
   },
   persons: {
@@ -2259,7 +2713,7 @@ const HELP_PAGES = {
       <div class="h-tip"><div class="h-tip-ic ic-green"><i class="fa-solid fa-arrow-up-right-from-square"></i></div><div class="h-tip-txt"><b>Grafiğe Yükleme</b><span>Kişi kartına veya ünvan satırına tıklayın — ad ve ünvan anında grafiğe aktarılır. Birden fazla ünvan varsa istediğinizi seçebilirsiniz.</span></div></div>
       <div class="h-tip"><div class="h-tip-ic ic-yellow"><i class="fa-solid fa-magnifying-glass"></i></div><div class="h-tip-txt"><b>Arama</b><span>Arama kutusuna yazarak ad veya ünvana göre kayıtları filtreleyin.</span></div></div>
       <div class="h-tip"><div class="h-tip-ic ic-cyan"><i class="fa-solid fa-file-excel"></i></div><div class="h-tip-txt"><b>Excel Dışa / İçe Aktarma</b><span>"Excel" ile tüm kayıtları .xlsx olarak indirin. "İçe Aktar" ile Excel/CSV dosyasından toplu kayıt ekleyin. Sütun sırası: Ad Soyad | Ünvan 1 | Ünvan 2</span></div></div>
-      <div class="h-tip"><div class="h-tip-ic ic-purple"><i class="fa-solid fa-cloud-arrow-down"></i></div><div class="h-tip-txt"><b>Evrensel Yedek</b><span>"Yedeği İndir" ile tüm ayarlar ve kayıtlar JSON olarak yedeklenir. "Yedeği Geri Yükle" ile başka cihaza taşıyın.</span></div></div>`
+      <div class="h-tip"><div class="h-tip-ic ic-purple"><i class="fa-solid fa-cloud-arrow-down"></i></div><div class="h-tip-txt"><b>Yedekleme / Taşıma</b><span>Excel dosyasını başka cihazda "İçe Aktar" ile yükleyerek kayıtları taşıyabilirsiniz. Aynı adlı kayıtlar atlanır.</span></div></div>`
   },
   export: {
     title: 'Dışa Aktarma',
@@ -2271,7 +2725,7 @@ const HELP_PAGES = {
         <div><h3>Dışa Aktarma</h3><p>Çözünürlük, format ve kalite</p></div>
       </div>
       <div class="h-tip"><div class="h-tip-ic ic-blue"><i class="fa-solid fa-photo-film"></i></div><div class="h-tip-txt"><b>Çözünürlük Seçimi</b><span>1920×1080 Full HD, 4K (3840×2160), Instagram Kare (1080×1080), Dikey Story (1080×1920) veya özel boyut seçebilirsiniz.</span></div></div>
-      <div class="h-tip"><div class="h-tip-ic ic-green"><i class="fa-solid fa-file-image"></i></div><div class="h-tip-txt"><b>Format</b><span>PNG — şeffaflık destekli, maksimum kalite. JPG — küçük dosya boyutu. WebP — modern tarayıcılar için dengeli format.</span></div></div>
+      <div class="h-tip"><div class="h-tip-ic ic-green"><i class="fa-solid fa-file-image"></i></div><div class="h-tip-txt"><b>Format</b><span>PNG — kayıpsız, maksimum kalite. JPG — küçük dosya boyutu. WebP — modern tarayıcılar için dengeli format.</span></div></div>
       <div class="h-tip"><div class="h-tip-ic ic-yellow"><i class="fa-solid fa-sliders"></i></div><div class="h-tip-txt"><b>Kalite Ayarı</b><span>JPG ve WebP formatlarında %50–100 arasında kalite ayarı yapılabilir. PNG her zaman maksimum kalitededir.</span></div></div>
       <div class="h-tip"><div class="h-tip-ic ic-purple"><i class="fa-solid fa-download"></i></div><div class="h-tip-txt"><b>İndirme Süreci</b><span>"Görseli İndir" butonuna basın, dosya adını girin, formatı seçin. Export sırasında önizleme kısa süre gizlenir — bu normaldir.</span></div></div>
       <div class="h-highlight" style="margin-top:4px;">
@@ -2311,7 +2765,6 @@ function downloadBlob(blob, name) {
   background-size:cover; background-position:center;
 ">
 </div>
-<canvas id="videoCanvas" style="position:fixed;left:-9999px;top:0;display:block;"></canvas>
 
 </body>
 </html>
