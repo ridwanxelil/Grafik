@@ -219,7 +219,12 @@ input[type=color]{
   content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
   background:radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.45) 100%);
 }
-.card-wrap{position:relative;z-index:1;width:100%;min-width:0;}
+.card-wrap{position:relative;z-index:1;width:100%;min-width:0;cursor:default;}
+.bg-frame.has-bgmedia{cursor:grab;}
+.bg-frame.bg-grabbing{cursor:grabbing;}
+.bg-ctrl-btn{flex:1;padding:6px 0;border-radius:7px;border:1px solid #334155;background:#1e293b;color:#cbd5e1;font-size:12px;cursor:pointer;}
+.bg-ctrl-btn:hover{background:#334155;color:#fff;}
+.bg-ctrl-btn.active{background:#2563eb;border-color:#2563eb;color:#fff;}
 .card-aspect{position:relative;width:100%;padding-top:56.25%;transition:padding-top .3s;}
 
 /* ── CARD ── */
@@ -244,7 +249,7 @@ input[type=color]{
   background:#1a1a2e;cursor:grab;user-select:none;transition:width .3s;
 }
 .photo-panel.grabbing{cursor:grabbing;}
-#photoImg{position:absolute;transform-origin:0 0;display:none;pointer-events:none;will-change:transform;}
+#photoImg,#photoVideo{position:absolute;transform-origin:0 0;display:none;pointer-events:none;will-change:transform;max-width:none;}
 #photoTint{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;}
 
 /* photo overlay */
@@ -335,7 +340,7 @@ input[type=color]{
 #nameField:empty::before{content:attr(data-ph);color:rgba(255,255,255,.38);font-style:italic;pointer-events:none;font-size:0.65em;font-weight:400;letter-spacing:0;text-transform:none;}
 #titleField{
   color:rgba(255,255,255,.86);font-weight:400;letter-spacing:.03em;line-height:1.15;
-  outline:none;display:block;margin-top:-6px;cursor:text;white-space:normal;word-break:break-word;
+  outline:none;display:block;margin-top:0;cursor:text;white-space:normal;word-break:break-word;
 }
 #titleField:empty::before{content:attr(data-ph);color:rgba(255,255,255,.32);font-style:italic;pointer-events:none;font-size:0.7em;}
 #nameField:focus,#titleField:focus{background:rgba(255,255,255,.07);border-radius:3px;}
@@ -741,6 +746,17 @@ input[type=color]{
               <option value="fill">Esnet</option>
             </select>
           </div>
+          <div id="bgCtrlRow" style="display:none;flex-direction:column;gap:5px;">
+            <div style="display:flex;gap:5px;">
+              <button class="bg-ctrl-btn" id="bgBtnIn"    title="Büyüt"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+              <button class="bg-ctrl-btn" id="bgBtnOut"   title="Küçült"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+              <button class="bg-ctrl-btn" id="bgBtnFH"    title="Yatay Çevir"><i class="fa-solid fa-left-right"></i></button>
+              <button class="bg-ctrl-btn" id="bgBtnFV"    title="Dikey Çevir"><i class="fa-solid fa-up-down"></i></button>
+              <button class="bg-ctrl-btn" id="bgBtnFit"   title="Sığdır (kaydırma ve zoom'u sıfırla)"><i class="fa-solid fa-expand"></i></button>
+              <button class="bg-ctrl-btn" id="bgBtnReset" title="Tümünü sıfırla"><i class="fa-solid fa-rotate-left"></i></button>
+            </div>
+            <div style="font-size:9.5px;color:#64748b;line-height:1.5;">Fareyle sahnenin kart dışındaki boş alanından sürükleyerek kaydır, tekerlekle zoom yap.</div>
+          </div>
           <div class="row" id="bgOpRow" style="display:none">
             <span class="lbl">Opaklık</span>
             <input type="range" class="flex-fill" id="slBgOp" min="5" max="100" value="100" oninput="applyBgStyle()">
@@ -1018,7 +1034,7 @@ input[type=color]{
               <button class="wb" id="tw700" onclick="setW('t',700,this)">Bold</button>
             </div>
           </div>
-          <div class="row"><span class="lbl">Ad/Ünvan Aralığı</span><input type="range" class="flex-fill" id="slTGap" min="-6" max="24" value="-6" oninput="applyText()"><span class="val" id="tGapVal">-6px</span></div>
+          <div class="row"><span class="lbl">Ad/Ünvan Aralığı</span><input type="range" class="flex-fill" id="slTGap" min="-6" max="24" value="0" oninput="applyText()"><span class="val" id="tGapVal">0px</span></div>
           <div class="row"><span class="lbl">Renk</span><input type="color" id="tColor" value="#e0e0e0" oninput="applyText()"></div>
         </div>
       </div>
@@ -1030,10 +1046,11 @@ input[type=color]{
         <div class="sb-card-head"><small><i class="fa-solid fa-fill-drip"></i> İçerik Paneli</small></div>
         <div class="sb-card-body">
           <div class="row">
-            <span class="lbl">Renk 1</span><input type="color" id="bgC1" value="#3a5298" oninput="applyBgGrad()">
-            <span class="lbl ms-2">Renk 2</span><input type="color" id="bgC2" value="#6b8fdf" oninput="applyBgGrad()">
+            <span class="lbl">Renk 1</span><input type="color" id="bgC1" value="#142052" oninput="applyBgGrad()">
+            <span class="lbl ms-2">Renk 2</span><input type="color" id="bgC2" value="#2d49b6" oninput="applyBgGrad()">
           </div>
           <div class="row"><span class="lbl">Açı</span><input type="range" class="flex-fill" id="slBgAngle" min="0" max="360" value="135" oninput="applyBgGrad()"><span class="val" id="bgAngleVal">135°</span></div>
+          <div class="row"><span class="lbl">Opaklık</span><input type="range" class="flex-fill" id="slBgPanelOp" min="0" max="100" value="25" oninput="applyBgGrad()"><span class="val" id="bgPanelOpVal">25%</span></div>
           <div class="sb-hr"></div>
           <div class="row">
             <span class="lbl">Düz Renk</span>
@@ -1119,7 +1136,7 @@ input[type=color]{
       <div class="sb-card" id="vidExportCard">
         <div class="sb-card-head"><small><i class="fa-solid fa-film"></i> Video Dışa Aktar (MP4 / WebM)</small></div>
         <div class="sb-card-body">
-          <div id="vidNoneHint" style="font-size:10px;color:#fbbf24;line-height:1.5;">Önce Arka Plan sekmesinden bir video ekleyin.</div>
+          <div id="vidNoneHint" style="font-size:10px;color:#fbbf24;line-height:1.5;">Arka plana ya da fotoğraf alanına video ekleyebilirsin; video eklemesen de sabit içerikle video üretilir.</div>
           <div class="row">
             <span class="lbl">Format</span>
             <select class="flex-fill" id="selVidFmt">
@@ -1147,8 +1164,37 @@ input[type=color]{
             </select>
           </div>
           <div class="row">
-            <label style="font-size:10.5px;color:#94a3b8;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="cbVidAudio" checked> Videonun sesini dahil et</label>
+            <label style="font-size:10.5px;color:#94a3b8;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="cbVidAudio" checked> Videoların sesini dahil et</label>
           </div>
+          <div class="row">
+            <label style="font-size:10.5px;color:#94a3b8;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="cbVidAnim" checked> Giriş/çıkış animasyonu</label>
+          </div>
+          <div class="row">
+            <span class="lbl">Anim. Süresi</span>
+            <select class="flex-fill" id="selVidAnimDur">
+              <option value="0.25">Çok hızlı (0,25 sn)</option>
+              <option value="0.4" selected>Hızlı (0,4 sn)</option>
+              <option value="0.7">Orta (0,7 sn)</option>
+            </select>
+          </div>
+          <div class="row">
+            <span class="lbl">Zoom Yönü</span>
+            <select class="flex-fill" id="selVidAnimOrg">
+              <option value="bottom" selected>Alttan</option>
+              <option value="top">Üstten</option>
+            </select>
+          </div>
+          <div class="row">
+            <span class="lbl">Kart Öncesi</span>
+            <input type="number" id="vidLead" min="0" step="0.1" value="2" style="width:70px">
+            <span class="val" style="width:auto;margin-left:4px">sn</span>
+          </div>
+          <div class="row">
+            <span class="lbl">Kart Sonrası</span>
+            <input type="number" id="vidTail" min="0" step="0.1" value="2" style="width:70px">
+            <span class="val" style="width:auto;margin-left:4px">sn</span>
+          </div>
+          <div style="font-size:9.5px;color:#64748b;line-height:1.5;">Video, kart çıkmadan önce "Kart Öncesi" kadar yalnızca arka planla başlar; kart kapandıktan sonra "Kart Sonrası" kadar arka planla biter. Tüm içerik (fotoğraf, yazı alanı, bant, yazılar) aynı anda, seçtiğin kenardan zoom yaparak belirir. Video sonunda aynı hareket tersine işler ve yalnızca arka plan kalır.</div>
           <button class="btn btn-green w-100" style="justify-content:center;" onclick="exportVideo()">
             <i class="fa-solid fa-film"></i> Videoyu İndir
           </button>
@@ -1213,10 +1259,11 @@ input[type=color]{
 
               <div class="photo-panel empty" id="photoPanel">
                 <img id="photoImg" alt="">
+                <video id="photoVideo" muted loop playsinline autoplay></video>
                 <div id="photoTint"></div>
                 <div class="photo-overlay">
                   <i class="fa-solid fa-cloud-arrow-up fa-2x" style="opacity:.7"></i>
-                  <span class="ov-label">Fotoğraf seçin<br>veya sürükleyin</span>
+                  <span class="ov-label">Fotoğraf veya video seçin<br>ya da sürükleyin</span>
                 </div>
                 <div class="photo-controls" id="photoControls">
                   <button class="pc-btn pc-camera" onclick="$('fileInput').click()" title="Fotoğraf Seç"><i class="fa-solid fa-camera"></i></button>
@@ -1231,7 +1278,7 @@ input[type=color]{
                 </div>
               </div>
 
-              <input type="file" id="fileInput" accept="image/*" style="display:none">
+              <input type="file" id="fileInput" accept="image/*,video/*" style="display:none">
 
               <div class="content-panel namebar-bottom" id="contentPanel">
                 <div class="quote-bg" id="quoteBg"></div>
@@ -1804,6 +1851,7 @@ $('bgImgInput').addEventListener('change',function(e){
   const r=new FileReader();
   r.onload=ev=>{
     clearBgVideo();
+    bgResetAll();
     bgBase64=ev.target.result;
     $('bgImgLayer').style.backgroundImage=`url('${bgBase64}')`;
     applyBgStyle();
@@ -1813,7 +1861,56 @@ $('bgImgInput').addEventListener('change',function(e){
   };
   r.readAsDataURL(f); this.value='';
 });
+// ── ARKA PLAN KADRAJ (kaydır / zoom / çevir) ──
+let bgZ=1, bgX=0, bgY=0, bgFH=false, bgFV=false;
+function bgHasMedia(){ try{ return !!(bgBase64 || bgVideoURL); }catch(e){ return !!bgBase64; } }
+function applyBgTransform(){
+  const idle = bgZ===1 && !bgX && !bgY && !bgFH && !bgFV;
+  const tr = idle ? '' : `translate(${bgX}px,${bgY}px) scale(${bgFH?-bgZ:bgZ},${bgFV?-bgZ:bgZ})`;
+  $('bgImgLayer').style.transform = tr;
+  $('bgVideo').style.transform    = tr;
+  $('bgBtnFH').classList.toggle('active', bgFH);
+  $('bgBtnFV').classList.toggle('active', bgFV);
+}
+function bgZoomAt(mx,my,d){
+  const ns=Math.min(Math.max(bgZ+d,0.2),10);
+  const cx=DESIGN_W/2, cy=DESIGN_H/2, k=ns/bgZ;
+  bgX=(mx-cx)-k*(mx-cx-bgX);
+  bgY=(my-cy)-k*(my-cy-bgY);
+  bgZ=ns; applyBgTransform();
+}
+function bgFitView(){ bgZ=1; bgX=0; bgY=0; applyBgTransform(); }
+function bgResetAll(){ bgFH=bgFV=false; bgFitView(); }
+function refreshBgMediaUI(){
+  const has=bgHasMedia();
+  $('bgFrame').classList.toggle('has-bgmedia',has);
+  $('bgCtrlRow').style.display=has?'flex':'none';
+}
+$('bgBtnIn').addEventListener('click',()=>bgZoomAt(DESIGN_W/2,DESIGN_H/2,.15));
+$('bgBtnOut').addEventListener('click',()=>bgZoomAt(DESIGN_W/2,DESIGN_H/2,-.15));
+$('bgBtnFH').addEventListener('click',()=>{ bgFH=!bgFH; applyBgTransform(); });
+$('bgBtnFV').addEventListener('click',()=>{ bgFV=!bgFV; applyBgTransform(); });
+$('bgBtnFit').addEventListener('click',bgFitView);
+$('bgBtnReset').addEventListener('click',bgResetAll);
+// Fare: kartın dışındaki boş alandan sürükle / tekerlekle zoom
+$('bgFrame').addEventListener('mousedown',e=>{
+  if(!bgHasMedia()||e.button!==0||e.target.closest('.card-wrap')) return;
+  const sx=e.clientX, sy=e.clientY, sbx=bgX, sby=bgY;
+  $('bgFrame').classList.add('bg-grabbing');
+  const mv=ev=>{ bgX=sbx+(ev.clientX-sx)/STAGE_S; bgY=sby+(ev.clientY-sy)/STAGE_S; applyBgTransform(); };
+  const up=()=>{ $('bgFrame').classList.remove('bg-grabbing'); window.removeEventListener('mousemove',mv); window.removeEventListener('mouseup',up); };
+  window.addEventListener('mousemove',mv); window.addEventListener('mouseup',up);
+  e.preventDefault();
+});
+$('bgFrame').addEventListener('wheel',e=>{
+  if(!bgHasMedia()||e.target.closest('.card-wrap')) return;
+  e.preventDefault();
+  const r=$('bgFrame').getBoundingClientRect();
+  bgZoomAt((e.clientX-r.left)/STAGE_S,(e.clientY-r.top)/STAGE_S,e.deltaY<0?.1:-.1);
+},{passive:false});
+
 function applyBgStyle(){
+  refreshBgMediaUI();
   const layer=$('bgImgLayer');
   const fit=$('selBgFit').value;
   const op=$('slBgOp').value/100;
@@ -1830,6 +1927,7 @@ function clearBgImg(){
   bgBase64=null;
   $('bgImgLayer').style.backgroundImage='none';
   ['bgClearRow','bgFitRow','bgOpRow'].forEach(id=>$(id).style.display='none');
+  bgResetAll(); refreshBgMediaUI();
 }
 
 // ── ARKA PLAN VİDEO ──
@@ -1846,6 +1944,7 @@ $('bgVidInput').addEventListener('change',function(e){
   const f=e.target.files[0]; this.value='';
   if(!f||!f.type.startsWith('video/')) return;
   clearBgVideo();
+  bgResetAll();
   bgBase64=null; $('bgImgLayer').style.backgroundImage='none';
   const bv=$('bgVideo');
   bgVideoURL=URL.createObjectURL(f);
@@ -1902,8 +2001,81 @@ function ellGrad(ctx,W,H,cxp,cyp,stops){
   ctx.restore();
 }
 
+
+// ── GİRİŞ / ÇIKIŞ ANİMASYONU (tüm kart birlikte, zoom + fade) ──
+function measureRects(rb) {
+  const rbR = rb.getBoundingClientRect();
+  const g = sel => {
+    const el = rb.querySelector(sel); if (!el) return null;
+    const r = el.getBoundingClientRect();
+    return { x:r.left-rbR.left, y:r.top-rbR.top, w:r.width, h:r.height };
+  };
+  return { card:g('#card'), photo:g('#photoPanel') };
+}
+// Fotoğraf alanındaki videoyu (kaydırma/zoom/çevirme/filtre ayarlarıyla) canvas'a çizen fonksiyon üretir
+function makePhotoVideoPainter(pv, R, ratio, rad, dir) {
+  const p = R.photo;
+  const panelBg = getComputedStyle($('photoPanel')).backgroundColor || '#1a1a2e';
+  const tintCol = $('tintColor').value, tintOp = $('slTint').value / 100;
+  const imgOp = $('slImgOp').value / 100;
+  const br = $('slBr').value, ct = $('slCt').value, sat = $('slSat').value, bl = parseFloat($('slBlur').value) || 0;
+  const s2 = scale * ratio, X = ox * ratio, Y = oy * ratio, fh = flipH, fv = flipV;
+  const filterOK = 'filter' in document.createElement('canvas').getContext('2d');
+  const tl = (dir === 'left'  || dir === 'top')    ? rad : 0;
+  const tr = (dir === 'right' || dir === 'top')    ? rad : 0;
+  const br_ = (dir === 'right' || dir === 'bottom') ? rad : 0;
+  const bl_ = (dir === 'left'  || dir === 'bottom') ? rad : 0;
+  return function (ctx) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(p.x + tl, p.y);
+    ctx.lineTo(p.x + p.w - tr, p.y);           ctx.arcTo(p.x + p.w, p.y, p.x + p.w, p.y + tr, tr);
+    ctx.lineTo(p.x + p.w, p.y + p.h - br_);    ctx.arcTo(p.x + p.w, p.y + p.h, p.x + p.w - br_, p.y + p.h, br_);
+    ctx.lineTo(p.x + bl_, p.y + p.h);          ctx.arcTo(p.x, p.y + p.h, p.x, p.y + p.h - bl_, bl_);
+    ctx.lineTo(p.x, p.y + tl);                 ctx.arcTo(p.x, p.y, p.x + tl, p.y, tl);
+    ctx.closePath(); ctx.clip();
+    ctx.fillStyle = panelBg; ctx.fillRect(p.x, p.y, p.w, p.h);
+    if (pv.readyState >= 2 && pv.videoWidth) {
+      const vw = pv.videoWidth, vh = pv.videoHeight;
+      const tx = fh ? vw * s2 : 0, ty = fv ? vh * s2 : 0;
+      ctx.save();
+      ctx.globalAlpha = ctx.globalAlpha * imgOp;
+      if (filterOK) ctx.filter = `brightness(${br}%) contrast(${ct}%) saturate(${sat}%) blur(${bl * s2}px)`;
+      ctx.translate(p.x + X + tx, p.y + Y + ty);
+      ctx.scale(fh ? -s2 : s2, fv ? -s2 : s2);
+      ctx.drawImage(pv, 0, 0);
+      ctx.restore();
+    }
+    if (tintOp > 0) {
+      ctx.globalAlpha = ctx.globalAlpha * tintOp;
+      ctx.fillStyle = tintCol; ctx.fillRect(p.x, p.y, p.w, p.h);
+    }
+    ctx.restore();
+  };
+}
+// Kart yalnızca [lead, dur-tail] aralığında görünür. ad: giriş/çıkış animasyon süresi (0 = animasyonsuz)
+function drawZoomCard(ctx, P, r, t, dur, lead, tail, ad, org) {
+  const t0 = lead, t1 = dur - tail;
+  if (t < t0 || t > t1) return;
+  let v = 1;
+  if (ad > 0) {
+    const p = Math.min(1, Math.max(0, Math.min(t - t0, t1 - t) / ad));
+    v = 1 - Math.pow(1 - p, 3);                       // easeOutCubic
+  }
+  if (v <= 0) return;
+  const s  = 0.7 + 0.3 * v;                           // %70 → %100
+  const ox = r.x + r.w / 2;
+  const oy = org === 'top' ? r.y : r.y + r.h;         // zoom noktası: kartın alt/üst kenarı
+  ctx.save();
+  ctx.globalAlpha = v;
+  ctx.translate(ox, oy); ctx.scale(s, s); ctx.translate(-ox, -oy);
+  if (P.shadow) ctx.drawImage(P.shadow, 0, 0);   // kart gölgesi
+  if (P.pre) P.pre(ctx);                          // fotoğraf alanındaki video
+  ctx.drawImage(P.ov, 0, 0);                      // kartın geri kalanı
+  ctx.restore();
+}
+
 async function exportVideo(){
-  if(!bgVideoURL){ alert('Önce bir arka plan videosu ekleyin.'); return; }
   if(!window.MediaRecorder){ alert('Tarayıcınız video kaydını desteklemiyor. Lütfen güncel Chrome veya Edge kullanın.'); return; }
   let fmt=$('selVidFmt').value;
   let mime=pickVideoMime(fmt);
@@ -1924,52 +2096,94 @@ async function exportVideo(){
   if(photoOv) photoOv.style.opacity='0';
   await sleep(150);
 
-  let v=null, ac=null, rec=null;
+  let v=null, pv2=null, ac=null, rec=null;
+  const mkVid=async(url,muted,loop)=>{
+    const el=document.createElement('video');
+    el.playsInline=true; el.preload='auto'; el.loop=loop; el.muted=muted;
+    el.style.cssText='position:fixed;left:-9999px;top:0;width:2px;height:2px;';
+    document.body.appendChild(el);
+    el.src=url;
+    await new Promise((res,rej)=>{ el.onloadeddata=res; el.onerror=()=>rej(new Error('Video okunamadı.')); });
+    return el;
+  };
+  const h2c=()=>html2canvas($('renderBox'),{
+    scale:1,useCORS:true,allowTaint:false,width:W_,height:H_,
+    backgroundColor:null,logging:false,imageTimeout:0,
+    onclone:(doc)=>{
+      [['quoteText',wMap.q],['nameField',wMap.n],['titleField',wMap.t]].forEach(([id,w])=>{
+        const el=doc.getElementById(id); if(el) el.style.fontWeight=String(w);
+      });
+    }
+  });
+  let W_=0, H_=0;
   try{
     const [W,H]=getResWH($('selRes').value);
+    W_=W; H_=H;
     const fps=parseInt($('selVidFps').value)||30;
-    const startSec=Math.min(Math.max(0,parseFloat($('vidStart').value)||0),Math.max(0,bgVideoDur-0.1));
-    const dur=Math.max(1,parseFloat($('vidDur').value)||bgVideoDur||5);
-    const withAudio=$('cbVidAudio').checked;
+    const hasBg=!!bgVideoURL, hasPv=!!(photoIsVideo&&photoVideoURL);
+    const startSec=hasBg?Math.min(Math.max(0,parseFloat($('vidStart').value)||0),Math.max(0,bgVideoDur-0.1)):0;
+    const dur=Math.max(1,parseFloat($('vidDur').value)||(hasBg?bgVideoDur:hasPv?photoVideoDur:0)||10);
+    const withAudio=$('cbVidAudio').checked && (hasBg||hasPv);
     const fit=$('selBgFit').value, op=$('slBgOp').value/100;
+    const bgKx=W/$('bgFrame').offsetWidth, bgTx=bgX*bgKx, bgTy=bgY*bgKx;
+    const anim=$('cbVidAnim').checked;
+    let lead=Math.max(0,parseFloat($('vidLead').value)||0), tail=Math.max(0,parseFloat($('vidTail').value)||0);
+    if(lead+tail>dur-0.5){ const k=Math.max(0,dur-0.5)/(lead+tail); lead*=k; tail*=k; }
+    const animDur=anim ? Math.max(0.05,Math.min(parseFloat($('selVidAnimDur').value)||0.4,(dur-lead-tail)/2-0.02)) : 0;
+    const animOrg=$('selVidAnimOrg').value;
 
-    // 1) Kart katmanını (arka plansız, şeffaf) tek sefer çiz
-    msg.textContent='Kart hazırlanıyor…';
-    buildRenderBox(W,H,true);
-    await document.fonts.ready; await sleep(400);
-    const ov=await html2canvas($('renderBox'),{
-      scale:1,useCORS:true,allowTaint:true,width:W,height:H,
-      backgroundColor:null,logging:false,imageTimeout:0,
-      onclone:(doc)=>{
-        [['quoteText',wMap.q],['nameField',wMap.n],['titleField',wMap.t]].forEach(([id,w])=>{
-          const el=doc.getElementById(id); if(el) el.style.fontWeight=String(w);
-        });
-      }
-    });
+    // 1) Sabit arka plan. Arka planda fotoğraf varsa tek kare olarak alınır ve doğrudan canvas'a çizilir
+    window._bgSkipped=false;
+    let bgImg=null;
+    if(!hasBg && bgBase64){
+      bgImg=await new Promise(res=>{ const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src=bgBase64; });
+    }
+    msg.textContent='Arka plan hazırlanıyor…';
+    buildRenderBox(W,H,false,{bgOnly:true,noBgImage:!!bgImg});
+    await document.fonts.ready; await sleep(150);
+    const bgBase=await h2c();
     $('renderBox').innerHTML='';
     if(_vidCancel) throw new Error('__cancel__');
 
-    // 2) Kayıt için ayrı video elemanı
-    v=document.createElement('video');
-    v.playsInline=true; v.preload='auto';
-    v.loop = false;
-    v.muted = !withAudio;
-    v.style.cssText='position:fixed;left:-9999px;top:0;width:2px;height:2px;';
-    document.body.appendChild(v);
-    v.src=bgVideoURL;
-    await new Promise((res,rej)=>{ v.onloadeddata=res; v.onerror=()=>rej(new Error('Video okunamadı.')); });
-    v.currentTime=startSec;
+    // 2) Kart katmanı (şeffaf zemin). Fotoğraf alanında video varsa o alan boş bırakılır
+    msg.textContent='Kart hazırlanıyor…';
+    buildRenderBox(W,H,true,{photoTransparent:hasPv});
+    const R=measureRects($('renderBox'));
+    const c0=$('renderBox').querySelector('#card');
+    const rad=parseFloat(c0.style.borderRadius)||0;
+    if(hasPv) c0.style.boxShadow='none';
+    await document.fonts.ready; await sleep(400);
+    const ov=await h2c();
+    $('renderBox').innerHTML='';
+    let shadow=null;
+    if(hasPv){
+      // gölge ayrı katman: video, gölgenin üstünde; kartın içeriği videonun üstünde kalır
+      buildRenderBox(W,H,true,{photoTransparent:true});
+      const q=s=>$('renderBox').querySelector(s);
+      q('#photoPanel').style.visibility='hidden'; q('#contentPanel').style.visibility='hidden';
+      shadow=await h2c();
+      $('renderBox').innerHTML='';
+    }
+    if(_vidCancel) throw new Error('__cancel__');
+    const dirMode=(()=>{ const m=['photo-top','photo-bottom','photo-right'].find(x=>card.classList.contains(x));
+      return {'photo-top':'top','photo-bottom':'bottom','photo-right':'right'}[m]||'left'; })();
+    const ratio=R.card.w/$('card').offsetWidth;
 
-    // 3) Canvas + akış
+    // 3) Kayıt için video elemanları
+    msg.textContent='Videolar hazırlanıyor…';
+    if(hasBg){ v=await mkVid(bgVideoURL,!withAudio,false); v.currentTime=startSec; }
+    if(hasPv){ pv2=await mkVid(photoVideoURL,!withAudio,true); pv2.currentTime=0; }
+    const pre=hasPv?makePhotoVideoPainter(pv2,R,ratio,rad,dirMode):null;
+
+    // 4) Canvas + akış
     const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
     const ctx=cv.getContext('2d');
     const stream=cv.captureStream(fps);
     if(withAudio){
       const AC=window.AudioContext||window.webkitAudioContext;
       ac=new AC(); await ac.resume();
-      const src=ac.createMediaElementSource(v);
       const dest=ac.createMediaStreamDestination();
-      src.connect(dest);                       // hoparlöre bağlama: kayıt sırasında ses çalmaz
+      [v,pv2].filter(Boolean).forEach(el=>{ ac.createMediaElementSource(el).connect(dest); }); // hoparlöre bağlanmaz
       dest.stream.getAudioTracks().forEach(t=>stream.addTrack(t));
     }
     const opts={videoBitsPerSecond:Math.round(Math.min(40e6,Math.max(4e6,10e6*(W*H)/(1920*1080))))};
@@ -1980,34 +2194,45 @@ async function exportVideo(){
     rec.ondataavailable=e=>{ if(e.data&&e.data.size) chunks.push(e.data); };
     const stopped=new Promise(r=>{ rec.onstop=r; });
 
-    const draw=()=>{
+    const draw=(el=0)=>{
       ctx.globalAlpha=1; ctx.clearRect(0,0,W,H);
-      ellGrad(ctx,W,H,.3,.4,[[0,'#1e3a5f'],[.55,'#0b1728'],[1,'#070d1a']]);
-      if(v.readyState>=2 && v.videoWidth){
-        const vw=v.videoWidth, vh=v.videoHeight;
+      ctx.drawImage(bgBase,0,0);
+      const bgMedia=v||bgImg;
+      const vw=bgMedia?(v?v.videoWidth:bgImg.naturalWidth):0, vh=bgMedia?(v?v.videoHeight:bgImg.naturalHeight):0;
+      if(bgMedia && vw && vh && (!v || v.readyState>=2)){
         let dw=W, dh=H, dx=0, dy=0;
         if(fit!=='fill'){
           const k=fit==='contain'?Math.min(W/vw,H/vh):Math.max(W/vw,H/vh);
           dw=vw*k; dh=vh*k; dx=(W-dw)/2; dy=(H-dh)/2;
         }
-        ctx.globalAlpha=op; ctx.drawImage(v,dx,dy,dw,dh); ctx.globalAlpha=1;
+        ctx.save();
+        ctx.translate(W/2+bgTx, H/2+bgTy);
+        ctx.scale(bgFH?-bgZ:bgZ, bgFV?-bgZ:bgZ);
+        ctx.translate(-W/2, -H/2);
+        ctx.globalAlpha=op; ctx.drawImage(bgMedia,dx,dy,dw,dh);
+        ctx.restore();
       }
       ellGrad(ctx,W,H,.5,.5,[[0,'rgba(0,0,0,0)'],[.4,'rgba(0,0,0,0)'],[1,'rgba(0,0,0,.45)']]);
-      ctx.drawImage(ov,0,0);
+      drawZoomCard(ctx,{ov,shadow,pre},R.card,el,dur,lead,tail,animDur,animOrg);
     };
 
     draw();
     rec.start(500);
-    try{ await v.play(); }
-    catch(e){ throw new Error('Tarayıcı videoyu oynatmaya izin vermedi. Sayfaya bir kez tıklayıp tekrar deneyin ya da "sesi dahil et" seçeneğini kapatın.'); }
+    if(v){
+      try{ await v.play(); }
+      catch(e){ throw new Error('Tarayıcı videoyu oynatmaya izin vermedi. Sayfaya bir kez tıklayıp tekrar deneyin ya da "sesi dahil et" seçeneğini kapatın.'); }
+    }
+    let pvStarted=false;
     const t0=performance.now();
     await new Promise(resolve=>{
       const tick=()=>{
         const el=(performance.now()-t0)/1000;
-        draw();
+        // fotoğraf alanındaki video, kart göründüğü anda başlar
+        if(pv2 && !pvStarted && el>=lead){ pvStarted=true; pv2.play().catch(()=>{}); }
+        draw(el);
         msg.textContent='Video kaydediliyor… %'+Math.min(100,Math.round(el/dur*100))+'  (sekmeyi açık tutun)';
-        // Video sonuna gelindiyse başlangıç noktasına sar (süre kalan kısımdan uzunsa)
-        if(bgVideoDur && (v.ended || v.currentTime >= bgVideoDur-0.04) && el<dur-0.1){
+        // Arka plan videosu bittiyse başlangıç noktasına sar
+        if(v && bgVideoDur && (v.ended || v.currentTime >= bgVideoDur-0.04) && el<dur-0.1){
           v.currentTime=startSec; v.play().catch(()=>{});
         }
         if(_vidCancel || el>=dur) return resolve();
@@ -2015,13 +2240,15 @@ async function exportVideo(){
       };
       requestAnimationFrame(tick);
     });
-    v.pause();
+    if(v) v.pause();
+    if(pv2) pv2.pause();
     if(rec.state!=='inactive') rec.stop();
     await stopped;
     if(!_vidCancel){
       const type=(mime||'video/webm').split(';')[0];
       const ext=type==='video/mp4'?'mp4':'webm';
       downloadBlob(new Blob(chunks,{type}),`${fileName}.${ext}`);
+      if(window._bgSkipped) setTimeout(()=>alert('Not: Arka plan görseli tarayıcı güvenliği nedeniyle videoya eklenemedi.\nÇözüm: "Arka Plan Seç / Değiştir" ile görseli bir kez yeniden seçin.'),300);
     }
   }catch(err){
     if(err && err.message!=='__cancel__'){
@@ -2031,7 +2258,7 @@ async function exportVideo(){
   }finally{
     try{ if(rec && rec.state!=='inactive') rec.stop(); }catch(e){}
     if(ac){ try{ ac.close(); }catch(e){} }
-    if(v){ v.pause(); v.remove(); }
+    [v,pv2].forEach(el=>{ if(el){ el.pause(); el.remove(); } });
     $('renderBox').innerHTML='';
     controls.style.opacity=''; controls.style.pointerEvents='';
     if(photoOv) photoOv.style.opacity='';
@@ -2041,12 +2268,19 @@ async function exportVideo(){
 }
 
 // ── COLORS ──
+function hexA(hex,a){
+  const h=hex.replace('#','');
+  const n=parseInt(h.length===3?h.split('').map(c=>c+c).join(''):h,16);
+  return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
+}
 function applyBgGrad(){
   const solid=$('cbSolidBg').checked;
-  const bg=solid?$('bgSolid').value
-    :`linear-gradient(${$('slBgAngle').value}deg,${$('bgC1').value},${$('bgC2').value})`;
+  const a=($('slBgPanelOp').value/100).toFixed(2);   // yalnızca panel zemini saydamlaşır, yazılar etkilenmez
+  const bg=solid?hexA($('bgSolid').value,a)
+    :`linear-gradient(${$('slBgAngle').value}deg,${hexA($('bgC1').value,a)},${hexA($('bgC2').value,a)})`;
   $('contentPanel').style.background=bg;
   $('bgAngleVal').textContent=$('slBgAngle').value+'°';
+  $('bgPanelOpVal').textContent=$('slBgPanelOp').value+'%';
 }
 applyBgGrad();
 
@@ -2136,11 +2370,10 @@ applyText();
 
 // ── PHOTO FILTERS ──
 function applyFilters(){
-  const img=$('photoImg');
   const br=$('slBr').value, ct=$('slCt').value, sat=$('slSat').value;
   const bl=$('slBlur').value, op=$('slImgOp').value/100;
-  img.style.filter=`brightness(${br}%) contrast(${ct}%) saturate(${sat}%) blur(${bl}px)`;
-  img.style.opacity=op;
+  const fStr=`brightness(${br}%) contrast(${ct}%) saturate(${sat}%) blur(${bl}px)`;
+  [$('photoImg'),$('photoVideo')].forEach(el=>{ el.style.filter=fStr; el.style.opacity=op; });
   $('brVal').textContent=br; $('ctVal').textContent=ct; $('satVal').textContent=sat;
   $('blurVal').textContent=bl; $('imgOpVal').textContent=$('slImgOp').value+'%';
 }
@@ -2160,21 +2393,26 @@ function applyPreset(t){
 }
 
 // ── PHOTO PAN/ZOOM ──
-const panel=$('photoPanel'), photoImg=$('photoImg'), fileInp=$('fileInput');
+const panel=$('photoPanel'), photoImg=$('photoImg'), photoVideo=$('photoVideo'), fileInp=$('fileInput');
 let imgLoaded=false, photoBase64=null;
+let photoIsVideo=false, photoVideoURL=null, photoVideoDur=0;
+const mediaW=()=>photoIsVideo?photoVideo.videoWidth:photoImg.naturalWidth;
+const mediaH=()=>photoIsVideo?photoVideo.videoHeight:photoImg.naturalHeight;
 let scale=1, ox=0, oy=0, flipH=false, flipV=false, lastPW=0;
 let dragging=false, sx,sy,sox,soy;
 
 function applyTransform(){
   const sw=flipH?-scale:scale, sh=flipV?-scale:scale;
-  const tx=flipH?photoImg.naturalWidth*scale:0, ty=flipV?photoImg.naturalHeight*scale:0;
-  photoImg.style.transform=`translate(${ox+tx}px,${oy+ty}px) scale(${sw},${sh})`;
+  const tx=flipH?mediaW()*scale:0, ty=flipV?mediaH()*scale:0;
+  const tr=`translate(${ox+tx}px,${oy+ty}px) scale(${sw},${sh})`;
+  photoImg.style.transform=tr; photoVideo.style.transform=tr;
   lastPW=panel.offsetWidth;
 }
 function fitCover(){
   const pw=panel.offsetWidth, ph=panel.offsetHeight;
-  scale=Math.max(pw/photoImg.naturalWidth, ph/photoImg.naturalHeight);
-  ox=(pw-photoImg.naturalWidth*scale)/2; oy=(ph-photoImg.naturalHeight*scale)/2;
+  const mw=mediaW(), mh=mediaH(); if(!mw||!mh) return;
+  scale=Math.max(pw/mw, ph/mh);
+  ox=(pw-mw*scale)/2; oy=(ph-mh*scale)/2;
   applyTransform();
 }
 function zoomAt(cx,cy,d){
@@ -2182,7 +2420,28 @@ function zoomAt(cx,cy,d){
   const ix=(cx-ox)/scale, iy=(cy-oy)/scale;
   scale=ns; ox=cx-ix*scale; oy=cy-iy*scale; applyTransform();
 }
+function clearPhotoVideo(){
+  if(photoVideoURL){ try{ URL.revokeObjectURL(photoVideoURL); }catch(e){} }
+  photoVideoURL=null; photoIsVideo=false; photoVideoDur=0;
+  photoVideo.pause(); photoVideo.removeAttribute('src'); try{ photoVideo.load(); }catch(e){}
+  photoVideo.style.display='none';
+}
+function setPhotoFromVideoFile(file){
+  clearPhotoVideo();
+  photoBase64=null; photoImg.removeAttribute('src'); photoImg.style.display='none';
+  photoVideoURL=URL.createObjectURL(file); photoIsVideo=true;
+  photoVideo.onloadedmetadata=()=>{
+    photoVideoDur=photoVideo.duration||0;
+    photoVideo.style.display='block'; imgLoaded=true;
+    panel.classList.remove('empty'); panel.classList.add('has-img');
+    fitCover();
+    if(!bgVideoURL) $('vidDur').value=(Math.round(photoVideoDur*10)/10)||10;
+  };
+  photoVideo.src=photoVideoURL; photoVideo.muted=true; photoVideo.loop=true;
+  photoVideo.play().catch(()=>{});
+}
 function setPhotoFromDataURL(b64){
+  clearPhotoVideo();
   photoBase64=b64;
   photoImg.onload=()=>{
     photoImg.style.display='block'; imgLoaded=true;
@@ -2192,7 +2451,9 @@ function setPhotoFromDataURL(b64){
   photoImg.src=b64;
 }
 function loadFile(file){
-  if(!file||!file.type.startsWith('image/')) return;
+  if(!file) return;
+  if(file.type.startsWith('video/')){ setPhotoFromVideoFile(file); return; }
+  if(!file.type.startsWith('image/')) return;
   const r=new FileReader();
   r.onload=ev=>setPhotoFromDataURL(ev.target.result);
   r.readAsDataURL(file);
@@ -2308,7 +2569,8 @@ function bakePhoto() {
   } catch (e) { console.warn('bakePhoto:', e); return null; }
 }
 
-function buildRenderBox(W, H, cardOnly) {
+function buildRenderBox(W, H, cardOnly, opt) {
+  opt = opt || {};
   const rb = $('renderBox');
   rb.innerHTML = '';
   rb.style.width    = W + 'px';
@@ -2326,7 +2588,8 @@ function buildRenderBox(W, H, cardOnly) {
     rb.style.backgroundColor = 'transparent';
     rb.style.backgroundImage = 'none';
   } else {
-    rb.style.backgroundColor = '#0b1728';
+    const cbg = getComputedStyle(bgFrame).backgroundColor;
+    rb.style.backgroundColor = (cbg && cbg !== 'rgba(0, 0, 0, 0)') ? cbg : '#0b1728';
     const frameBgImg = getComputedStyle(bgFrame).backgroundImage;
     rb.style.backgroundImage = (frameBgImg && frameBgImg !== 'none') ? frameBgImg : 'none';
   }
@@ -2336,7 +2599,7 @@ function buildRenderBox(W, H, cardOnly) {
   let currentBg = layer.style.backgroundImage;
   // Arka plan video ise, görsel dışa aktarmada videonun o anki karesi kullanılır
   const bvEl = $('bgVideo');
-  if (!cardOnly && bgVideoURL && bvEl.readyState >= 2 && bvEl.videoWidth) {
+  if (!cardOnly && !opt.bgOnly && bgVideoURL && bvEl.readyState >= 2 && bvEl.videoWidth) {
     try {
       const c = document.createElement('canvas');
       c.width = bvEl.videoWidth; c.height = bvEl.videoHeight;
@@ -2344,7 +2607,10 @@ function buildRenderBox(W, H, cardOnly) {
       currentBg = 'url(' + c.toDataURL('image/jpeg', 0.92) + ')';
     } catch (e) { console.warn('video karesi alınamadı:', e); }
   }
-  if (!cardOnly && currentBg && currentBg !== 'none') {
+  // data:/blob: dışındaki görseller (örn. file:// background.jpg) tuvali kirletir → dahil etme
+  const bgSafe = /^url\(\s*["']?(data:|blob:)/i.test(currentBg || '');
+  if (!cardOnly && currentBg && currentBg !== 'none' && !bgSafe) window._bgSkipped = true;
+  if (!cardOnly && !opt.noBgImage && currentBg && currentBg !== 'none' && bgSafe) {
     const fitVal = $('selBgFit') ? $('selBgFit').value : 'cover';
     const bgSize = fitVal === 'contain' ? 'contain' : fitVal === 'fill' ? '100% 100%' : 'cover';
     const bgOp   = $('slBgOp') ? parseFloat($('slBgOp').value) / 100 : 1;
@@ -2361,19 +2627,34 @@ function buildRenderBox(W, H, cardOnly) {
       'background-repeat:no-repeat',
       `opacity:${bgOp}`
     ].join(';');
+    {
+      const kx = W / bgFrame.offsetWidth;
+      if (bgZ !== 1 || bgX || bgY || bgFH || bgFV) {
+        bgImgDiv.style.transform = `translate(${bgX * kx}px,${bgY * kx}px) scale(${bgFH ? -bgZ : bgZ},${bgFV ? -bgZ : bgZ})`;
+      }
+    }
     rb.appendChild(bgImgDiv);
   }
 
   // Önizlemedeki vinyet katmanı (.bg-frame::after)
-  if (!cardOnly) {
+  if (!cardOnly && !opt.bgOnly) {
     const vig = document.createElement('div');
     vig.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;' +
       'background:radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.45) 100%)';
     rb.appendChild(vig);
   }
 
+  if (opt.bgOnly) return rb;
+
   const cardOrig  = $('card');
   const cardClone = cardOrig.cloneNode(true);
+
+  if (opt.noBgImage) {
+    // güvenli mod: data:/blob: olmayan tüm görselleri çıkar
+    cardClone.querySelectorAll('img').forEach(im => {
+      if (im.getAttribute('src') && !/^(data|blob):/i.test(im.getAttribute('src'))) im.remove();
+    });
+  }
 
   cardClone.querySelectorAll('[contenteditable]').forEach(el => {
     el.removeAttribute('contenteditable');
@@ -2394,6 +2675,31 @@ function buildRenderBox(W, H, cardOnly) {
       // html2canvas CSS filter desteklemez → filtreyi canvas'a önceden uygula
       const baked = bakePhoto();
       if (baked) { imgEl.src = baked; imgEl.style.filter = 'none'; }
+    }
+  }
+
+  // Fotoğraf alanındaki video: html2canvas video çizemez
+  const pvClone = cardClone.querySelector('#photoVideo');
+  if (pvClone) pvClone.style.display = 'none';
+  if (photoIsVideo) {
+    const imgEl = cardClone.querySelector('#photoImg');
+    const ppClone = cardClone.querySelector('#photoPanel');
+    if (opt.photoTransparent) {
+      // video kare kare canvas'a çizilecek; kartta yalnızca boş (şeffaf) alan kalsın
+      if (imgEl) imgEl.style.display = 'none';
+      if (tint) tint.style.display = 'none';
+      if (ppClone) ppClone.style.background = 'transparent';
+    } else if (imgEl && photoVideo.videoWidth) {
+      // sabit imaj çıktısı: videonun o anki karesi
+      try {
+        const c = document.createElement('canvas');
+        c.width = photoVideo.videoWidth; c.height = photoVideo.videoHeight;
+        const g = c.getContext('2d');
+        if ('filter' in g) g.filter = photoVideo.style.filter || 'none';
+        g.drawImage(photoVideo, 0, 0);
+        imgEl.src = c.toDataURL('image/jpeg', 0.95);
+        imgEl.style.display = 'block'; imgEl.style.filter = 'none';
+      } catch (e) { console.warn('foto video karesi alınamadı:', e); }
     }
   }
 
@@ -2444,8 +2750,8 @@ function buildRenderBox(W, H, cardOnly) {
     const imgEl = cardClone.querySelector('#photoImg');
     if (imgEl && imgLoaded) {
       const s2 = scale * ratio, X = ox * ratio, Y = oy * ratio;
-      const tx = flipH ? photoImg.naturalWidth  * s2 : 0;
-      const ty = flipV ? photoImg.naturalHeight * s2 : 0;
+      const tx = flipH ? mediaW() * s2 : 0;
+      const ty = flipV ? mediaH() * s2 : 0;
       imgEl.style.transform =
         `translate(${X + tx}px,${Y + ty}px) scale(${flipH ? -s2 : s2},${flipV ? -s2 : s2})`;
     }
@@ -2518,38 +2824,40 @@ async function exportImg() {
     const mime    = exportFmt==='png' ? 'image/png' : exportFmt==='webp' ? 'image/webp' : 'image/jpeg';
     const ext     = exportFmt==='png' ? 'png'       : exportFmt==='webp' ? 'webp'       : 'jpg';
 
-    buildRenderBox(W, H);
-    await document.fonts.ready;
-    await sleep(400);
-
-    // Font yüklenmesini bekle
-    await document.fonts.ready;
-
-    const cv = await html2canvas($('renderBox'), {
-      scale          : 1,
-      useCORS        : true,
-      allowTaint     : true,
-      width          : W,
-      height         : H,
-      backgroundColor: null,
-      logging        : false,
-      imageTimeout   : 0,
-      onclone        : (doc) => {
-        // Klonlanmış dokümanda da fontWeight'i garantile
-        const fw = [
-          { id:'quoteText', w: String(wMap.q) },
-          { id:'nameField', w: String(wMap.n) },
-          { id:'titleField', w: String(wMap.t) },
-        ];
-        fw.forEach(({ id, w }) => {
-          const el = doc.getElementById(id);
-          if (el) el.style.fontWeight = w;
-        });
-      }
-    });
-
-    const blob = await canvasToBlob(cv, mime, quality);
+    window._bgSkipped = false;
+    const renderOnce = async (noBg) => {
+      buildRenderBox(W, H, false, { noBgImage: noBg });
+      await document.fonts.ready;
+      await sleep(400);
+      return html2canvas($('renderBox'), {
+        scale          : 1,
+        useCORS        : true,
+        allowTaint     : false,
+        width          : W,
+        height         : H,
+        backgroundColor: null,
+        logging        : false,
+        imageTimeout   : 0,
+        onclone        : (doc) => {
+          [{ id:'quoteText', w:String(wMap.q) }, { id:'nameField', w:String(wMap.n) }, { id:'titleField', w:String(wMap.t) }]
+            .forEach(({ id, w }) => { const el = doc.getElementById(id); if (el) el.style.fontWeight = w; });
+        }
+      });
+    };
+    let cv = await renderOnce(false);
+    let blob;
+    try {
+      blob = await canvasToBlob(cv, mime, quality);
+    } catch (e) {
+      // Tarayıcı kirli tuval nedeniyle kaydetmeyi reddetti → arka plan görselini çıkarıp tekrar dene
+      if (/taint|security|insecure/i.test((e && (e.message || e.name)) || '')) {
+        window._bgSkipped = true;
+        cv = await renderOnce(true);
+        blob = await canvasToBlob(cv, mime, quality);
+      } else { throw e; }
+    }
     downloadBlob(blob, `${fileName}.${ext}`);
+    if (window._bgSkipped) setTimeout(() => alert('Not: Arka plan görseli tarayıcı güvenliği nedeniyle çıktıya eklenemedi.\nÇözüm: "Arka Plan Seç / Değiştir" ile görseli bir kez yeniden seçin.'), 300);
 
   } catch(err) {
     console.error(err);
